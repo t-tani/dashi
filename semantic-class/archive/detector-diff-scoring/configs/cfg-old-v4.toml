@@ -1,0 +1,895 @@
+# これは実験入力のスナップショットである。akunuki の現行の雛形には追随しない。
+# 実験の当時の設定を凍結してあるので、本体の config.toml が変わっても書き換えない。
+# reference/ の symlink はリポジトリに入らない。この設定が指す意味分類表は、
+# 同じフォルダの README の入力データの表にある。
+
+# aku の設定ファイル。aku lint が検査のたびに読む。既定のままで動くので、
+# 指摘の出方を変えたいときにだけ編集する。
+#
+# 設定の値は 3 種類ある。スイッチは true か false を書き、コメントがそれぞれの
+# 効果を言う。閾値は数値を書き、コメントが「この値を超えたら指摘する」のように
+# 効く向きを言う。残りはパラメータで、語の一覧・ファイルパス・重大度などを
+# 書く。
+#
+# enabled のキーは、どの検出器の節でも、その検出器を働かせるかのスイッチで
+# ある。severity のキーは、その検出器が出す指摘の重大度である。書けるのは
+# info と warn。warn の指摘は 1 件 1 行で表示され、既定で終了コードを 1 にする。
+# info は文体の癖の観測であり、既定の表示では検出器ごとの件数にまとめる。
+#
+# この設定は、検査するすべての入力に一律に効く。文書の種類ごと(FAQ でだけ
+# 疑問形の見出しを許す、など)や、文書の中の領域(特定の見出しの節、
+# frontmatter のキーなどの部分範囲)ごとに検査を変えるときは、構造プロファイル
+# (aku lint --profile <ファイル>)で上書きする。領域ごとには、検出器の
+# 有効・無効と、重大度と閾値の上書き、辞書の当て方を書ける。文書全体には、
+# 辞書の当て方と、グループの切り替えと、検出器の重大度を書ける。
+
+# 検査対象の絞り込み。検査できる入力は 4 種類ある。データ記述(YAML・TOML・
+# JSON・CSV・TSV)はコメントを検査する。Markdown は本文の全体を検査する。
+# ソースコード(Python・Rust・Go・JavaScript・TypeScript・JSX・TSX・
+# シェルスクリプト・Makefile・CSS・SCSS・Less・HTML・Astro)はコメントと
+# docstring を検査する。JSX・TSX・HTML・Astro はこれに加え、タグの間のテキスト
+# (HTML・Astro ではテキストノード)と、散文を持つ属性の値も検査する
+# ([check.source.markup_text])。HTML の script・style の中身は JavaScript・
+# CSS として、Astro の --- フェンスの中身は TypeScript として、それぞれの
+# 言語の設定で検査する。プレーンテキスト(.txt)は全体を検査するが、Markdown
+# の構造は解釈しない。
+#
+# 種類ごとの節の enabled を false にすると、その種類のファイルはディレクトリの
+# 走査で収集されなくなる。パスで名指しして渡したファイルは、この設定に
+# 関わらず検査する。
+[check]
+# 検査対象に含めるのに必要な、日本語の文字の比率の下限。日本語がこの比率に
+# 満たないまとまり(Markdown ではブロック、ソースコードではコメントのかたまり)
+# は、日本語の文書ではないとみなして検査しない。比率を数えるとき、URL・
+# ドット区切りの識別子・パスは分母から除く。0.0 にすると、すべてを検査する。
+#
+# 0.20 は実測で選んだ値である。日本語で書かれた文書の指摘はほぼすべて残り、
+# 英語の文書に断片として混ざった日本語への雑音の指摘は大半が外れる。
+japanese_ratio = 0.20
+
+[check.data]
+# データ記述(YAML・TOML・JSON・CSV・TSV)を検査対象に含めるなら true。
+enabled = true
+
+[check.markdown]
+# Markdown を検査対象に含めるなら true。
+enabled = true
+
+# 引用ブロック(> で始まる行)の中も検査するなら true。引用は他人の文なので、
+# 既定では検査しない。
+blockquote = false
+
+[check.source]
+# ソースコード(Python・Rust・Go・JavaScript・TypeScript・JSX・TSX・
+# シェルスクリプト・Makefile・CSS・SCSS・Less・HTML・Astro)を検査対象に
+# 含めるなら true。
+enabled = true
+
+[check.source.strings]
+# ソースコードを検査するとき、文字列リテラルの中身も対象に含めるかを言語ごとに
+# 選ぶ。既定では、コメントと docstring だけを検査する。エラーメッセージなど、
+# 文字列に日本語を書く言語だけ true にする。選べるのはこの 8 言語だけである。
+# JSX は javascript の値を、TSX は typescript の値を使う。シェルスクリプト・
+# Makefile・データ記述の文字列は対象にできない。HTML・Astro 自身の文字列も
+# 対象にできないが、HTML の script・style、Astro のフェンスの中身は、埋め込み
+# 先ではなくこの節の javascript・css・typescript の値にそのまま従う。
+python = false
+rust = false
+go = false
+javascript = false
+typescript = false
+css = false
+scss = false
+less = false
+
+[check.source.markup_text]
+# JSX・TSX のタグの間のテキスト、HTML のテキストノード、および共通する許可
+# リストの属性の値(alt・title・placeholder・aria-label と、meta 要素の
+# name="description" に対する content)を検査対象に含めるなら true。既定は
+# true である。表示される散文そのものなので、strings と違い既定で検査する。
+enabled = true
+
+[check.text]
+# プレーンテキスト(.txt)を検査対象に含めるなら true。
+enabled = true
+
+# 参照データのファイルパス。参照データは、公開の言語資料から生成する表であり、
+# 一部の検査が語の意味や英訳を引くのに使う。aku init が導入のときに取得して
+# 生成する。後から作り直すときは aku reference を実行する。表が無い場合、
+# それを使う検査は指摘を出さない。ファイルパスは、この設定ファイル
+# (.aku/config.toml)のあるディレクトリからの相対で書く。既定の
+# "reference/gloss-table.tsv" は .aku/reference/gloss-table.tsv を指す。表の
+# 中身は生成物であり、ユーザーは編集しない。
+[reference]
+# 対訳表: 日本語の見出し語と英訳の対応。JMdict から生成する。直訳語の検出
+# (calque)と、aku report の語彙の節が使う。
+gloss_table = "reference/gloss-table.tsv"
+
+# 意味分類表: 見出し語と意味の分類番号の対応。分類語彙表増補改訂版データベース
+# から生成する。語の意味の種類を見る検査(role-conflict・concrete-noun-misfit
+# など)が使う。
+semantic_class_table = "reference/semantic-class-table.tsv"
+
+# Wikipedia の記事名の一覧。Wikipedia 日本語版のダンプから生成する。見慣れない
+# 複合語の検査(unknown-compound)が、世間で定着した名前を指摘から外すのに
+# 使う。
+wikipedia_title_table = "reference/wikipedia-title-table.txt"
+
+# JMdict の見出し語の一覧。JMdict から生成する。使い道は Wikipedia の記事名の
+# 一覧と同じである。
+jmdict_headword_table = "reference/jmdict-headword-table.txt"
+
+# 同義語表: 同義語のグループと、そこに属する語の対応。Sudachi 同義語辞書から
+# 生成する。同じ語を 2 通りに書いた箇所(「宛先」と「宛て先」)を見分ける検査
+# (orthographic-variants)が使う。ファイル名は配布元のものに合わせてある。
+# 取得後およそ 3 MB ある。
+synonym_table = "reference/synonyms.txt"
+
+# 辞書の読み方。辞書はユーザーが育てる語の一覧で、.aku/dict/ に役割ごとの
+# ファイルで置かれている。行の書き方は、各ファイルの冒頭の説明にある。
+[dict]
+# 辞書の形式の版。今は 1 だけがある。書かなければ 1 とみなす。
+version = 1
+
+# 置き換えの規則として読み込むファイルの一覧。形式は prh(textlint などで
+# 使われる辞書形式)であり、公開されている prh 辞書をそのまま足せる。パスは
+# 辞書のディレクトリ(.aku/dict/)からの相対で書く。
+imports = ["replace.prh.yml"]
+
+# 辞書の登録のグループごとの切り替え。辞書の登録には、group でグループの
+# 名前を付けられる。同じグループに属する登録は、この表で一度に有効・無効を
+# 切り替えられる。
+#
+# 例えば .aku/dict/ai-wrong-words.yaml には次の登録があり、transferred-word という
+# グループに属している。
+#
+#   - morpheme: '配線'
+#     group: transferred-word
+#
+# この表に "transferred-word" = false と書くと、このグループの登録がすべて
+# 無効になる。書かないグループは有効である。group の無い登録は、この表に
+# 関わらず常に有効である。
+#
+# この表に書けるのは、辞書のどれかの登録が実際に名乗っているグループの名前
+# だけである。名乗る登録の無い名前を書いても何も切り替わらず、lint が警告を
+# 出す。グループを使う登録は .aku/dict/ai-wrong-words.yaml にあり、各グループが何を
+# 照合するかの説明もそこにある。
+#
+# aku init が既定で写す辞書にあるグループは、有効のままのものも含めてこの表に
+# 載せる。true の行は挙動を変えないが、切り替えられるグループの一覧を
+# ユーザーに見せる。切るときは、そのグループの値を false にする。
+#
+# transferred-word を false にするのは、配線や計器を本来の意味(電気の配線、
+# 計測の機器)で書くことが多い文書である。本来の意味で書いた箇所にも指摘が
+# 出るためである。
+[dict.groups]
+"transferred-word" = true
+
+# volatile-pointer を有効にするのは、コミットの文面やエージェントの記憶の
+# ような、セッションの外へ残る文書を検査するときだけである。計画やタスク管理の
+# 文書にはタスクの識別子が、手順の文書には /tmp のようなパスが正当に載るので、
+# 既定では切っている。切り替えは構造プロファイルの groups で行う。記憶用の
+# プロファイルは aku audit-agent-memory が同梱する。
+"volatile-pointer" = false
+
+# 検査する文書の分野。
+[project]
+# fields: 検査する文書が属する分野を、対訳表の分野タグの名前で並べる。タグの
+# 名前は JMdict が定める略称であり、計算機が comp、医学が med、法律が law で
+# ある。
+#
+# 挙げた分野のタグを持つ語は、その分野で定着した用語として扱い、転用の候補に
+# しない。
+# 書かなければ、aku report --draft は分野の外の転用語の節を出さない。
+fields = ["comp"]
+
+[detectors]
+# 検出器ごとの調整。検出器 1 つにつき、指摘に付く rule ID を名前に持つ節が
+# 1 つある。どの節も enabled を持ち、調整のキー(閾値・語の一覧)を持つ節は
+# enabled の後に並べ、severity を持つ節はそれを最後に置く。
+
+[detectors.foreign-script]
+# ハングルやキリル文字など、日本語の文書に現れないはずの文字体系の字が
+# 混ざっていたら指摘する。
+enabled = true
+severity = "warn"
+
+[detectors.non-japanese-kanji]
+# 漢字のうち、日本語の文字集合に無い字(簡体字など)を指摘する。
+enabled = true
+severity = "info"
+
+[detectors.foreign_text_exclusion]
+# 上の 2 つの検出器(foreign-script・non-japanese-kanji)だけの除外設定。
+# 検出器でないので、この節に enabled は無い。リンクのラベルと、鉤括弧・
+# 曲がった二重引用符の内側は、外国語の固有名詞や引用が正当に入るので、既定
+# では検査しない。検査に含めるなら true にする。
+include_link_label = false
+include_quotation = false
+
+[detectors.hankaku-kana]
+# 半角カタカナを指摘する。
+enabled = true
+
+[detectors.zero-width-space]
+# 幅を持たない空白文字の混入を指摘する。
+enabled = true
+
+[detectors.nfd-dakuten]
+# 濁点・半濁点が分解された形の文字(ガ が 2 文字になっている等)を指摘する。
+enabled = true
+
+[detectors.control-character]
+# 表示されない制御文字の混入を指摘する。
+enabled = true
+
+[detectors.invisible-character]
+# 方向制御文字やタグ文字など、表示されない文字の混入を指摘する。旗の絵文字や
+# 結合絵文字のような正当な不可視文字には出ない。
+enabled = true
+
+[detectors.kanji-run-length]
+# 漢字がこの字数を超えて連なったら指摘する。
+enabled = true
+threshold = 6
+severity = "info"
+
+[detectors.exclamation-mark]
+# 全角・半角の感嘆符を、出現 1 つごとに指摘する。既定を warn にするのは、
+# 実測で誤検出が出なかったためである。
+enabled = true
+severity = "warn"
+
+[detectors.no-dash]
+# 地の文のダッシュ(——)を指摘する。
+enabled = true
+
+[detectors.no-arrow]
+# 地の文の矢印(→)と、中黒で 4 つ以上並べた項目を指摘する。
+enabled = true
+
+[detectors.paren-limit]
+# 括弧の入れ子と、1 文に多すぎる注釈の括弧を指摘する。
+enabled = true
+
+[detectors.unmatched-paren]
+# 段落の中で対応の取れていない括弧を指摘する。
+enabled = true
+
+[detectors.ja-spacing]
+# 括弧の外側と内側、全角どうしの間、スラッシュの前後、インラインコードの
+# 前後、リンクの前後にある、削るべき空白を指摘する。括弧・全角どうし・
+# スラッシュは、空白を入れない書き方しか無い。スラッシュで指摘するのは
+# 両側に空白がある並記(A / B)だけである。片側だけの空白は、末尾スラッシュの
+# ディレクトリ名や先頭スラッシュの絶対パスの区切りとして正当に現れるので、
+# 対象にしない。
+#
+# インラインコードの前後、リンクの前後は、空白を入れる書き方と入れない
+# 書き方のどちらも実務にあるので、space で選ぶ。never は空白が有れば指摘し、
+# always は空白が無ければ指摘する。
+#
+# space を always にしたのは、このリポジトリ自身がバッククォートで囲んだ
+# 識別子や英語の術語の前後に空白を置く書き方をしているためである。同梱の
+# 雛形は .aku/config.toml と完全一致の不変条件があるので、同じ値を既定として
+# 出荷し、逆の書き方を選ぶ利用側は never へ切り替える。
+#
+# 半角と全角の境界(地の文どうしが接する箇所)は boundary_enabled で
+# 既定を無効にする。頭字語と漢字が直結した定着した語(`OSINT資源`)を、
+# 空白の欠けと区別する仕組みが無いためである。有効化は、この仕組みを
+# 別途作ってから判断する。
+enabled = true
+severity = "warn"
+space = "always"
+boundary_enabled = false
+
+[detectors.en-ja-compound]
+# 英単語と日本語を区切りなく直結した語を指摘する。
+# 日本語として定着した表記の除外に形態素解析の辞書を使う。「Gaines氏」
+# 「GitHub上」のように、日本語側が接辞 1 形態素(品詞が接尾辞・接頭辞)の
+# 直結は指摘しない。「Windows版」のように、ラテン文字側が固有名詞として辞書
+# に載る直結も指摘しない。3 つ目の型は「AIエージェント」「CVE番号」のような
+# 直結である。文字種の遷移点が形態素の境界と一致する。ラテン文字側は固有名詞
+# であるか、全大文字と数字だけの略語(6 字以下)であるか、同梱 allowlist の
+# 語である。略語の例は AI・CVE である。allowlist の例は Linux・GitHub・Web
+# である。日本語側の隣の形態素は既知語である。この 3 条件がそろう直結も指摘
+# しない。ラテン文字側が複数語・ハイフンの名前の一部だけを指す場合もある
+# (「Red Hat製」「Wi-Fiルーター」)。この場合は、空白かハイフン越しに隣の語を
+# 足した句を allowlist と照合して指摘しない。4 つ目の型は
+# 「生成AI」「IPアドレス」のように、直結の全体が解析辞書に 1 語として載る
+# 直結である。形態素解析を持たない構成では、この除外をせず、区切りなしの
+# 直結をすべて指摘する。
+#
+# 既定で無効である。上の除外を全部積んでも、実測(セキュリティ記事 2,705
+# ファイル・34 MB、2026-08-26〜27 計測)で 17,331 件の warn が残る。大半は
+# 「発見者TrustSec」のような日本語の普通名詞へ固有名詞を直結した同格の形と、
+# 1 回きりの固有名である。true にすれば、上の除外を含む全機能が動く。
+enabled = false
+
+[detectors.katakana-compound]
+# 見慣れないカタカナの複合語を指摘する。ユーザーが認めた用語の一覧
+# (.aku/dict/domain-terms.yaml・jargon.yaml)、辞書、形態素解析の辞書の
+# どれにも無い語が対象である。複合語の内部に中黒(・)がある形は、対の検出器
+# katakana-nakaguro が指摘する。enabled と severity は両方に効く。
+# 複合語の判定は形態素解析の辞書を使うので、形態素解析を持たない構成では
+# katakana-nakaguro だけが指摘を出す。
+enabled = true
+severity = "info"
+
+[detectors.unnatural-alphabet]
+# 内部に大文字を含むアルファベットの並び(camelCase 等)を指摘する。
+enabled = true
+# この一覧に書いた語は指摘されない。正しい固有名詞に指摘が出たら、その語を
+# ここに足す。
+allowlist = []
+# true なら、同梱の一覧にある企業名と製品名 274 語(GitHub・MongoDB など、
+# 内部に大文字を持つ語)を指摘しない。false なら、この 274 語も指摘する。
+builtin_allowlist = true
+severity = "info"
+
+[detectors.hype-expression]
+# 誇張の言い回しを数える。数える語彙は akunuki が同梱しており、
+# aku rule-body no-loaded-language で読める。
+enabled = true
+# threshold: 1 文書あたりの出現数がこの値を超えたら指摘する。0 のままなら
+# 1 件目から指摘する。
+# paragraph_threshold: 同じ段落に現れた異なる語の数がこの値以上なら、段落にも
+# 指摘する。
+threshold = 0
+paragraph_threshold = 2
+severity = "info"
+
+[detectors.undefined-term]
+# ユーザーが認めた用語の一覧(.aku/dict/domain-terms.yaml・jargon.yaml)にも
+# 辞書にも無い語が、初出の段落で定義されないまま使われていたら指摘する。
+#
+# 既定で無効である。指摘のほぼすべてが unknown-compound と同じ語を指す二重の
+# 報告になることを、実測で確かめたためである。有効にすれば動く。定義の無い
+# 語の集約は aku report の語の一覧に任せる。
+enabled = false
+severity = "info"
+
+[detectors.untranslated-term]
+# 用語集(.aku/dict/glossary.yaml)が日本語の正式名を決めた語を、原語のまま
+# 書いていたら指摘する。直し先は決めた訳 1 つなので、aku fix が置き換える。
+#
+# 用語集に書いた語だけが対象である。用語集が無ければ指摘は出ない。
+enabled = true
+severity = "warn"
+
+[detectors.undecided-term]
+# 用語集(.aku/dict/glossary.yaml)に無い原語を、裁定待ちとして指摘する。
+# 日本語で書くか原語のまま書くかを、まだ誰も決めていない語である。
+#
+# 既定で無効である。有効にすると、地の文のラテン文字のうち用語集に無いものが
+# すべて出る。文書を直すための指摘ではなく、決める語を数えるための指摘なので、
+# 語彙を見直すときに有効にし、aku report の語の一覧で読む。
+#
+# この指摘は修復タスクに載らない。直す手段が訳語を作ることしかなく、決める
+# 相手は書き手ではないためである。
+enabled = false
+severity = "info"
+
+[detectors.max-ten]
+# 1 文の中の読点(、)の数がこの値を超えたら指摘する。
+enabled = true
+threshold = 4
+
+[detectors.max-len]
+# 1 文の実効長がこの値を超えたら指摘する。実効長は字数と違い、空白を 0 と
+# 数え、ラテン文字の連なりとインラインコードスパンの中身を圧縮した長さで
+# ある。linter のような 6 字のラテン文字の語は 4 前後まで縮む。ほとんどの
+# 文で実効長は字数より短くなるので、閾値も字数で数えていたときの 80 より
+# 下げて 75 にした。
+enabled = true
+threshold = 75
+
+[detectors.no-comma-sentence]
+# この字数以上の文に読点が 1 つも無ければ指摘する。60 字は実測で校正した値で
+# ある。
+enabled = true
+threshold = 60
+severity = "info"
+
+[detectors.double-negative]
+# 二重否定の言い回しを指摘する。
+enabled = true
+
+[detectors.sentence-period]
+# 文がこの一覧のどの文字列でも終わらなければ指摘する。文末の閉じ括弧と
+# 引用符は除いて判定する。
+enabled = true
+terminators = ["。"]
+# 箇条書きの項目にも適用するなら true。見出しは、この値に関わらず対象に
+# しない。
+include_list_items = false
+# 表のセルにも適用するなら true。セルを体言止めで書くのが表の普通の書き方
+# なので、既定は false(対象にしない)である。セルまで完全な文で書く方針の
+# 文書を検査するなら、ユーザーが true にする。
+include_table_cells = false
+# JSX・TSX のタグの間のテキストと属性の値にも適用するなら true。ボタンの
+# 「保存」のような短いラベルを体言止めで書くのが普通なので、既定は
+# false(対象にしない)である。
+include_markup_text = false
+severity = "info"
+
+[detectors.mixed-style]
+# ですます体とである体が同じ領域に混ざったら指摘する。どちらの体とみなすかは、
+# この 2 つの文末の一覧で決める。
+enabled = true
+desu_masu_endings = ["です", "ます", "ましょう", "でしょう", "ください", "ました", "ません", "でした", "ませんでした"]
+dearu_endings = ["である", "であった", "だった", "だ"]
+severity = "info"
+
+[detectors.doubled-conjunction]
+# 文頭の接続詞が連続したら指摘する。同じ内側の一覧に属する語どうしは、語を
+# 替えていても連続とみなす(「さらに」の次の文が「また」で始まる、など)。
+# 逆接の「が、」を含む文の連続は、この一覧に関わらず常に指摘する。逆接の
+# 「が」の判定だけは形態素解析を使い、持たない構成ではその判定を行わない。
+enabled = true
+conjunctions = [
+    ["さらに", "また", "加えて"],
+    ["しかし", "一方", "ただし"],
+    ["したがって", "そのため"],
+    ["そして"],
+    ["なお"],
+    ["つまり"],
+]
+severity = "info"
+
+[detectors.paragraph-len]
+# 1 段落の文の数がこの値を超えたら指摘する。
+enabled = true
+threshold = 6
+
+[detectors.hedge-density]
+# 推量やぼかしの言い回しが 1 段落にこの数を超えて現れたら指摘する。
+enabled = true
+threshold = 3
+# 数える言い回しの一覧。この一覧が原本であり、行を足せばそのまま数えに入る。
+phrases = ["とされる", "とみられる", "可能性がある", "という", "かもしれない"]
+severity = "info"
+
+[detectors.short-sentence-run]
+# 接続表現を持たない短文の連続(実効長が閾値以下の文が閾値以上連続し、文頭に
+# 接続表現を持つ文が 1 つも無い箇所)を指摘する。LLM が書く文書に出やすい
+# 書式の癖である。既定を有効にするのは、実測で無作為に抜いた指摘に明らかな
+# 誤検出が無かったためである。severity を warn にするのは、info の既定では
+# text 形式の表示に 1 件 1 行で出ず見落とされるためである。
+enabled = true
+# max_len は字数ではなく実効長(max-len の節を見よ)で数える。ほとんどの
+# 文で実効長は字数より短くなるので、閾値も字数で数えていたときの 40 より
+# 下げて 37 にした。
+max_len = 37
+min_run = 4
+# 隣り合う地の文の段落の文を 1 つの並びとして数えるなら true。1〜2 文の
+# 細切れの段落に散らばった連打も捕まえる。段落の区切りには内容の区切りという
+# 正当な用法があるので、既定は false である。
+across_paragraphs = false
+severity = "warn"
+
+[detectors.short-paragraph-run]
+# 文の数が閾値以下の地の文の段落の連続(短文の連打が段落にまで割られた形)を
+# 指摘する。short-sentence-run と同じ癖を、文の連なりでなく段落の連なりとして
+# 見る。severity を warn にする理由は short-sentence-run と同じである。
+enabled = true
+max_sentences = 2
+min_run = 3
+severity = "warn"
+
+[detectors.heading-emphasis]
+# 見出しの中の太字を指摘する。見出しは書式で既に強調されている。
+enabled = true
+severity = "info"
+
+[detectors.heading-two-part]
+# 見出しを区切りの記号で 2 つの部分へつないだ形を指摘する。見る記号は、
+# 罫線・em dash・horizontal bar・半角ハイフン 2 連の 4 つである。記号で始まる
+# 見出しと記号で終わる見出しは、2 要素をつないだ形ではないので指摘しない。
+enabled = true
+severity = "warn"
+
+[detectors.boilerplate-heading]
+# 内容を名指さず、定型の文言だけでできた見出しを指摘する。定型の文言で
+# 始まっても、続きで対象を名指している見出しは指摘しない。照合する文言は
+# akunuki が同梱しており、aku rule-body no-abstract-heading で読める。
+enabled = true
+severity = "info"
+
+[detectors.question-heading]
+# 疑問形の見出しを指摘する。
+#
+# 既定で無効である。FAQ 形式の文書では疑問形が正当なためである。FAQ 以外を
+# 検査する設定なら true にしてよい。
+enabled = false
+
+[detectors.list-label-emphasis]
+# 箇条書きの行が太字のラベルで始まり、直後にコロン・ハイフン・ダッシュの
+# どれかが続く形(**ラベル**: 説明)を指摘する。
+enabled = true
+severity = "info"
+
+[detectors.list-item-essay]
+# 箇条書きの項目、または表のセルの中の文の数が閾値以上なら指摘する。項目や
+# セルに理由の説明まで詰めてしまう LLM の書式の癖である。既定を有効にする
+# 理由と severity を warn にする理由は、short-sentence-run と同じである。
+enabled = true
+item_threshold = 3
+cell_threshold = 2
+severity = "warn"
+
+[detectors.emoji-bullet]
+# 絵文字で始まる箇条書きの行を指摘する。
+enabled = true
+severity = "info"
+
+[detectors.descriptive-link-text]
+# リンクの文字列が「こちら」「ここ」だけの箇所を指摘する。指す先の名前を含む
+# 文字列(「こちらのページ」)は指摘しない。
+enabled = true
+severity = "info"
+
+[detectors.lead-in-before-structure]
+# 見出しの直後に、導入の文なしで箇条書き・表・コードフェンスが始まる箇所を
+# 指摘する。
+#
+# 既定で無効である。見出しが文の形で内容を言い切り、導入を兼ねる正当な形と
+# 区別できず、誤検出が出るためである。true にすれば動く。
+enabled = false
+severity = "info"
+
+[detectors.repeated-bold-term]
+# 同じ文字列が文書の中で 2 回以上太字になっていたら、2 回目以降を指摘する。
+# 太字は語の初出の定義を示す書式とみなすためである。箇条書きのラベルの太字は
+# 数えない。
+enabled = true
+severity = "info"
+
+[detectors.format-excess]
+# 書式の使い過ぎを指摘する。次の 3 つの上限のどれかを超えると出る。
+enabled = true
+# 全ブロックに対する箇条書きの項目の比率の上限。この値と bold_density は、
+# 実測で校正した値である。
+bullet_ratio = 0.35
+# 太字(**...**)の密度の上限。見える文字 1000 字あたりの個数で数える。
+bold_density = 3.0
+# 見出しの深さの上限。# が 1 で、## が 2 と数える。
+heading_max_depth = 4
+# severity を warn にする理由は short-sentence-run と同じである。info の
+# 既定では、書式の過剰の観測が件数の行に埋もれて見落とされる。
+severity = "warn"
+
+[detectors.parallel-phrase]
+# 同じ形の言い回しの繰り返し(並列句)が多い文書を指摘する。並列句の一致の
+# 数を総文数で割った比率で判定し、info_ratio 以上なら info、warn_ratio 以上
+# なら warn を出す。重大度を比率が決めるので、この節に severity のキーは
+# 無い。2 つの値は、実測で校正した値である。
+enabled = true
+info_ratio = 0.02
+warn_ratio = 0.03
+
+[detectors.paragraph-uniformity]
+# どの段落も同じ文数で並ぶ機械的な単調さを指摘する。段落あたりの文数の
+# ばらつき(変動係数)が threshold を下回ったら出す。段落が min_paragraphs に
+# 満たない文書は対象にしない。2 つの値は、実測で校正していない暫定値である。
+enabled = true
+threshold = 0.15
+min_paragraphs = 4
+severity = "info"
+
+[detectors.sentence-length-uniformity]
+# どの文も同じ長さで並ぶ機械的な単調さを指摘する。文の字数のばらつき
+# (変動係数)が threshold を下回ったら出す。文が min_sentences に満たない
+# 文書は対象にしない。2 つの値は、実測で校正していない暫定値である。
+enabled = true
+threshold = 0.25
+min_sentences = 5
+severity = "info"
+
+[detectors.artifact-leak]
+# チャット画面からの貼り付けの痕跡を指摘する。チャット UI の引用マークアップ
+# と、AI 経由を示すパラメータの付いた URL である。照合する文字列は akunuki が
+# 同梱する。
+enabled = true
+severity = "warn"
+
+[detectors.placeholder-text]
+# 生成のときに埋められなかった穴(伏せ字の日付、丸印、記入の指示など)を
+# 指摘する。テンプレートを配る文書では穴が残っているのが正しいので、その文書
+# だけ構造プロファイルで無効にする。
+enabled = true
+severity = "info"
+
+# ここから下の検出器は、文を語に区切る形態素解析を使う。形態素解析を持たない
+# 構成(morph feature 無しのビルド)では、指摘を出さない。ここから下の
+# enabled をすべて false にしても、形態素解析が必ず省かれるとは限らない。
+# この区切りより上にある en-ja-compound も、定着した表記の除外に同じ
+# 形態素解析を使うからである。
+
+[detectors.noun-chain]
+# 名詞の連なりの積み過ぎを指摘する。
+enabled = true
+
+[detectors.unknown-compound]
+# 見慣れない漢語の複合語を指摘する。形態素解析の辞書にも、ユーザーが認めた
+# 用語の一覧(.aku/dict/domain-terms.yaml・jargon.yaml)にも無い語が対象で
+# ある。重大度は、連なりを既知語へ分割できるかで決める。2 字以上の既知語と
+# 1 字の接辞で連なり全体を敷き詰められたら info、敷き詰められなければ warn で
+# ある。
+enabled = true
+# affixes: 分割の片として使う接辞を足す一覧。1 字を想定するが、「済み」の
+# ように送りがなを伴う断片も書ける。分野によって足すべき接辞が違うので、報道の
+# 文体なら「偽」「英」「策」「額」のような字をここに並べる。複合語の材料に
+# なる名詞(「値」「族」「壁」)を足すと、造語が info へ落ちる。
+affixes = []
+# akunuki は、接頭辞 20 字・接尾辞 41 字と、送りがなを伴う「済み」「ごと」を
+# 同梱する。同梱の接辞を使うなら true。false にした場合は、分割に使いたい
+# 接辞を affixes に書く。
+builtin_affixes = true
+
+[detectors.redundant-light-verb]
+# 「検証を行う」「検証を実施する」のように、動作の名詞へ「を行う」または
+# 「を実施する」「を実行する」を続けた形を指摘する(「検証する」と書ける)。
+# 受身と使役は意味が変わるので対象にしない。
+enabled = true
+severity = "info"
+
+[detectors.redundant-expression]
+# 冗長な言い回しを、形態素の並びのパターン表との照合で指摘する。「することが
+# できる」(「できる」と書ける)、「することが可能です」(同じ)、「である
+# と言えます」(「である」か「と言える」の一方で足りる)、「であると考えて
+# いる」(同じ)、「することが重要です」(動作を「〜する」で書けば評価の文は
+# 要らない)、「と言えるでしょう」(確かめた事実なら言い切る)の 6 つを見る。
+# パターンの一覧は akunuki に埋め込んであり、設定では差し替えられない。
+enabled = true
+severity = "info"
+
+[detectors.dropped-ra]
+# 一段動詞・カ変動詞の可能形から「ら」を落とした、いわゆるら抜き言葉
+# (「食べれる」「見れる」など)を指摘する。五段動詞の可能動詞(「読める」
+# 「書ける」)は対象にしない。
+enabled = true
+severity = "warn"
+
+[detectors.dropped-i]
+# 「ている」「でいる」の「い」を落とした、いわゆるい抜き言葉(「してる」
+# 「見てる」など)を指摘する。
+enabled = true
+severity = "warn"
+
+[detectors.standalone-unit-noun]
+# 「グループ」「一覧」「項目」のような、単位や容れ物を指す語が、何のグループ
+# か、何の一覧かを示す修飾を伴わずに単独で立つと指摘する。
+enabled = true
+severity = "info"
+
+[detectors.open-function-words]
+# 漢字で書いた機能語(代名詞・形式名詞・補助動詞・補助形容詞・接続詞・連体詞・
+# 副詞・副助詞)を指摘し、`aku fix` がひらいた表記へ置き換える。同じ字を実質の
+# 意味で使う語(「事件」の「事」など)は、形態素が別なので対象にしない。
+enabled = true
+severity = "warn"
+
+[detectors.calque]
+# 英語の直訳が疑われる語を指摘する。文書に現れた英単語と、日本語の語の
+# 第 1 義の英訳(対訳表で引く)が一致したとき、その日本語の語を直訳の疑いと
+# して報告する。reference.gloss_table が無ければ指摘は出ない。
+enabled = true
+# exclude_code: 突き合わせる英単語から、コードスパンとコードブロックの中を
+# 除くなら true。
+# same_paragraph: 英単語が語と同じ段落にある場合だけ報告するなら true。
+#
+# same_paragraph の true が誤検出の大半を消すことは、実測で確かめてある。
+# exclude_code を true にすると、コードスパンに書いた英単語を見落とすので、
+# false のままにする。
+exclude_code = false
+same_paragraph = true
+
+[detectors.glossary-calque]
+# 用語集(.aku/dict/glossary.yaml)の決めと違う訳で書かれた日本語の語を指摘
+# する。語の第 1 義の英訳(対訳表で引く)が用語集にある語に当たり、その語の
+# 決めどおりでなければ報告する。
+#
+# calque と違い、英単語が同じ文書に現れる必要は無い。用語集が英語の側を先に
+# 与えるためである。reference.gloss_table と用語集の両方が要る。
+enabled = true
+severity = "warn"
+
+[detectors.standalone-calque]
+# 英語の語義を写した疑いのある短い漢語(「網」を web の意味で使う類)を
+# 指摘する。
+#
+# 既定で無効である。この形はファイルに残ることが少なく、既定で有効にする
+# 根拠を実測で確かめられていないためである。true にすれば動く。
+enabled = true
+
+[detectors.noun-only-sentence]
+# 名詞 1 語と句点だけの文を指摘する。地の文の段落だけを見る。見出し・
+# 箇条書きの項目・表のセルの名詞 1 語は正しい書き方なので、対象に入れない。
+enabled = true
+
+[detectors.noun-sentence-ending]
+# 述語を持たず名詞で言い切る文(体言止め)を指摘する。地の文の段落だけを
+# 見る。見出し・箇条書きの項目・表のセルの体言止めは正しい書き方なので、
+# 対象に入れない。「次のとおり。」「〜であること。」のように形式名詞で
+# 文を結ぶ形は指摘しない。
+#
+# 既定で無効である。太字だけの段落を見出し代わりに使う書き方と、述語の
+# 直後に注釈の丸括弧が続く形(「〜にする(未実装)。」)を誤検出する。実測で
+# この 2 つが誤検出の大半を占め、既定で有効にする根拠を確かめられていない。
+# true にすれば動く。
+enabled = false
+severity = "info"
+
+[detectors.buried-list]
+# 箇条書きにすべき同格の並びを、1 文に読点で詰め込んだ形を指摘する。名詞で
+# 終わる区画の数ごとに、指摘を始める文の長さを変える。項目 3 つなら 80 字
+# から、4 つ以上なら 50 字から指摘する。
+enabled = true
+three_item_min_chars = 80
+four_item_min_chars = 50
+severity = "info"
+
+[detectors.predicate-colon-lead]
+# 述語の直後をコロンで止めて次のまとまりへつなぐ形を指摘する。コロンの手前が
+# この字数を超える段落は、導入のラベルではなく本文がたまたまコロンで終わった
+# だけとみなして指摘しない。
+enabled = true
+max_label_chars = 40
+severity = "info"
+
+[detectors.concrete-noun-misfit]
+# 抽象的な語が支配する段落に、具体物の名詞が単独で立っている箇所を指摘する。
+# 語の種類は意味分類表から引くので、reference.semantic_class_table が無ければ
+# 指摘は出ない。
+enabled = true
+# abstract_ratio: 段落を「抽象が支配する」とみなす比率。意味の分類が引けた
+# 名詞のうち、関係か活動を表す語の割合がこの値以上なら該当する。
+# min_classified_nouns: 判定に要る、分類が引けた名詞の数。満たない段落は
+# 対象にしない。
+#
+# 2 つの値は実測で校正していない暫定値である。
+abstract_ratio = 0.85
+min_classified_nouns = 8
+
+[detectors.orthographic-variants]
+# 同じ語彙素の表記が同一文書内で揺れている箇所(「サーバ」と「サーバー」の
+# 混在など)を指摘する。誤表記・誤用の印を持つ語は、他の表記が無くても
+# 単独で指摘する。語の同義と語形は同義語表から引くので、
+# reference.synonym_table が無ければ指摘は出ない。
+enabled = true
+# この一覧に書いた語は指摘されない。同義語表の見出しと完全一致で比較する。
+# 一覧の語は、混在の起点にも、混在の相手(同じ語彙素の他の表記)にもならない。
+# 同義語表の誤登録(語彙素の同一視が誤り)に指摘が出たら、その語をここに足す。
+allowlist = []
+severity = "info"
+
+[detectors.low-specificity]
+# 固有名詞や数値がほとんど無く、動作や性質を名指す抽象的な名詞が多い段落
+# ——一般論だけの段落——を指摘する。
+enabled = true
+# min_specific_ratio: 内容語に占める固有名詞と数詞の比率がこの値を下回り、
+# max_abstract_ratio: 動作と性質を名指す名詞の比率がこの値を超えたら指摘する。
+# min_content_words: 判定に要る内容語の数。満たない段落は対象にしない。
+#
+# 3 つの値は実測で校正していない暫定値である。
+min_specific_ratio = 0.02
+max_abstract_ratio = 0.30
+min_content_words = 30
+
+[detectors.verbal-heading]
+# 動詞で終わる見出しを指摘する。手順書のように、読み手を作業へ誘導する文書
+# では動詞の見出しが正当なので、その文書だけ構造プロファイルで切る。
+enabled = true
+
+[detectors.repeated-sentence]
+# 同じ文の 2 回目以降の出現を指摘する。文書全体で数えるので、領域ごとには
+# 切り替えられない。同じ形式の項目を並べた参照文書には正当な反復があるため、
+# 癖の観測として info に留めている。
+enabled = true
+
+[detectors.repeated-sentence-ending]
+# 同じ段落の中で、同じ文末表現(述語直後の助動詞・助詞の列。無ければ述語
+# 自身の辞書形と活用形)の文が 3 文以上連続すると指摘する。「行います」と
+# 「あります」のように述語の語幹が違っても、続く助動詞の列が同じなら同じ
+# 表現とみなす。見出しと表のセルは対象外である。
+enabled = true
+severity = "info"
+
+[detectors.role-conflict]
+# 語が、両立しない役割で使われている箇所を指摘する。照合のパターンは
+# akunuki が同梱するので、ユーザーは辞書を置かない。語の種類は意味分類表から
+# 引くので、reference.semantic_class_table が無ければ指摘は出ない。
+enabled = true
+# subject_division: 次の 2 つの形を報告するなら true。人にしか使わない述語を
+# 物に使う形(「装置が黙る」)と、人の様子を表す副詞を物の動作に係ける形
+# (「黙って破棄する」)である。どちらも warn であり、終了コードを 1 にする
+# 根拠になる。既定を true にするのは、実測で誤検出が出なかったためである。
+subject_division = true
+
+# copula_division:「X は Y である」の形で、X と Y の意味の種類が両立しない
+# 文(人や組織を、書き物やデータの置き場所と言い切る、など)を報告するなら
+# true。既定を false にするのは、実測でこの形の指摘が 1 件も出ず、有効に
+# する根拠が無いためである。役目を人に見立てて書く文からは誤検出が出うる。
+copula_division = true
+
+[detectors.doubled-particle]
+# 1 文の中で、間隔が min_interval 以下の文節に同じ助詞(表層形と品詞細分類が
+# 同じもの)が現れたら指摘する(「材料不足で代替素材で」)。間に読点を挟む対は、
+# 間隔を 1 大きく数える(「これが iPhone、これが Android です」は指摘しない)。
+# excluded は、連続を報告しない助詞である。所有・修飾の連鎖(「彼の家の隣」)で
+# 連続しても不自然でない「の」、目的格の「を」、接続助詞の「て」、並立助詞の
+# 「たり」を既定で外す。
+#
+# 既定を false にするのは、実測(評価コーパス/corpus、2,705 ファイル)で
+# 誤検出が目立ったためである。多いのは「Xが…Yが可能」のような入れ子の主語
+# (「象は鼻が長い」型)への指摘で、これは日本語として自然であり読みにくさの
+# 原因ではない。と・で・に は、役割(並立・引用・比較・場所・手段など)が
+# 違っても解析辞書の品詞細分類が同じ(格助詞)に寄るため、役割の違う語の連続を
+# 同じ助詞の連続として誤って数える。
+enabled = false
+excluded = ["の", "を", "て", "たり"]
+min_interval = 1
+severity = "warn"
+
+[fix]
+# aku fix(自動の書き換え)の設定。
+#
+# heading_emphasis: 見出しの中の太字から、囲みの記号(** または __)を外すなら
+# true。外すのは記号だけで、見出しの文言は変わらない。書き手の判断が要らない
+# 書き換えなので、既定で行う。検出器 heading-emphasis を無効にした設定では、
+# 規則そのものを当てないので書き換えも行わない。
+heading_emphasis = true
+
+# aku report(文書の語彙の集計)の設定。以下の節は、同じものを違う名前で
+# 呼んでいる疑いをユーザーが見直すための材料であり、既定ではほとんど出さない。
+[report]
+# competing_terms: 同じものを 2 つの名前で呼んでいる疑いのある対(語の競合)の
+# 節を出すなら true。既定で出さないのは、実測で誤検出が多かったためである。
+# 集計は残してあり、true にすれば出る。
+competing_terms = false
+
+# competing_terms_ratio: 語の競合の節が、2 語を 1 対として出すのに要る出現数の
+# 比。同じ(格助詞、述語)の組を 2 種類以上共有し、多い側の出現数が少ない側の
+# この倍数以上ある 2 語を対にする。実測で校正していない暫定値である。
+competing_terms_ratio = 4
+
+# competing_terms_collocation_word_limit: 語の競合の節で、多くの語がたまたま
+# 係る組(「が+ある」など)を証拠から外すための上限。組を共有する語の種類が
+# この数を超える組は、2 語が同じものを指す証拠に数えない。値を上げるほど、
+# 多くの組を証拠に数える。
+competing_terms_collocation_word_limit = 20
+
+# competing_terms_pairs_per_rare: 語の競合の節で、少ない側の語 1 つにつき出す
+# 対の数。共有数の多い順にこの件数だけを出す。
+competing_terms_pairs_per_rare = 3
+
+# shared_gloss: 英訳が同じ語が 1 つの文書に混在している箇所を、aku report に
+# 出すなら true。たとえば「誤り」と「エラー」の第 1 義の英訳がどちらも
+# error なら、両方を使った文書でこの 2 語が並べて報告される。並んだ語は、
+# 意味を書き分けているのか、同じものの呼び方が割れているのかのどちらかで
+# あり、その判定はユーザーが行う。語彙を見直すときに true にする。英訳は
+# 対訳表から引くので、reference.gloss_table が無ければ何も出ない。
+shared_gloss = false
+
+# shared_gloss_words: 報告に要る語の数。英訳が同じ語がこの数以上あるときだけ
+# 報告する。実測で校正していない暫定値である。
+shared_gloss_words = 3
+
+# shared_gloss_occurrences: 報告に数える語の条件。文書にこの回数以上現れた語
+# だけを数える。実測で校正していない暫定値である。
+shared_gloss_occurrences = 2
+
+# shared_gloss_class_digits: 意味が近い語だけに報告を絞る、近さの判定の精度。
+# 意味分類表の分類番号が、小数点以下この桁数まで一致する語どうしを意味が
+# 近いとみなす。2 なら 1.4420 と 1.4430 は近く、1.4500 は遠い。値を上げる
+# ほど判定は厳しくなる。英訳がたまたま同じなだけの、意味の遠い語を報告から
+# 落とす。reference.semantic_class_table が無ければ、この絞り込みは行わない。
+# 実測で校正していない暫定値である。
+shared_gloss_class_digits = 2
+
+# constituent_gloss: 複合語の部品の英訳が一致する語の対の節を出すなら true。
+# 複合語を部品(隣り合う名詞・接頭辞の連なりの各形態素)へ割り、片方の部品を
+# 共有し、残りの部品の英訳が対訳表で一致する 2 語を対にする。shared_gloss と
+# 同じく、ユーザーが語彙を見直すときの合図である。節を出すには
+# reference.gloss_table も要る。
+constituent_gloss = false

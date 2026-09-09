@@ -1,0 +1,564 @@
+{
+  "artifact": "release",
+  "version": "dashi-2026.09.1",
+  "inputs": {
+    "wikipedia": {
+      "counts_dir": "../counts",
+      "weight": 1.0
+    },
+    "documents": {
+      "counts_dir": "../counts-docs",
+      "weight": 1.0,
+      "text_dir": "../corpus/text",
+      "documents": 13848,
+      "text_bytes": 54872563,
+      "excluded_sources": [],
+      "sources": [
+        {
+          "name": "mdn",
+          "commit": "5ac29ddc0c08296e349285742c9bbb4f282c67dc",
+          "license": "CC-BY-SA-2.5",
+          "documents": 10221,
+          "text_bytes": 30803125
+        },
+        {
+          "name": "k8s",
+          "commit": "bfae6f837a9ef9d84809a39465b055f99121655f",
+          "license": "CC-BY-4.0",
+          "documents": 587,
+          "text_bytes": 4023619
+        },
+        {
+          "name": "astro",
+          "commit": "ae13762517102f50f103106d1ce4609496909ef7",
+          "license": "MIT",
+          "documents": 144,
+          "text_bytes": 627843
+        },
+        {
+          "name": "react",
+          "commit": "8a0810dcc7e0455775cd6162f94b32561052ade9",
+          "license": "CC-BY-4.0",
+          "documents": 181,
+          "text_bytes": 1966936
+        },
+        {
+          "name": "vue",
+          "commit": "d540983e00ee18e62f650b4f94c8840647ad340f",
+          "license": "CC-BY-4.0",
+          "documents": 111,
+          "text_bytes": 793928
+        },
+        {
+          "name": "vite",
+          "commit": "30ae2dd0e3460eaedc692189d95ebcd1b766ce67",
+          "license": "MIT",
+          "documents": 47,
+          "text_bytes": 335950
+        },
+        {
+          "name": "angular",
+          "commit": "5978b046e75cf1d0169c9f586bcc3dd88c540b94",
+          "license": "MIT",
+          "documents": 251,
+          "text_bytes": 1346692
+        },
+        {
+          "name": "svelte",
+          "commit": "aeda0071490a6479d2bdd84898468e50cd5c10a0",
+          "license": "MIT",
+          "documents": 157,
+          "text_bytes": 473264
+        },
+        {
+          "name": "rust-book",
+          "commit": "5092e5395bf32a65b277c3b1cc1a81ba288c7d46",
+          "license": "MIT/Apache-2.0",
+          "documents": 106,
+          "text_bytes": 1103425
+        },
+        {
+          "name": "rust-example",
+          "commit": "d9ed1fd0a6279f8fd06d434e7176f5f8845c3156",
+          "license": "MIT/Apache-2.0",
+          "documents": 198,
+          "text_bytes": 157484
+        },
+        {
+          "name": "python",
+          "commit": "23f7a3a89c5a4a36665656e45b02e02f76495b87",
+          "license": "PSF",
+          "documents": 524,
+          "text_bytes": 5861619
+        },
+        {
+          "name": "rails",
+          "commit": "9836cf7cc871d2750af8a298c0b63880b32cc710",
+          "license": "CC-BY-SA-4.0",
+          "documents": 81,
+          "text_bytes": 2536411
+        },
+        {
+          "name": "docker",
+          "commit": "06cba5e6daf98a987e753f0b7201c04ca873e817",
+          "license": "Apache-2.0",
+          "documents": 704,
+          "text_bytes": 3127921
+        },
+        {
+          "name": "ts-survival",
+          "commit": "0794d57f8e38f714eb64ed2d4e2de08fb55a747e",
+          "license": "CC-BY-SA-4.0",
+          "documents": 267,
+          "text_bytes": 1008376
+        },
+        {
+          "name": "ts-deepdive",
+          "commit": "6ef95388cadfbfbd7a629b4a0f5844bb747c53c7",
+          "license": "CC-BY-4.0",
+          "documents": 252,
+          "text_bytes": 567679
+        },
+        {
+          "name": "owasp-top10",
+          "commit": "66ebc4798d2ca72973967a20264bdeb70dcf0a13",
+          "license": "CC-BY-SA-4.0",
+          "documents": 17,
+          "text_bytes": 138291
+        }
+      ]
+    },
+    "corpus": {
+      "counts_dir": "../counts-corpus",
+      "weight": 1.0,
+      "documents": 14540,
+      "text_bytes": 535840821,
+      "excluded_sources": [
+        "jawiki",
+        "raw"
+      ],
+      "excluded_laws": 284,
+      "unreadable_law_ids": 0,
+      "sources": [
+        {
+          "name": "board-of-audit",
+          "styles": [
+            "説明文"
+          ],
+          "licenses": [
+            "PDL1.0準拠（出典記載で利用可）"
+          ],
+          "domain": "行政",
+          "documents": 2597,
+          "text_bytes": 28444801
+        },
+        {
+          "name": "digital-guidelines",
+          "styles": [
+            "指示文"
+          ],
+          "licenses": [
+            "政府標準利用規約 第2.0版（CC BY 4.0互換）"
+          ],
+          "domain": "行政",
+          "documents": 50,
+          "text_bytes": 6618395
+        },
+        {
+          "name": "digital-procurement",
+          "styles": [
+            "指示文"
+          ],
+          "licenses": [
+            "政府標準利用規約 第2.0版（CC BY 4.0互換）"
+          ],
+          "domain": "行政",
+          "documents": 35,
+          "text_bytes": 1017835
+        },
+        {
+          "name": "egov-law-api",
+          "styles": [
+            "法令文"
+          ],
+          "licenses": [
+            "政府標準利用規約 第2.0版（CC BY 4.0互換）"
+          ],
+          "domain": "法令",
+          "documents": 9267,
+          "text_bytes": 480500549
+        },
+        {
+          "name": "ipa-exam",
+          "styles": [
+            "説明文"
+          ],
+          "licenses": [
+            "IPA保持（出所明示で利用可。2026-09-07ユーザー報告: 表示すればOK）"
+          ],
+          "domain": "情報技術",
+          "documents": 272,
+          "text_bytes": 1337635
+        },
+        {
+          "name": "ipa-procurement",
+          "styles": [
+            "指示文"
+          ],
+          "licenses": [
+            "IPA保持（出所明示で利用可。2026-09-07ユーザー報告: 表示すればOK）"
+          ],
+          "domain": "情報技術",
+          "documents": 22,
+          "text_bytes": 1428990
+        },
+        {
+          "name": "ipa-websec",
+          "styles": [
+            "説明文"
+          ],
+          "licenses": [
+            "IPA保持（出所明示で利用可。2026-09-07ユーザー報告: 表示すればOK）"
+          ],
+          "domain": "情報技術",
+          "documents": 19,
+          "text_bytes": 771540
+        },
+        {
+          "name": "jpccert",
+          "styles": [
+            "説明文"
+          ],
+          "licenses": [
+            "引用自由・転載再配布は事前連絡（JPCERT許諾取得済み 2026-09-07）"
+          ],
+          "domain": "情報技術",
+          "documents": 103,
+          "text_bytes": 399984
+        },
+        {
+          "name": "jpccert-eyes",
+          "styles": [
+            "説明文"
+          ],
+          "licenses": [
+            "引用自由・転載再配布は事前連絡（JPCERT許諾取得済み 2026-09-07）"
+          ],
+          "domain": "情報技術",
+          "documents": 121,
+          "text_bytes": 1096916
+        },
+        {
+          "name": "jvn-ipedia",
+          "styles": [
+            "説明文"
+          ],
+          "licenses": [
+            "JVN利用条件（利用の旨の掲載・出典明示。2026-09-07ユーザー報告）"
+          ],
+          "domain": "情報技術",
+          "documents": 1312,
+          "text_bytes": 1026149
+        },
+        {
+          "name": "meti-dx",
+          "styles": [
+            "説明文"
+          ],
+          "licenses": [
+            "政府標準利用規約 第2.0版（CC BY 4.0互換）"
+          ],
+          "domain": "行政",
+          "documents": 6,
+          "text_bytes": 295678
+        },
+        {
+          "name": "mext-joho2-kyoin",
+          "styles": [
+            "説明文"
+          ],
+          "licenses": [
+            "政府標準利用規約 第2.0版（CC BY 4.0互換）"
+          ],
+          "domain": "行政",
+          "documents": 7,
+          "text_bytes": 660017
+        },
+        {
+          "name": "mext-johoshi-kyoin",
+          "styles": [
+            "説明文"
+          ],
+          "licenses": [
+            "政府標準利用規約 第2.0版（CC BY 4.0互換）"
+          ],
+          "domain": "行政",
+          "documents": 5,
+          "text_bytes": 398823
+        },
+        {
+          "name": "mic-whitepaper-r06",
+          "styles": [
+            "説明文"
+          ],
+          "licenses": [
+            "政府標準利用規約 第2.0版（CC BY 4.0互換）"
+          ],
+          "domain": "行政",
+          "documents": 276,
+          "text_bytes": 784943
+        },
+        {
+          "name": "mic-whitepaper-r07",
+          "styles": [
+            "説明文"
+          ],
+          "licenses": [
+            "政府標準利用規約 第2.0版（CC BY 4.0互換）"
+          ],
+          "domain": "行政",
+          "documents": 245,
+          "text_bytes": 684095
+        },
+        {
+          "name": "nco-manual",
+          "styles": [
+            "指示文"
+          ],
+          "licenses": [
+            "政府標準利用規約 第2.0版（CC BY 4.0互換）"
+          ],
+          "domain": "情報技術",
+          "documents": 16,
+          "text_bytes": 3283683
+        },
+        {
+          "name": "nco-standards",
+          "styles": [
+            "指示文"
+          ],
+          "licenses": [
+            "政府標準利用規約 第2.0版（CC BY 4.0互換）"
+          ],
+          "domain": "情報技術",
+          "documents": 9,
+          "text_bytes": 876152
+        },
+        {
+          "name": "nicter-reports",
+          "styles": [
+            "説明文"
+          ],
+          "licenses": [
+            "NICTサイトポリシー（出所明示で引用・転載可。無断転載注記のある文書は除外）"
+          ],
+          "domain": "情報技術",
+          "documents": 11,
+          "text_bytes": 450491
+        },
+        {
+          "name": "ppc-guidelines",
+          "styles": [
+            "説明文"
+          ],
+          "licenses": [
+            "政府標準利用規約 第2.0版（CC BY 4.0互換）"
+          ],
+          "domain": "行政",
+          "documents": 163,
+          "text_bytes": 5187237
+        },
+        {
+          "name": "toshin-tsushin",
+          "styles": [
+            "説明文"
+          ],
+          "licenses": [
+            "政府標準利用規約 第2.0版（CC BY 4.0互換）"
+          ],
+          "domain": "行政",
+          "documents": 4,
+          "text_bytes": 576908
+        }
+      ]
+    }
+  },
+  "dump": {
+    "file_name": "jawiki-20251229-cirrussearch-content.json.gz",
+    "version": "20251229"
+  },
+  "selection": {
+    "condition": "namespace が 0 の記事をすべて採る",
+    "scanned_articles": 1484267,
+    "selected_articles": 1484267,
+    "text_bytes": 9285571411,
+    "skipped_articles": 0,
+    "domain_articles": [
+      {
+        "domain": "情報技術",
+        "documents": 31397
+      },
+      {
+        "domain": "その他の理工",
+        "documents": 164686
+      },
+      {
+        "domain": "文化",
+        "documents": 762478
+      },
+      {
+        "domain": "地理",
+        "documents": 844552
+      },
+      {
+        "domain": "社会",
+        "documents": 249288
+      }
+    ]
+  },
+  "akunuki": {
+    "rev": "a4d27caa92493d46cb60c29f975dca4d7526cc56",
+    "dictionary_version": "sudachi-dictionary-20260723"
+  },
+  "dictionary": {
+    "version": "sudachi-dictionary-20260723",
+    "lexicon_files": [
+      "small_lex.zip",
+      "core_lex.zip",
+      "notcore_lex.zip"
+    ],
+    "read_headwords": 2274679,
+    "registered_headwords": 83594,
+    "registered_common_nouns": 83548,
+    "registered_proper_nouns": 0,
+    "registered_other_nouns": 46
+  },
+  "titles": {
+    "titles_dir": "../counts-titles",
+    "scanned_articles": 1484267,
+    "read_titles": 1484267,
+    "read_redirect_titles": 928100,
+    "registered_titles": 464833
+  },
+  "variant": {
+    "unknown_morphemes": true,
+    "proper_noun_headwords": false,
+    "min_count": 3,
+    "min_component_count": 3
+  },
+  "domain": {
+    "domains": [
+      {
+        "code": 1,
+        "name": "情報技術"
+      },
+      {
+        "code": 2,
+        "name": "その他の理工"
+      },
+      {
+        "code": 3,
+        "name": "文化"
+      },
+      {
+        "code": 4,
+        "name": "地理"
+      },
+      {
+        "code": 5,
+        "name": "社会"
+      },
+      {
+        "code": 6,
+        "name": "行政"
+      },
+      {
+        "code": 7,
+        "name": "法令"
+      },
+      {
+        "code": 8,
+        "name": "一般"
+      }
+    ],
+    "min_count": 5,
+    "general_threshold": 5,
+    "keys": 7891906,
+    "domain_filter_bin": {
+      "bytes": 17760342,
+      "sha256": "3476b9f5aca5a7a8654fce3f1e03d5ad3afdab53683aedc27ddb74b55db255cc"
+    },
+    "registered": [
+      {
+        "domain": "情報技術",
+        "keys": 92384
+      },
+      {
+        "domain": "その他の理工",
+        "keys": 617768
+      },
+      {
+        "domain": "文化",
+        "keys": 2667887
+      },
+      {
+        "domain": "地理",
+        "keys": 3315526
+      },
+      {
+        "domain": "社会",
+        "keys": 1031786
+      },
+      {
+        "domain": "行政",
+        "keys": 12571
+      },
+      {
+        "domain": "法令",
+        "keys": 55497
+      },
+      {
+        "domain": "一般",
+        "keys": 98487
+      }
+    ]
+  },
+  "compound_keys": 11183905,
+  "artifact_bytes": {
+    "freq_filter_bin": {
+      "bytes": 25165910,
+      "sha256": "d2b695656061fc245ce0d867189f3e94a8afde6db20f6deb31c11c729eced1c5"
+    },
+    "component_freq_fst": {
+      "bytes": 5855317,
+      "sha256": "eb9122ed13cf7cb3171b782b51782113f94cc1c1d320e178ac46f5eee18d1f69"
+    }
+  },
+  "buckets": [
+    {
+      "bucket": 1,
+      "min_count": 3,
+      "max_count": 9
+    },
+    {
+      "bucket": 2,
+      "min_count": 10,
+      "max_count": 99
+    },
+    {
+      "bucket": 3,
+      "min_count": 100,
+      "max_count": 999
+    },
+    {
+      "bucket": 4,
+      "min_count": 1000,
+      "max_count": 9999
+    },
+    {
+      "bucket": 5,
+      "min_count": 10000,
+      "max_count": null
+    }
+  ]
+}

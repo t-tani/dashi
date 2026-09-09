@@ -1,0 +1,54 @@
+dashi
+Copyright 2026 Tomoaki Tani
+
+This repository is licensed under the Apache License, Version 2.0 (see
+LICENSE), except for the generated artifacts and the third-party
+material listed below.
+
+The generated artifacts are licensed under the Creative Commons
+Attribution 4.0 International License (CC BY 4.0,
+https://creativecommons.org/licenses/by/4.0/):
+
+  - semantic-class/noun/semantic-class-table.tsv
+  - semantic-class/verb/verb-semantic-class-table.tsv
+  - the compound frequency filter (freq_filter.bin, component_freq.fst,
+    domain_filter.bin), not tracked here and distributed as a release
+    asset of this repository
+
+Attribution may take the following form:
+
+  Semantic class table - Tomoaki Tani (dashi, https://github.com/t-tani/dashi)
+  CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/)
+
+The frequency filter stores only hashes of compound words with a
+frequency bucket or a domain number. The counted material cannot be
+recovered from it, and its terms are not listed here. What was counted
+is recorded per source, with commit and license, in
+compound-frequency/manifest.json.
+
+This repository also contains third-party material that is not a dashi
+artifact. It is kept as a record of how the artifacts were generated
+and evaluated, and it remains under the terms of its providers.
+
+Japanese WordNet and Princeton WordNet
+---------------------------------------
+- Source: https://bond-lab.github.io/wnja/ (Japanese WordNet 1.1),
+  https://wordnet.princeton.edu/ (Princeton WordNet 3.0)
+- Applies to: files beginning with wnja- in
+  semantic-class/archive/wordnet-mapping/
+- License: see semantic-class/archive/wordnet-mapping/wnja-license.txt
+
+The Japanese WordNet distribution page asks that published work carry
+the following attribution:
+
+  日本語ワードネット(1.1 版)© 2009-2011 NICT, 2012-2015 Francis Bond
+  and 2016-2024 Francis Bond, Takayuki Kuribayashi
+
+JMdict
+-------
+- Source: Electronic Dictionary Research and Development Group,
+  https://www.edrdg.org/jmdict/j_jmdict.html
+- Applies to: semantic-class/noun/inputs/jmdict-noun-headwords.txt,
+  semantic-class/verb/inputs/jmdict-verb-headwords.txt, and the
+  headwords of the semantic class tables
+- License: Creative Commons Attribution-ShareAlike 4.0 International

@@ -1,0 +1,30 @@
+# 走行のログと失敗したバッチの一覧。判定そのものは JSONL が持つ。
+semantic-class/noun/votes/run-*.log
+semantic-class/noun/votes/failed-*.json
+semantic-class/verb/votes/run-*.log
+semantic-class/verb/votes/failed-*.json
+
+# 複合語の頻度統計の中間物。回数と見出しの TSV は作り直せるので追跡しない。
+# 対応表の行ごとに回数と成果物を分けて置くので、変形の置き場もまとめて外す。
+compound-frequency/counts/
+compound-frequency/counts-*/
+compound-frequency/variants/
+compound-frequency/sudachidict/
+compound-frequency/corpus-tool/target/
+
+# 正解つきの語の集合を連ねたもの。元の集合と足す集合から `cat` で作り直せる。
+compound-frequency/eval/*-all.tsv
+
+# 複合語の頻度統計の成果物。手順で作り直せる 48 MB のバイナリであり、作り直す
+# たびに履歴へ積まれる。大きさとキー数は manifest.json が持つ。
+compound-frequency/freq_filter.bin
+compound-frequency/component_freq.fst
+compound-frequency/domain_filter.bin
+
+# 取得した日本語技術文書と、そこから作った平文。原文は配らない。
+compound-frequency/corpus/
+
+# Python のキャッシュと、uv が作る仮想環境。
+__pycache__/
+*.pyc
+.venv/

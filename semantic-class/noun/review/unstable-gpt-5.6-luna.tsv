@@ -1,0 +1,314 @@
+word	passes	tier	jmdict_priority
+AU	26 | 27 | 52	corpus	いいえ
+G	11 | 18 | 50	corpus	いいえ
+K	18 | 31 | 19	corpus	いいえ
+S	18 | 19 | 51	corpus	いいえ
+SS	40 | 32 | 45	corpus	いいえ
+adh	11 | 57 | 10	corpus	いいえ
+bh	40 | 52 | 10	corpus	いいえ
+bi	30 | 51 | 38	corpus	いいえ
+da	40 | 10 | 11	corpus	いいえ
+dp	31 | 18 | 30	corpus	いいえ
+ect	11 | 10 | 15	corpus	いいえ
+ee	11 | 31 | 38	corpus	いいえ
+gp	11 | 10 | 24	corpus	いいえ
+hb	10 | 11 | 45	corpus	いいえ
+sn	19 | 10	corpus	いいえ
+あく	10 43 | 13 | 16	corpus	はい
+う	55 | 10 | 31	corpus	はい
+かい	10 | 13 16 19 35 45 55 | 15	corpus	はい
+がさ	15 | 36 | 35	corpus	いいえ
+がれ	15 | 17 | 51	corpus	いいえ
+くい	17 | 45 | 30	corpus	はい
+くこ	54 | 10 | 17	corpus	いいえ
+こ	20 | 53 | 11	corpus	はい
+さえ	10 | 13 | 19	corpus	はい
+たち	20 | 18 | 13	corpus	はい
+ちゃん	13 | 20 | 35	corpus	はい
+ちん	13 | 56 | 45	corpus	はい
+とま	15 | 41 | 40	corpus	いいえ
+なら	54 | 10 | 30	corpus	はい
+ふるまい	13 | 30 | 15	corpus	はい
+ほ	40 | 54 | 31	corpus	はい
+もり	50 | 30 | 54	corpus	はい
+や	11 | 45 | 44	corpus	はい
+ゆらぎ	15 | 13 | 50	corpus	はい
+わせ	15 | 19 | 54	corpus	はい
+アシスト	35 | 30 | 14	jmdict	はい
+アチーブ	10 | 15 | 13	jmdict	はい
+アドベンチャー	15 | 10 | 33	jmdict	はい
+イン	44 | 17 | 13	corpus	はい
+インティ	33 | 52 | 37	corpus	いいえ
+エージ	24 | 19 | 16	corpus	いいえ
+オラン	11 | 26 | 55	corpus	いいえ
+オンパレード	11 | 19 | 33	jmdict	はい
+オンライン	13 | 17 | 31	corpus	はい
+カモフラージ	18 | 30	corpus	いいえ
+カラ	18 | 55 | 13	corpus	はい
+カンニング	30 | 10 | 15	jmdict	はい
+クイズ	30 | 31 | 33	corpus	はい
+ケイ	20 | 45 | 19	corpus	いいえ
+コミット	15 30 | 40 | 32 34	jmdict	はい
+コールバック	35 | 31 | 30	corpus	いいえ
+ゴロ	40 | 15 | 33	jmdict	はい
+サプライ	38 | 41 | 40	corpus	はい
+サルバルサン	40 | 41 | 51	jmdict	はい
+サーベイランス	36 | 15 | 30	jmdict	はい
+シス	11 | 20 | 18	corpus	いいえ
+システムズ	27 | 30 | 45	jmdict	はい
+シンポ	35 | 33 | 31	jmdict	はい
+スキンケア	30 | 56 | 33	jmdict	はい
+スト	15 | 34 | 38	corpus	はい
+ストライク	10 | 33 | 15	jmdict	はい
+スラ	40 | 32 | 18	corpus	いいえ
+スラローム	32 | 15 | 33	jmdict	はい
+スリープ	57 | 15 | 13	corpus	いいえ
+ゼネスト	36 | 35 | 38	jmdict	はい
+チア	33 | 35 | 32	jmdict	はい
+チャットルーム	44 | 17 | 35	corpus	いいえ
+テア	18 | 20 | 40	corpus	いいえ
+テッド	31 | 20 | 27	corpus	いいえ
+テレクラ	38 | 27 | 35	jmdict	はい
+ディスクリプタ	40 | 31 | 10	corpus	いいえ
+トレーニング	33 | 30 | 15	corpus	はい
+トール	18 | 19 | 37	jmdict	はい
+ドッグファイト	36 | 15 | 35	jmdict	はい
+ドメス	33 | 25 | 26	corpus	いいえ
+ハンスト	36 | 15 34 | 35	jmdict	はい
+ハンティング	15 | 38 | 33	corpus	はい
+バスター	15 | 24 | 33	jmdict	はい
+バッチ	11 32 | 38 | 15	corpus	はい
+パステル	41 | 40 | 45	jmdict	はい
+パッチワーク	40 | 32 | 42	jmdict	はい
+パドック	47 | 17 | 44	jmdict	はい
+パラ	19 | 33 | 40	corpus	いいえ
+パームボール	45 | 11 | 15	jmdict	はい
+ヒロイン	32 | 24 | 20	jmdict	はい
+ビネ	40 | 11 | 30	corpus	いいえ
+ピブロック	45 | 40 | 11	corpus	いいえ
+ピリ	54 | 13 | 30	jmdict	はい
+ファンサイト	31 | 40 | 32	jmdict	はい
+ファース	11 | 32	corpus	はい
+ファームウェア	40 | 45 | 32	corpus	いいえ
+フォアハンド	15 | 18 | 30	jmdict	はい
+フォークボール	11 | 30 | 18 40	jmdict	はい
+フガード	40 | 24 | 11	corpus	いいえ
+フラー	20 | 24 | 45	corpus	いいえ
+ベータ	18 | 13 | 11	corpus	はい
+ボン	26 | 33 | 50	corpus	はい
+ミッション	30 | 10 | 34	corpus	はい
+ミトコンドリア	51 | 56 | 53	jmdict	はい
+ミドルホール	33 | 17 | 11	jmdict	はい
+ミミック	18 | 55 | 53	jmdict	はい
+ラリ	35 | 30 | 13	corpus	いいえ
+ランド	37 | 26 | 17	corpus	はい
+リピ	24 | 15 | 37	jmdict	はい
+リュー	40 | 55 | 17	corpus	いいえ
+ルタ	45 | 54 | 40	corpus	いいえ
+レット	33 | 13 | 15	corpus	はい
+ロングホール	47 | 33 | 17	jmdict	はい
+ロー	11 | 19 45 | 13	corpus	はい
+ワイト	13 | 53 | 12	corpus	いいえ
+一助	30 | 35 | 14	jmdict	はい
+万物	12 | 50 | 10	jmdict	はい
+三者	19 | 22 | 20	jmdict	はい
+上記	10 | 31 | 17	corpus	はい
+不参	35 | 13 | 15	corpus	いいえ
+不参加	13 | 15 | 35	corpus	いいえ
+不始末	10 | 30 | 13	jmdict	はい
+丸抱え	35 | 19 | 37	jmdict	はい
+主務	34 | 24 | 38	jmdict	はい
+久留子	53 | 55 | 20	jmdict	はい
+乱取り	33 | 15 | 35	jmdict	はい
+乱暴	35 | 14 | 13	jmdict	はい
+乱立	15 | 12 | 13	jmdict	はい
+了承	35 | 30 | 34	jmdict	はい
+二目	15 | 16 | 19	jmdict	はい
+人目	30 | 35 | 20	jmdict	はい
+何物	10 | 40 | 51	jmdict	はい
+余録	31 37 | 10 | 32	jmdict	はい
+使い	15 | 30 | 24	corpus	はい
+供給源	17 | 12 | 38	corpus	はい
+保養	57 | 15 | 33	jmdict	はい
+信義	30 | 34 | 13	jmdict	はい
+健康	57 | 56 | 13	corpus	はい
+免疫原性	13 | 56 | 57	corpus	いいえ
+全学	27 | 19 | 26	jmdict	はい
+全裸	56 | 42 | 18	jmdict	はい
+公序	26 | 13 | 33	jmdict	はい
+処方箋	31 | 40 | 30	jmdict	はい
+凶作	50 | 13 | 47	jmdict	はい
+分担	34 | 30 | 38	corpus	はい
+初球	15 | 19 | 40	jmdict	はい
+判決	36 | 10 | 34	corpus	はい
+別項	31 | 10 | 11	corpus	はい
+利根	50 | 30 | 17	jmdict	はい
+刺	40 | 15 | 45	corpus	はい
+前哨戦	10 | 36 | 15	jmdict	はい
+前項	10 | 31 | 17	jmdict	はい
+加爾基	41 | 33 | 51	jmdict	はい
+医事	33 | 38 | 10	jmdict	はい
+危害	10 | 15 | 13	jmdict	はい
+即位	25 | 15 | 36	jmdict	はい
+原審	10 | 36 | 27	jmdict	はい
+反発	14 | 15 | 30	corpus	はい
+収穫	15 | 43 | 47	corpus	はい
+取り分け	19 | 15	jmdict	はい
+取扱注意	30 | 35 | 13	jmdict	はい
+受刑	15 | 36 | 34	corpus	はい
+受賞	37 | 33 | 13	corpus	はい
+同名	11 | 18 | 31	corpus	はい
+同和	35 | 26 | 33	jmdict	はい
+四つ切り	15 40 | 19 | 18	jmdict	はい
+四つ相撲	35 | 33 | 18	jmdict	はい
+四天王	33 | 20 | 22	jmdict	はい
+国人	20 | 23 | 24	corpus	はい
+在籍	13 | 27 | 12 24	corpus	はい
+地学	30 | 33 | 50	jmdict	はい
+基	19 | 10 | 30	corpus	はい
+基底	10 | 17 | 18	corpus	はい
+基盤	30 44 | 38 | 13	corpus	はい
+売れ筋	11 | 37 | 13 40	jmdict	はい
+大募集	15 | 31 | 35	jmdict	はい
+大義	10 | 30 | 34	jmdict	はい
+大量消費	19 | 38 | 37	corpus	いいえ
+天文学	33 | 30 | 52	jmdict	はい
+失	13 | 10 | 15	corpus	いいえ
+守	36 | 24 | 15	corpus	はい
+守り	14 | 30 | 36	corpus	はい
+守護神	12 | 33 | 20	jmdict	はい
+完勝	13 | 14 | 10	jmdict	はい
+定義	31 | 10 | 30	corpus	はい
+寄託	35 | 37 | 34	jmdict	はい
+密生	13 | 15 | 50	jmdict	はい
+寝床	40 | 45 | 44	jmdict	はい
+察	30 | 24 | 27	corpus	いいえ
+封じ手	32 | 33 | 15	jmdict	はい
+小競り合い	10 | 15 | 35	jmdict	はい
+尼羅	17 | 50 | 26	jmdict	はい
+局留め	35 | 38 | 30	jmdict	はい
+山姥	33 | 20 | 53	jmdict	はい
+州立	27 | 26 | 25	corpus	いいえ
+左党	24 | 36 | 20	jmdict	はい
+帰属	30 | 35 | 26	corpus	はい
+常習	33 | 30 | 13	jmdict	はい
+幕下	33 | 24 | 11	jmdict	はい
+広義	10 | 19 | 13	jmdict	はい
+弔い合戦	10 | 35 | 15	jmdict	はい
+引き分け	10 | 13 | 15	jmdict	はい
+引き込み線	45 | 41 | 17	jmdict	はい
+強制	36 | 15 | 14	corpus	はい
+役割	30 | 34 | 13	corpus	はい
+後手	30 | 15 | 22	jmdict	はい
+得撒	24 | 10 | 30	jmdict	はい
+御回	19 | 15 | 24	corpus	いいえ
+徳義	30 | 34 | 13	jmdict	はい
+悪戦苦闘	15 | 14 | 30	jmdict	はい
+成人向け	13 | 20 | 33	corpus	いいえ
+戦	33 | 36 | 10	corpus	はい
+手振り	35 | 31 | 30	jmdict	はい
+手掛	38 | 15	corpus	いいえ
+批評	31 | 32 | 30	corpus	はい
+抜き打ち	15 | 13 | 30	jmdict	はい
+押え	30 | 36 | 45	corpus	はい
+排外	35 | 30 | 13	jmdict	はい
+排日	23 | 36 | 26	jmdict	はい
+摂理	33 | 10 | 13	jmdict	はい
+支	18 | 11 17 | 27	corpus	いいえ
+攻防	14 | 35 | 15	corpus	はい
+救世	33 | 30 | 15	jmdict	はい
+新制	33 | 13 36 | 27	jmdict	はい
+早慶戦	35 | 10 | 33	jmdict	はい
+有職	33 | 24 | 38	jmdict	はい
+本元	12 | 15 | 17	jmdict	はい
+本塁打	15 | 33 | 10	jmdict	はい
+極楽	17 | 33 | 26	jmdict	はい
+機構	18 27 | 13 | 45	corpus	はい
+檻	44 | 40 | 45	jmdict	はい
+欠け	13 | 19 | 12 18	corpus	いいえ
+欠員	13 | 24 | 19	jmdict	はい
+武勇	13 | 30 | 14	jmdict	はい
+歯ごたえ	56 | 13 | 43	jmdict	はい
+段階	16 | 19 | 15	corpus	はい
+気象学	50 | 33 | 30	jmdict	はい
+沢地	47 | 50 | 17	jmdict	はい
+河童	33 | 53 | 55	jmdict	はい
+治験	10 | 38 | 33	jmdict	はい
+測量	38 | 19 | 47	jmdict	はい
+源氏	21 32 | 33 | 26	jmdict	はい
+激賞	13 | 30 | 31	jmdict	はい
+無理強い	35 | 14 | 34	jmdict	はい
+熱闘	15 | 13 | 35	jmdict	はい
+特別捜査	30 | 15 | 36	corpus	いいえ
+猟	15 | 38 | 33	jmdict	はい
+環視	30 | 35 | 15	jmdict	はい
+異議	31 | 34 | 10	corpus	はい
+病名	31 | 10 | 11	jmdict	はい
+登用	15 | 24 | 36	jmdict	はい
+百景	17 19 | 50 | 18	jmdict	はい
+盗用	37 | 32 34 | 15	corpus	はい
+目上	22 | 20 | 25	jmdict	はい
+相乗	19 | 14 | 15	corpus	はい
+真っ盛り	13 | 19 | 16	jmdict	はい
+破門	35 | 36 | 15	jmdict	はい
+確定申告	31 | 37 | 34	corpus	いいえ
+磁性	14 | 51 | 13 50	jmdict	はい
+神明	33 | 53 | 12	jmdict	はい
+禿び	40 | 15 20 | 18	jmdict	はい
+立ち居振る舞い	30 | 13 | 18	jmdict	はい
+筆跡	32 | 31 | 18	jmdict	はい
+籍	26 | 27 | 33	corpus	はい
+精霊	12 | 57 | 53	jmdict	はい
+組み合わせ	30 | 15 | 18	corpus	はい
+給源	17 | 37 | 12	corpus	いいえ
+綱引き	14 | 35 | 15	jmdict	はい
+綱紀	36 | 34 | 13	jmdict	はい
+総見	33 | 32 | 35	jmdict	はい
+縁台	44 | 45 | 40	jmdict	はい
+義	30 | 13 | 34	corpus	はい
+腕立て伏せ	56 | 33 | 15	jmdict	はい
+自首	34 | 35 | 15	jmdict	はい
+若さ	16 | 57 | 13	jmdict	はい
+英霊	20 | 12 | 57	jmdict	はい
+草食	43 | 15 | 55	jmdict	はい
+蒸し	15 | 43 | 30	jmdict	はい
+薄手	42 | 19 | 18	jmdict	はい
+薬理	30 | 10 | 57	jmdict	はい
+虜	20 | 24 | 22	jmdict	はい
+補助	35 | 30 | 14	corpus	はい
+裸	13 | 18 | 42 56	corpus	はい
+要求	31 | 34 | 35	corpus	はい
+視聴	56 | 30 | 32	jmdict	はい
+解剖学	30 | 56 | 33	jmdict	はい
+訓告	35 | 34 | 31	jmdict	はい
+設定	13 | 15 | 30	corpus	はい
+諸島	17 | 26 | 50	jmdict	はい
+諾	30 | 10 | 35	corpus	いいえ
+豊漁	19 | 50 | 13	jmdict	はい
+豪華版	18 | 11 | 40	jmdict	はい
+身代わり	20 | 22 | 24	jmdict	はい
+軟派	22 36 | 20 | 30	jmdict	はい
+追試	10 | 15 | 33	corpus	はい
+逆	17 | 18 | 13	corpus	はい
+速達便	31 | 38 | 40	jmdict	はい
+連勝	10 | 15 | 13	jmdict	はい
+連敗	10 | 15 | 13	jmdict	はい
+連絡先	17 22 | 35 | 31	jmdict	はい
+運動不足	13 | 56 | 15 19	jmdict	はい
+達し	31 | 19 | 15	corpus	はい
+重点	13 | 19 | 30	corpus	はい
+鉄条網	45 | 40 | 41	jmdict	はい
+鉄火	10 | 43 | 13 51	jmdict	はい
+鏡台	44 | 45 | 40	jmdict	はい
+門外漢	22 | 24 | 20	jmdict	はい
+関連性	10 | 13 | 35	corpus	いいえ
+陰陽	30 | 33 | 10	jmdict	はい
+階級	13 | 25 | 26	jmdict	はい
+隠し	15 | 30 | 13	corpus	いいえ
+雑食	43 53 | 57 | 55	jmdict	はい
+離婚	15 | 35 | 21	jmdict	はい
+非営利	13 | 38 | 25	corpus	いいえ
+須要	10 | 30 | 13	corpus	いいえ
+風光	13 | 50 | 17	jmdict	はい
+飲み	33 | 43 | 15	corpus	いいえ
+首謀	20 | 30 | 15	jmdict	はい

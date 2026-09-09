@@ -1,0 +1,4 @@
+語	判定者	出典	区分	区分の判定者
+クレデンシャル	maintainer	akunuki の .aku/dict/fix/wording/user.prh.yml	言い換え	claude-fable-5-1
+デニリスト	maintainer	akunuki の .aku/dict/fix/wording/user.prh.yml	言い換え	claude-fable-5-1
+ファネル	maintainer	akunuki の docs/slop-inventory.yaml	意味の転用	claude-fable-5-1

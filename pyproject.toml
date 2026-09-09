@@ -1,0 +1,21 @@
+# 意味分類表の生成パイプラインの依存。版は実験に使ったものに固定する。
+# 直接 import するのは dspy と pydantic だけである。litellm と openai は
+# dspy が LM を呼ぶ経路で使う。ゲートウェイは openai 互換の口を持つので、
+# dspy.LM("openai/<モデル名>") の形で通す。
+#
+# スクリプトは semantic-class/ の中で `uv run python pipeline/<スクリプト>` の形で実行する。
+[project]
+name = "dashi"
+version = "0"
+description = "akunuki が引く意味分類表の生成と検証"
+requires-python = ">=3.13"
+dependencies = [
+    "dspy==3.3.1",
+    "pydantic==2.13.5",
+    "litellm==1.98.0",
+    "openai==2.54.0",
+]
+
+[tool.uv]
+# 配布するパッケージではなく、スクリプトを動かすための環境である。
+package = false

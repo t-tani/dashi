@@ -1,0 +1,18 @@
+== 層ごとの妥当率(基準 v2)==
+old: 3/60 = 5.0% (95% 区間 1.7%〜13.7%)
+new: 1/60 = 1.7% (95% 区間 0.3%〜8.9%)
+both: 2/20 = 10.0% (95% 区間 2.8%〜30.1%)
+fresh: 0/30 = 0.0% (95% 区間 0.0%〜11.4%)
+
+== 表ごとの精度 ==
+旧表: 指摘 1314 件 / 妥当の概算 85 件 (6.4%)
+WordNet 表: 指摘 1351 件 / 妥当の概算 54 件 (4.0%)
+Haiku 表: 指摘 2608 件 / 妥当の概算 44 件 (1.7%)
+
+== 妥当に残った 6 件を、どの表が出すか ==
+野生	topics_2026_06_2026-06-11-cve-2026-20253-splunk-postgres-sidecar.md:78	出す表: 旧・Haiku
+ボード	topics_2026_06_2026-06-10-trends-cisa-bod-26-04.md:50	出す表: 旧・Haiku
+導線	referent-tables.md:1311	出す表: 旧
+バケット	referent-tables.md:526	出す表: WordNet・Haiku
+窓	AUTONOMY_REVIEW.md:85	出す表: 旧・WordNet・Haiku
+原子	MIGRATION_PLAN.md:852	出す表: 旧・WordNet

@@ -1,0 +1,53 @@
+[package]
+name = "corpus-tool"
+version = "0.1.0"
+edition = "2024"
+license = "Apache-2.0"
+publish = false
+
+[lints.rust]
+unsafe_code = "forbid"
+missing_docs = "warn"
+
+[lints.clippy]
+all = { level = "deny", priority = -1 }
+pedantic = { level = "warn", priority = -1 }
+
+[dependencies]
+# `topic-distribution` が語の一覧を本文に対して 1 回の走査で照合する。形態素解析
+# を挟まず、表層形の部分文字列の一致だけを見る。
+aho-corasick = "1.1.5"
+# 複合語の頻度のフィルタと部品の頻度表。構築と照合を akunuki と同じ実装で行わな
+# ければ、数えたキーは検査する側で当たらない。akunuki はまだ版のタグを切って
+# いないので、タグではなく commit で固定する。
+aku_freq = { git = "https://github.com/t-tani/akunuki.git", rev = "a4d27caa92493d46cb60c29f975dca4d7526cc56" }
+# Markdown の走査。コードブロックとフロントマターと HTML を外し、日本語の本文の
+# 断片だけを返す。平文化が akunuki と同じ走査を使えば、頻度を数える本文と、検査
+# する側が読む本文が揃う。
+aku_core = { git = "https://github.com/t-tani/akunuki.git", rev = "a4d27caa92493d46cb60c29f975dca4d7526cc56" }
+# 分割単位 A の形態素解析。複合語のキーと部品は、akunuki が検査で使うのと同じ
+# 解析辞書と同じ正規化で割る。
+aku_morph = { git = "https://github.com/t-tani/akunuki.git", rev = "a4d27caa92493d46cb60c29f975dca4d7526cc56", features = [
+    "morph",
+] }
+anyhow = "1.0.100"
+clap = { version = "4.5.51", features = ["derive"] }
+# 解析辞書の見出しの CSV を読む。引用符で囲まれた見出しと、`,` を含む見出しが
+# あるので、手書きの分割にしない。
+csv = "1.3.1"
+# ダンプの gzip を 1 行ずつ流して読む。
+flate2 = "1.1.5"
+# 記事の解析を CPU の数だけ並べる。
+rayon = "1.11.0"
+# rst のインラインのマークアップを外す。入れ子にならない少数のパターンなので、
+# 手書きの走査ではなく正規表現で書く。
+regex = "1.13.1"
+serde = { version = "1.0.229", features = ["derive"] }
+serde_json = "1.0.145"
+# 成果物ファイルの SHA-256 を manifest に書く。akunuki と同じ版を使う。
+sha2 = "0.11.0"
+
+# 依存を最適化して組む。形態素解析は依存の側で走るので、最適化しないと確認の
+# 実行が数十倍遅くなる。この crate 自身の再ビルドの速さは変わらない。
+[profile.dev.package."*"]
+opt-level = 2

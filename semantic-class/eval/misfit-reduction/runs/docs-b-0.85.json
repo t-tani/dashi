@@ -1,0 +1,1474 @@
+{
+ "findings": [
+  {
+   "path": "docsB-0001",
+   "line": 49,
+   "col": 58,
+   "severity": "info",
+   "message": "'手' の意味分類 '1.5600' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "手"
+  },
+  {
+   "path": "docsB-0001",
+   "line": 85,
+   "col": 8,
+   "severity": "info",
+   "message": "'生' の意味分類 '1.5700' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "生"
+  },
+  {
+   "path": "docsB-0001",
+   "line": 138,
+   "col": 9,
+   "severity": "info",
+   "message": "'表' の意味分類 '1.4000' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "表"
+  },
+  {
+   "path": "docsB-0001",
+   "line": 206,
+   "col": 3,
+   "severity": "info",
+   "message": "'罠' の意味分類 '1.4000'、'1.4500' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "罠"
+  },
+  {
+   "path": "docsB-0001",
+   "line": 212,
+   "col": 7,
+   "severity": "info",
+   "message": "'ブロッカー' の意味分類 '1.4500' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "ブロッカー"
+  },
+  {
+   "path": "docsB-0001",
+   "line": 389,
+   "col": 9,
+   "severity": "info",
+   "message": "'写し' の意味分類 '1.4000' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "写し"
+  },
+  {
+   "path": "docsB-0014",
+   "line": 7,
+   "col": 13,
+   "severity": "info",
+   "message": "'ページ' の意味分類 '1.4000' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "ページ"
+  },
+  {
+   "path": "docsB-0014",
+   "line": 39,
+   "col": 1,
+   "severity": "info",
+   "message": "'パッケージ' の意味分類 '1.4000'、'1.4100' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "パッケージ"
+  },
+  {
+   "path": "docsB-0014",
+   "line": 43,
+   "col": 640,
+   "severity": "info",
+   "message": "'タグ' の意味分類 '1.4000'、'1.4500' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "タグ"
+  },
+  {
+   "path": "docsB-0014",
+   "line": 52,
+   "col": 290,
+   "severity": "info",
+   "message": "'板' の意味分類 '1.4000'、'1.4100' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "板"
+  },
+  {
+   "path": "docsB-0014",
+   "line": 61,
+   "col": 316,
+   "severity": "info",
+   "message": "'窓' の意味分類 '1.4400'、'1.4500' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "窓"
+  },
+  {
+   "path": "docsB-0014",
+   "line": 61,
+   "col": 665,
+   "severity": "info",
+   "message": "'欄' の意味分類 '1.4000' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "欄"
+  },
+  {
+   "path": "docsB-0014",
+   "line": 64,
+   "col": 210,
+   "severity": "info",
+   "message": "'結線' の意味分類 '1.4500' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "結線"
+  },
+  {
+   "path": "docsB-0014",
+   "line": 65,
+   "col": 99,
+   "severity": "info",
+   "message": "'代替' の意味分類 '1.4000' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "代替"
+  },
+  {
+   "path": "docsB-0014",
+   "line": 68,
+   "col": 364,
+   "severity": "info",
+   "message": "'ハーネス' の意味分類 '1.4000'、'1.4500' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "ハーネス"
+  },
+  {
+   "path": "docsB-0014",
+   "line": 68,
+   "col": 391,
+   "severity": "info",
+   "message": "'ピン' の意味分類 '1.4000'、'1.4500' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "ピン"
+  },
+  {
+   "path": "docsB-0014",
+   "line": 90,
+   "col": 53,
+   "severity": "info",
+   "message": "'アドイン' の意味分類 '1.4500' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "アドイン"
+  },
+  {
+   "path": "docsB-0014",
+   "line": 109,
+   "col": 382,
+   "severity": "info",
+   "message": "'ホーム' の意味分類 '1.4400' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "ホーム"
+  },
+  {
+   "path": "docsB-0014",
+   "line": 112,
+   "col": 127,
+   "severity": "info",
+   "message": "'画面' の意味分類 '1.4500' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "画面"
+  },
+  {
+   "path": "docsB-0014",
+   "line": 115,
+   "col": 195,
+   "severity": "info",
+   "message": "'表' の意味分類 '1.4000' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "表"
+  },
+  {
+   "path": "docsB-0014",
+   "line": 121,
+   "col": 265,
+   "severity": "info",
+   "message": "'半導体' の意味分類 '1.5100' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "半導体"
+  },
+  {
+   "path": "docsB-0091",
+   "line": 91,
+   "col": 197,
+   "severity": "info",
+   "message": "'表' の意味分類 '1.4000' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "表"
+  },
+  {
+   "path": "docsB-0091",
+   "line": 94,
+   "col": 319,
+   "severity": "info",
+   "message": "'計器' の意味分類 '1.4500' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "計器"
+  },
+  {
+   "path": "docsB-0091",
+   "line": 94,
+   "col": 333,
+   "severity": "info",
+   "message": "'機械' の意味分類 '1.4500' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "機械"
+  },
+  {
+   "path": "docsB-0091",
+   "line": 94,
+   "col": 355,
+   "severity": "info",
+   "message": "'画面' の意味分類 '1.4500' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "画面"
+  },
+  {
+   "path": "docsB-0091",
+   "line": 94,
+   "col": 446,
+   "severity": "info",
+   "message": "'部品' の意味分類 '1.4000'、'1.4500' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "部品"
+  },
+  {
+   "path": "docsB-0091",
+   "line": 98,
+   "col": 35,
+   "severity": "info",
+   "message": "'ホーム' の意味分類 '1.4400' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "ホーム"
+  },
+  {
+   "path": "docsB-0091",
+   "line": 196,
+   "col": 78,
+   "severity": "info",
+   "message": "'バー' の意味分類 '1.4400' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "バー"
+  },
+  {
+   "path": "docsB-0091",
+   "line": 210,
+   "col": 52,
+   "severity": "info",
+   "message": "'床' の意味分類 '1.4400'、'1.4700' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "床"
+  },
+  {
+   "path": "docsB-0091",
+   "line": 256,
+   "col": 46,
+   "severity": "info",
+   "message": "'本体' の意味分類 '1.4000' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "本体"
+  },
+  {
+   "path": "docsB-0091",
+   "line": 279,
+   "col": 53,
+   "severity": "info",
+   "message": "'土台' の意味分類 '1.4000' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "土台"
+  },
+  {
+   "path": "docsB-0091",
+   "line": 342,
+   "col": 44,
+   "severity": "info",
+   "message": "'ページ' の意味分類 '1.4000' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "ページ"
+  },
+  {
+   "path": "docsB-0091",
+   "line": 354,
+   "col": 16,
+   "severity": "info",
+   "message": "'ウォーターマーク' の意味分類 '1.4000' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "ウォーターマーク"
+  },
+  {
+   "path": "docsB-0091",
+   "line": 383,
+   "col": 6,
+   "severity": "info",
+   "message": "'悪魔' の意味分類 '1.5300' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "悪魔"
+  },
+  {
+   "path": "docsB-0091",
+   "line": 446,
+   "col": 61,
+   "severity": "info",
+   "message": "'スコアカード' の意味分類 '1.4000' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "スコアカード"
+  },
+  {
+   "path": "docsB-0091",
+   "line": 447,
+   "col": 96,
+   "severity": "info",
+   "message": "'装置' の意味分類 '1.4500' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "装置"
+  },
+  {
+   "path": "docsB-0091",
+   "line": 460,
+   "col": 5,
+   "severity": "info",
+   "message": "'写し' の意味分類 '1.4000' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "写し"
+  },
+  {
+   "path": "docsB-0091",
+   "line": 532,
+   "col": 28,
+   "severity": "info",
+   "message": "'バケット' の意味分類 '1.4000'、'1.4500' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "バケット"
+  },
+  {
+   "path": "docsB-0091",
+   "line": 557,
+   "col": 85,
+   "severity": "info",
+   "message": "'ラダー' の意味分類 '1.4500' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "ラダー"
+  },
+  {
+   "path": "docsB-0091",
+   "line": 593,
+   "col": 1,
+   "severity": "info",
+   "message": "'窓' の意味分類 '1.4400'、'1.4500' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "窓"
+  },
+  {
+   "path": "docsB-0091",
+   "line": 633,
+   "col": 136,
+   "severity": "info",
+   "message": "'物差し' の意味分類 '1.4500' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "物差し"
+  },
+  {
+   "path": "docsB-0091",
+   "line": 639,
+   "col": 74,
+   "severity": "info",
+   "message": "'地図' の意味分類 '1.4000' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "地図"
+  },
+  {
+   "path": "docsB-0091",
+   "line": 641,
+   "col": 243,
+   "severity": "info",
+   "message": "'紐' の意味分類 '1.4000'、'1.4500' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "紐"
+  },
+  {
+   "path": "docsB-0091",
+   "line": 668,
+   "col": 77,
+   "severity": "info",
+   "message": "'ブラウザ' の意味分類 '1.4500' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "ブラウザ"
+  },
+  {
+   "path": "docsB-0091",
+   "line": 756,
+   "col": 190,
+   "severity": "info",
+   "message": "'セル' の意味分類 '1.4000'、'1.4500' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "セル"
+  },
+  {
+   "path": "docsB-0091",
+   "line": 1113,
+   "col": 18,
+   "severity": "info",
+   "message": "'ボラ' の意味分類 '1.5500' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "ボラ"
+  },
+  {
+   "path": "docsB-0091",
+   "line": 1264,
+   "col": 22,
+   "severity": "info",
+   "message": "'コンポーネント' の意味分類 '1.4000'、'1.4500' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "コンポーネント"
+  },
+  {
+   "path": "docsB-0091",
+   "line": 1276,
+   "col": 76,
+   "severity": "info",
+   "message": "'棒' の意味分類 '1.4000'、'1.4500' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "棒"
+  },
+  {
+   "path": "docsB-0091",
+   "line": 1296,
+   "col": 45,
+   "severity": "info",
+   "message": "'チック' の意味分類 '1.5600'、'1.5700' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "チック"
+  },
+  {
+   "path": "docsB-0091",
+   "line": 1297,
+   "col": 44,
+   "severity": "info",
+   "message": "'ティッカー' の意味分類 '1.4500' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "ティッカー"
+  },
+  {
+   "path": "docsB-0091",
+   "line": 1309,
+   "col": 47,
+   "severity": "info",
+   "message": "'ライト' の意味分類 '1.4500'、'1.4600' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "ライト"
+  },
+  {
+   "path": "docsB-0091",
+   "line": 1359,
+   "col": 96,
+   "severity": "info",
+   "message": "'製品' の意味分類 '1.4000' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "製品"
+  },
+  {
+   "path": "docsB-0091",
+   "line": 1362,
+   "col": 101,
+   "severity": "info",
+   "message": "'手' の意味分類 '1.5600' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "手"
+  },
+  {
+   "path": "docsB-0091",
+   "line": 1377,
+   "col": 31,
+   "severity": "info",
+   "message": "'欄' の意味分類 '1.4000' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "欄"
+  },
+  {
+   "path": "docsB-0091",
+   "line": 1412,
+   "col": 75,
+   "severity": "info",
+   "message": "'帯' の意味分類 '1.4000'、'1.4200' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "帯"
+  },
+  {
+   "path": "docsB-0091",
+   "line": 1517,
+   "col": 39,
+   "severity": "info",
+   "message": "'生' の意味分類 '1.5700' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "生"
+  },
+  {
+   "path": "docsB-0091",
+   "line": 1622,
+   "col": 29,
+   "severity": "info",
+   "message": "'砦' の意味分類 '1.4400' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "砦"
+  },
+  {
+   "path": "docsB-0091",
+   "line": 1853,
+   "col": 141,
+   "severity": "info",
+   "message": "'青竹' の意味分類 '1.5400' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "青竹"
+  },
+  {
+   "path": "docsB-0091",
+   "line": 1870,
+   "col": 72,
+   "severity": "info",
+   "message": "'配線' の意味分類 '1.4500' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "配線"
+  },
+  {
+   "path": "docsB-0091",
+   "line": 1981,
+   "col": 11,
+   "severity": "info",
+   "message": "'結線' の意味分類 '1.4500' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "結線"
+  },
+  {
+   "path": "docsB-0091",
+   "line": 2005,
+   "col": 24,
+   "severity": "info",
+   "message": "'モジュール' の意味分類 '1.4000'、'1.4500' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "モジュール"
+  },
+  {
+   "path": "docsB-0091",
+   "line": 2029,
+   "col": 40,
+   "severity": "info",
+   "message": "'半導体' の意味分類 '1.5100' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "半導体"
+  },
+  {
+   "path": "docsB-0091",
+   "line": 2046,
+   "col": 180,
+   "severity": "info",
+   "message": "'スタンプ' の意味分類 '1.4000'、'1.4500' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "スタンプ"
+  },
+  {
+   "path": "docsB-0091",
+   "line": 2106,
+   "col": 48,
+   "severity": "info",
+   "message": "'カード' の意味分類 '1.4000' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "カード"
+  },
+  {
+   "path": "docsB-0091",
+   "line": 2138,
+   "col": 42,
+   "severity": "info",
+   "message": "'帯下' の意味分類 '1.5600'、'1.5700' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "帯下"
+  },
+  {
+   "path": "docsB-0091",
+   "line": 2153,
+   "col": 172,
+   "severity": "info",
+   "message": "'琥珀' の意味分類 '1.5100' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "琥珀"
+  },
+  {
+   "path": "docsB-0091",
+   "line": 2333,
+   "col": 44,
+   "severity": "info",
+   "message": "'ビート' の意味分類 '1.5000' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "ビート"
+  },
+  {
+   "path": "docsB-0091",
+   "line": 2568,
+   "col": 18,
+   "severity": "info",
+   "message": "'レンズ' の意味分類 '1.4500' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "レンズ"
+  },
+  {
+   "path": "docsB-0091",
+   "line": 2578,
+   "col": 1,
+   "severity": "info",
+   "message": "'ファサード' の意味分類 '1.4400' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "ファサード"
+  },
+  {
+   "path": "docsB-0091",
+   "line": 2587,
+   "col": 38,
+   "severity": "info",
+   "message": "'原子' の意味分類 '1.5100' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "原子"
+  },
+  {
+   "path": "docsB-0091",
+   "line": 2910,
+   "col": 22,
+   "severity": "info",
+   "message": "'ポインター' の意味分類 '1.4500' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "ポインタ"
+  },
+  {
+   "path": "docsB-0091",
+   "line": 2931,
+   "col": 43,
+   "severity": "info",
+   "message": "'テーブル' の意味分類 '1.4000'、'1.4500' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "テーブル"
+  },
+  {
+   "path": "docsB-0091",
+   "line": 2977,
+   "col": 564,
+   "severity": "info",
+   "message": "'本' の意味分類 '1.4000' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "本"
+  },
+  {
+   "path": "docsB-0091",
+   "line": 3094,
+   "col": 280,
+   "severity": "info",
+   "message": "'旧版' の意味分類 '1.4000' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "旧版"
+  },
+  {
+   "path": "docsB-0091",
+   "line": 3130,
+   "col": 32,
+   "severity": "info",
+   "message": "'素' の意味分類 '1.4500' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "素"
+  },
+  {
+   "path": "docsB-0091",
+   "line": 3152,
+   "col": 7,
+   "severity": "info",
+   "message": "'封筒' の意味分類 '1.4000' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "封筒"
+  },
+  {
+   "path": "docsB-0091",
+   "line": 3563,
+   "col": 274,
+   "severity": "info",
+   "message": "'タグ' の意味分類 '1.4000'、'1.4500' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "タグ"
+  },
+  {
+   "path": "docsB-0091",
+   "line": 3801,
+   "col": 7,
+   "severity": "info",
+   "message": "'施設' の意味分類 '1.4400' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "施設"
+  },
+  {
+   "path": "docsB-0091",
+   "line": 3834,
+   "col": 6,
+   "severity": "info",
+   "message": "'アダプター' の意味分類 '1.4500' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "アダプタ"
+  },
+  {
+   "path": "docsB-0091",
+   "line": 3922,
+   "col": 27,
+   "severity": "info",
+   "message": "'パッケージ' の意味分類 '1.4000'、'1.4100' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "パッケージ"
+  },
+  {
+   "path": "docsB-0091",
+   "line": 4104,
+   "col": 1,
+   "severity": "info",
+   "message": "'実物' の意味分類 '1.4000' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "実物"
+  },
+  {
+   "path": "docsB-0091",
+   "line": 4124,
+   "col": 40,
+   "severity": "info",
+   "message": "'入れ物' の意味分類 '1.4000'、'1.4500' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "入れ物"
+  },
+  {
+   "path": "docsB-0091",
+   "line": 4194,
+   "col": 23,
+   "severity": "info",
+   "message": "'商品' の意味分類 '1.4000' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "商品"
+  },
+  {
+   "path": "docsB-0091",
+   "line": 4211,
+   "col": 22,
+   "severity": "info",
+   "message": "'包み' の意味分類 '1.4000' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "包"
+  },
+  {
+   "path": "docsB-0091",
+   "line": 4320,
+   "col": 218,
+   "severity": "info",
+   "message": "'散らし' の意味分類 '1.4300' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "散らし"
+  },
+  {
+   "path": "docsB-0091",
+   "line": 4358,
+   "col": 64,
+   "severity": "info",
+   "message": "'記入欄' の意味分類 '1.4000' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "記入欄"
+  },
+  {
+   "path": "docsB-0091",
+   "line": 4376,
+   "col": 94,
+   "severity": "info",
+   "message": "'生存' の意味分類 '1.5700' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "生存"
+  },
+  {
+   "path": "docsB-0091",
+   "line": 4461,
+   "col": 117,
+   "severity": "info",
+   "message": "'産物' の意味分類 '1.4000' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "産物"
+  },
+  {
+   "path": "docsB-0091",
+   "line": 4461,
+   "col": 305,
+   "severity": "info",
+   "message": "'目' の意味分類 '1.5600' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "目"
+  },
+  {
+   "path": "docsB-0091",
+   "line": 4464,
+   "col": 261,
+   "severity": "info",
+   "message": "'ディスク' の意味分類 '1.4000'、'1.4500' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "ディスク"
+  },
+  {
+   "path": "docsB-0091",
+   "line": 4508,
+   "col": 231,
+   "severity": "info",
+   "message": "'用紙' の意味分類 '1.4000' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "用紙"
+  },
+  {
+   "path": "docsB-0091",
+   "line": 4754,
+   "col": 143,
+   "severity": "info",
+   "message": "'透かし' の意味分類 '1.4000' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "透かし"
+  },
+  {
+   "path": "docsB-0091",
+   "line": 4788,
+   "col": 25,
+   "severity": "info",
+   "message": "'検出器' の意味分類 '1.4500' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "検出器"
+  },
+  {
+   "path": "docsB-0091",
+   "line": 4841,
+   "col": 5,
+   "severity": "info",
+   "message": "'表紙' の意味分類 '1.4000' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "表紙"
+  },
+  {
+   "path": "docsB-0091",
+   "line": 4991,
+   "col": 213,
+   "severity": "info",
+   "message": "'書庫' の意味分類 '1.4400' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "書庫"
+  },
+  {
+   "path": "docsB-0091",
+   "line": 5035,
+   "col": 300,
+   "severity": "info",
+   "message": "'器具' の意味分類 '1.4500' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "器具"
+  },
+  {
+   "path": "docsB-0091",
+   "line": 5519,
+   "col": 8,
+   "severity": "info",
+   "message": "'成分' の意味分類 '1.5100' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "成分"
+  },
+  {
+   "path": "docsB-0091",
+   "line": 5758,
+   "col": 170,
+   "severity": "info",
+   "message": "'指紋' の意味分類 '1.5600' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "指紋"
+  },
+  {
+   "path": "docsB-0091",
+   "line": 5867,
+   "col": 62,
+   "severity": "info",
+   "message": "'枝' の意味分類 '1.5400' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "枝"
+  },
+  {
+   "path": "docsB-0091",
+   "line": 5917,
+   "col": 30,
+   "severity": "info",
+   "message": "'板' の意味分類 '1.4000'、'1.4100' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "板"
+  },
+  {
+   "path": "docsB-0091",
+   "line": 6159,
+   "col": 30,
+   "severity": "info",
+   "message": "'時計' の意味分類 '1.4500' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "時計"
+  },
+  {
+   "path": "docsB-0091",
+   "line": 6472,
+   "col": 6,
+   "severity": "info",
+   "message": "'データベース' の意味分類 '1.4000'、'1.4500' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "データベース"
+  },
+  {
+   "path": "docsB-0091",
+   "line": 7275,
+   "col": 153,
+   "severity": "info",
+   "message": "'ゲート' の意味分類 '1.4500' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "ゲート"
+  },
+  {
+   "path": "docsB-0091",
+   "line": 7390,
+   "col": 166,
+   "severity": "info",
+   "message": "'在庫' の意味分類 '1.4000' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "在庫"
+  },
+  {
+   "path": "docsB-0091",
+   "line": 7532,
+   "col": 24,
+   "severity": "info",
+   "message": "'メモリ' の意味分類 '1.4500'、'1.5100' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "メモリ"
+  },
+  {
+   "path": "docsB-0091",
+   "line": 7954,
+   "col": 9,
+   "severity": "info",
+   "message": "'スクリーン' の意味分類 '1.4500' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "スクリーン"
+  },
+  {
+   "path": "docsB-0257",
+   "line": 73,
+   "col": 9,
+   "severity": "info",
+   "message": "'片足' の意味分類 '1.5600' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "片脚"
+  },
+  {
+   "path": "docsB-0257",
+   "line": 78,
+   "col": 5,
+   "severity": "info",
+   "message": "'代替' の意味分類 '1.4000' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "代替"
+  },
+  {
+   "path": "docsB-0257",
+   "line": 84,
+   "col": 32,
+   "severity": "info",
+   "message": "'チェックボックス' の意味分類 '1.4500' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "チェックボックス"
+  },
+  {
+   "path": "docsB-0257",
+   "line": 85,
+   "col": 5,
+   "severity": "info",
+   "message": "'パーサ' の意味分類 '1.4500' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "パーサ"
+  },
+  {
+   "path": "docsB-0257",
+   "line": 223,
+   "col": 32,
+   "severity": "info",
+   "message": "'海図' の意味分類 '1.4000' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "海図"
+  },
+  {
+   "path": "docsB-0257",
+   "line": 227,
+   "col": 18,
+   "severity": "info",
+   "message": "'赤旗' の意味分類 '1.4000' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "赤旗"
+  },
+  {
+   "path": "docsB-0257",
+   "line": 228,
+   "col": 23,
+   "severity": "info",
+   "message": "'タグ' の意味分類 '1.4000'、'1.4500' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "タグ"
+  },
+  {
+   "path": "docsB-0257",
+   "line": 259,
+   "col": 48,
+   "severity": "info",
+   "message": "'スコアカード' の意味分類 '1.4000' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "スコアカード"
+  },
+  {
+   "path": "docsB-0257",
+   "line": 359,
+   "col": 25,
+   "severity": "info",
+   "message": "'床' の意味分類 '1.4400'、'1.4700' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "床"
+  },
+  {
+   "path": "docsB-0257",
+   "line": 444,
+   "col": 28,
+   "severity": "info",
+   "message": "'タップ' の意味分類 '1.4500' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "タップ"
+  },
+  {
+   "path": "docsB-0257",
+   "line": 447,
+   "col": 31,
+   "severity": "info",
+   "message": "'琥珀' の意味分類 '1.5100' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "琥珀"
+  },
+  {
+   "path": "docsB-0257",
+   "line": 449,
+   "col": 35,
+   "severity": "info",
+   "message": "'バー' の意味分類 '1.4400' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "バー"
+  },
+  {
+   "path": "docsB-0257",
+   "line": 455,
+   "col": 53,
+   "severity": "info",
+   "message": "'欄' の意味分類 '1.4000' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "欄"
+  },
+  {
+   "path": "docsB-0257",
+   "line": 611,
+   "col": 34,
+   "severity": "info",
+   "message": "'帯' の意味分類 '1.4000'、'1.4200' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "帯"
+  },
+  {
+   "path": "docsB-0257",
+   "line": 614,
+   "col": 15,
+   "severity": "info",
+   "message": "'バッジ' の意味分類 '1.4000' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "バッジ"
+  },
+  {
+   "path": "docsB-0257",
+   "line": 621,
+   "col": 31,
+   "severity": "info",
+   "message": "'ホーム' の意味分類 '1.4400' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "ホーム"
+  },
+  {
+   "path": "docsB-0257",
+   "line": 622,
+   "col": 31,
+   "severity": "info",
+   "message": "'画面' の意味分類 '1.4500' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "画面"
+  },
+  {
+   "path": "docsB-0257",
+   "line": 646,
+   "col": 37,
+   "severity": "info",
+   "message": "'レンズ' の意味分類 '1.4500' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "レンズ"
+  },
+  {
+   "path": "docsB-0257",
+   "line": 699,
+   "col": 6,
+   "severity": "info",
+   "message": "'生命線' の意味分類 '1.5600' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "生命線"
+  },
+  {
+   "path": "docsB-0257",
+   "line": 734,
+   "col": 15,
+   "severity": "info",
+   "message": "'旧版' の意味分類 '1.4000' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "旧版"
+  },
+  {
+   "path": "docsB-0257",
+   "line": 756,
+   "col": 27,
+   "severity": "info",
+   "message": "'テーブル' の意味分類 '1.4000'、'1.4500' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "テーブル"
+  },
+  {
+   "path": "docsB-0257",
+   "line": 797,
+   "col": 24,
+   "severity": "info",
+   "message": "'製品' の意味分類 '1.4000' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "製品"
+  },
+  {
+   "path": "docsB-0257",
+   "line": 801,
+   "col": 39,
+   "severity": "info",
+   "message": "'目' の意味分類 '1.5600' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "目"
+  },
+  {
+   "path": "docsB-0257",
+   "line": 832,
+   "col": 37,
+   "severity": "info",
+   "message": "'資源' の意味分類 '1.4000' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "資源"
+  },
+  {
+   "path": "docsB-0257",
+   "line": 938,
+   "col": 66,
+   "severity": "info",
+   "message": "'表' の意味分類 '1.4000' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "表"
+  },
+  {
+   "path": "docsB-0257",
+   "line": 945,
+   "col": 14,
+   "severity": "info",
+   "message": "'土台' の意味分類 '1.4000' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "土台"
+  },
+  {
+   "path": "docsB-0257",
+   "line": 945,
+   "col": 30,
+   "severity": "info",
+   "message": "'本体' の意味分類 '1.4000' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "本体"
+  },
+  {
+   "path": "docsB-0257",
+   "line": 1181,
+   "col": 109,
+   "severity": "info",
+   "message": "'紐' の意味分類 '1.4000'、'1.4500' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "紐"
+  },
+  {
+   "path": "docsB-0257",
+   "line": 1182,
+   "col": 33,
+   "severity": "info",
+   "message": "'存命' の意味分類 '1.5700' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "存命"
+  },
+  {
+   "path": "docsB-0257",
+   "line": 1190,
+   "col": 10,
+   "severity": "info",
+   "message": "'定食' の意味分類 '1.4300' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "定食"
+  },
+  {
+   "path": "docsB-0257",
+   "line": 1274,
+   "col": 15,
+   "severity": "info",
+   "message": "'ベット' の意味分類 '1.4000'、'1.4400' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "ベット"
+  },
+  {
+   "path": "docsB-0257",
+   "line": 1316,
+   "col": 23,
+   "severity": "info",
+   "message": "'ハーネス' の意味分類 '1.4000'、'1.4500' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "ハーネス"
+  },
+  {
+   "path": "docsB-0257",
+   "line": 1375,
+   "col": 22,
+   "severity": "info",
+   "message": "'玉' の意味分類 '1.4000'、'1.5100' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "玉"
+  },
+  {
+   "path": "docsB-0257",
+   "line": 1406,
+   "col": 3,
+   "severity": "info",
+   "message": "'カード' の意味分類 '1.4000' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "カード"
+  },
+  {
+   "path": "docsB-0257",
+   "line": 1501,
+   "col": 28,
+   "severity": "info",
+   "message": "'死' の意味分類 '1.5700' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "死"
+  },
+  {
+   "path": "docsB-0071",
+   "line": 44,
+   "col": 28,
+   "severity": "info",
+   "message": "'殻' の意味分類 '1.4000'、'1.5100' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "殻"
+  },
+  {
+   "path": "docsB-0059",
+   "line": 284,
+   "col": 74,
+   "severity": "info",
+   "message": "'欄' の意味分類 '1.4000' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "欄"
+  },
+  {
+   "path": "docsB-0059",
+   "line": 397,
+   "col": 34,
+   "severity": "info",
+   "message": "'画面' の意味分類 '1.4500' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "画面"
+  },
+  {
+   "path": "docsB-0059",
+   "line": 482,
+   "col": 58,
+   "severity": "info",
+   "message": "'機械' の意味分類 '1.4500' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "機械"
+  },
+  {
+   "path": "docsB-0059",
+   "line": 505,
+   "col": 47,
+   "severity": "info",
+   "message": "'配線' の意味分類 '1.4500' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "配線"
+  },
+  {
+   "path": "docsB-0046",
+   "line": 38,
+   "col": 45,
+   "severity": "info",
+   "message": "'欄' の意味分類 '1.4000' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "欄"
+  },
+  {
+   "path": "docsB-0046",
+   "line": 39,
+   "col": 39,
+   "severity": "info",
+   "message": "'丸印' の意味分類 '1.4000' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "丸印"
+  },
+  {
+   "path": "docsB-0046",
+   "line": 59,
+   "col": 200,
+   "severity": "info",
+   "message": "'製品' の意味分類 '1.4000' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "製品"
+  },
+  {
+   "path": "docsB-0046",
+   "line": 181,
+   "col": 25,
+   "severity": "info",
+   "message": "'画面' の意味分類 '1.4500' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "画面"
+  },
+  {
+   "path": "docsB-0077",
+   "line": 1,
+   "col": 57,
+   "severity": "info",
+   "message": "'表' の意味分類 '1.4000' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "表"
+  },
+  {
+   "path": "docsB-0251",
+   "line": 15,
+   "col": 57,
+   "severity": "info",
+   "message": "'アドオン' の意味分類 '1.4000'、'1.4500' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "アドオン"
+  },
+  {
+   "path": "docsB-0251",
+   "line": 21,
+   "col": 29,
+   "severity": "info",
+   "message": "'自宅' の意味分類 '1.4400' は、生産物か自然物の部門にある。この段落は関係と活動の部門の語が占める。英語の語を写した語なら、指すものを平たく書き下す",
+   "rule": "concrete-noun-misfit",
+   "excerpt": "自宅"
+  }
+ ],
+ "meta": {
+  "fix_hint": "置換だけで直せる指摘が 15 件ある。'aku fix' を実行して直す。",
+  "rule_body_hint": "指摘の説明文にある執筆規則の id は 'aku rule-body <id>' の <id> へ渡すと、本文を読める。",
+  "reference_hint": "参照データが無いので、1 件の検出器が指摘を出さなかった。'aku reference' を実行すると、参照データがそろう。",
+  "version": "0.1.0",
+  "files": [
+   "docsB-0001",
+   "docsB-0014",
+   "docsB-0046",
+   "docsB-0059",
+   "docsB-0071",
+   "docsB-0077",
+   "docsB-0091",
+   "docsB-0251",
+   "docsB-0257"
+  ],
+  "detectors": [
+   "artifact-leak",
+   "boilerplate-heading",
+   "buried-list",
+   "calque",
+   "concrete-noun-misfit",
+   "control-character",
+   "descriptive-link-text",
+   "double-negative",
+   "doubled-conjunction",
+   "dropped-i",
+   "dropped-ra",
+   "emoji-bullet",
+   "exclamation-mark",
+   "foreign-script",
+   "format-excess",
+   "glossary-calque",
+   "hankaku-kana",
+   "heading-emphasis",
+   "heading-two-part",
+   "hedge-density",
+   "hype-expression",
+   "invisible-character",
+   "ja-spacing",
+   "kanji-run-length",
+   "katakana-compound",
+   "list-item-essay",
+   "list-label-emphasis",
+   "low-specificity",
+   "max-len",
+   "max-ten",
+   "mixed-punctuation",
+   "mixed-style",
+   "nfd-dakuten",
+   "no-arrow",
+   "no-comma-sentence",
+   "no-dash",
+   "non-japanese-kanji",
+   "noun-chain",
+   "noun-only-sentence",
+   "open-function-words",
+   "orthographic-variants",
+   "paragraph-len",
+   "paragraph-uniformity",
+   "parallel-phrase",
+   "paren-limit",
+   "placeholder-text",
+   "predicate-colon-lead",
+   "redundant-expression",
+   "redundant-light-verb",
+   "repeated-bold-term",
+   "repeated-sentence",
+   "repeated-sentence-ending",
+   "role-conflict",
+   "sentence-length-uniformity",
+   "sentence-period",
+   "short-paragraph-run",
+   "short-sentence-run",
+   "standalone-unit-noun",
+   "unknown-compound",
+   "unmatched-paren",
+   "unnatural-alphabet",
+   "untranslated-term",
+   "verbal-heading",
+   "zero-width-space"
+  ],
+  "skipped_detectors": [
+   "orthographic-variants"
+  ],
+  "excluded_lines": {
+   "frontmatter": 0,
+   "code": 3288,
+   "blockquote": 50,
+   "html": 42,
+   "japanese_ratio": 1247
+  }
+ }
+}

@@ -1,0 +1,91 @@
+語	該当文(冒頭)	確認
+トランスポンダー	実用性への疑問	N
+コンポーネント	脆弱なバージョンはリクエストボディ	N
+手	この時の修正はエンドポイントへ JWT	N
+アダプター	Go言語製の静的リンクELF	N
+クラウド	暗号化されたAIモデルを再構築	N
+ソケット	侵入後には公開状態のDocker	N
+チェックポイント	Go言語製の静的リンクELF(PyTorch)	Y
+マルウェア	BleepingComputerが報じた攻撃タイムライン	N
+ランサムウェア	Sysdig は2026年7月1日	N
+ランサムウェア	さらに2026年7月21日	N
+踏み台	AI 開発環境は実験的なツール	N
+ヒット	公開直後から中国系5グループ	Y
+堅果	Trend Micro は正規のエクスプロイト	Y
+緑葉	Trend Micro は正規のエクスプロイト	Y
+ヒット	Cloudflare 集計(2025-12-03〜)総ヒット	Y
+ヒット	2025-12-11 Cloudflare 集計	Y
+基盤	攻撃パイプラインは OpenClaw	N
+手	位置づけ: 検知エンジニアリング	N
+画面	Jira(要件読み込み)	N
+マップ	nuclei-index	Y
+バイブコーディング	opencode-pentester(humaidhahm 作	N
+ブラウザ	port-analyzer	N
+ディスク	ディスクへの書き込みを行わない	N
+メモリ	削除ペンディング状態のファイル	N
+データベース	Gtfo-Suid	N
+ダッシュボード	Third-Eye	N
+衛星	Third-Eye	N
+ファームウェア	drone-audit-framework	N
+プラグイン	wp-taint-scan	N
+プラグイン	WordPress プラグインの脆弱性解析ツール	N
+パッケージ	cve-detect	N
+パッケージ	与えられたパッケージのソースコード	N
+バイブコーディング	opencode-pentester(humaidhahm)— 「バイブコーディング(vibe-coded)」、すなわち	N
+ストレージ	8つのカテゴリ	N
+基盤	Android-Pentesting-Checklist-MASTG	N
+タグ	操作履歴は MITRE ATT&CK	N
+デバイス	promptzero	N
+デバイス	操作履歴は MITRE ATT&CK タグ付き	N
+クラウド	LLM がクラウドに接続しない	N
+マシン	GTFOBins は SUID	N
+パディング	CBC モードのブロック暗号	N
+シミュレーター	MAVLink プロトコルを通じて	N
+ドローン	drone-audit-framework — ArduPilot	N
+ドローン	カンファレンス発表もなく	N
+パケット	MAVLink プロトコルを通じて	N
+カーネル	CVE 情報と照合したカーネル	N
+素材	既存の SAST ツールが AI アプリ特有	Y
+素材	AI セキュリティツール評価に関わる	Y
+モジュール	WinIntel	N
+モバイル	作者は b4sith-sec	N
+レンジ	作者は b4sith-sec で新規・1スター	Y
+手	OWASP Mobile Top 10 に沿って	N
+ガジェット	注目点は「オフセット・アドレス	N
+マーカー	注目点は「オフセット・アドレス	N
+スクリーンショット	gowitness	N
+カーネル	従来の限界: 従来の BTB	N
+プロセッサー	対象/前提条件: 攻撃は「various Intel	N
+ベンダ	CVE 採番や具体的なベンダ対応	N
+本	Cisco PSIRT は本 CVE について	N
+モジュール	初期侵入から自己増殖	N
+ブラウザ	SHADOW-EARTH-066	N
+武器	RomCom がパッチ	N
+キャッシュ	無効化される機能	N
+ページ	プロンプトインジェクションは	N
+マルウェア	マルウェアや脆弱性解析で Rust	N
+製品	エンタープライズバックアップソフト	N
+野生	2026-06-17 時点で公開 PoC	Y
+テイクダウン	求人や開発案件を餌にする	N
+マルウェア	マルウェア Windows 向けは Node.js	N
+端末	論点 Hanff は	N
+決勝	リーグ本戦は5月に終了	N
+決勝	6月20日の決勝まで継続	N
+テイクダウン	また大手プロキシ業者 IPIDEA	N
+実例	Synthient は同日公開の	Y
+テイクダウン	2026-06-11 Cyber Security News	Y
+テイクダウン	Gress・CrBuzz・IPIDEA テイクダウンなど追加	Y
+ベンダ	発見は Tenable Research で	Y
+ベンダ	今回の CVE-2026-5027 は Tenable	Y
+ベンダ	2026-01〜03 Tenable Research が	Y
+デコンパイラ	Project Ire によるLOTUSLITE 発見	N
+ワーム	PlugX インフラ破壊後は	N
+トロイ	トロイの木馬化パッケージ	N
+パッケージ	トロイの木馬化パッケージ・postinstall	N
+パッケージ	少数の人気パッケージを侵害	N
+木馬	トロイの木馬化パッケージ	N
+プラグイン	即時パッチ適用が困難な場合	N
+ベンダ	Namecheap のチームがベンダに報告した	Y
+モジュール	Endpoint Manager モジュールは	N
+クラウドストレージ	今回の欠陥はその危険性が	N
+チェックポイント	CVE-2026-28277	Y

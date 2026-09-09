@@ -1,0 +1,13 @@
+{
+ "model_a": "claude-haiku-4-5-20251001",
+ "model_b": "gpt-5.6-luna",
+ "judged_by_both": 6734,
+ "model_agree": 2861,
+ "model_disagree": 3873,
+ "kinds": {
+  "交わり無し": 822,
+  "部分的に重なる": 787,
+  "包含": 2264
+ },
+ "concrete_split": 303
+}

@@ -1,0 +1,146 @@
+{
+  "version": "v5-verbs",
+  "written": "2026-09-06",
+  "purpose": "用言(サ変を除く動詞)の語彙に対する複数モデルの判定を、再利用できる形で保存する",
+  "record_format": {
+    "file": "モデルごとに 1 つの JSONL。1 行 1 語",
+    "fields": {
+      "word": "分類した語",
+      "categories": "中項目番号の配列。許す集合は分類対象で決まる。昇順で重複を持たない",
+      "model": "ゲートウェイへ渡したモデル名",
+      "date": "判定した日",
+      "contract": "生成の方針の版の識別子",
+      "context_used": "用例文。添えなかったときは null",
+      "tier": "語彙の母集団の層。corpus か jmdict",
+      "jmdict_priority": "JMdict の頻度の印(ichi・news・spec・gai)を持つ見出しなら true",
+      "source": "来歴。取り込んだ行は元ファイル名、この形式で取った行は api",
+      "chunk_id": "その語を載せたバッチの識別子。取り込んだ行では null",
+      "chunk_index": "バッチ内の位置(0 起点)。取り込んだ行では null",
+      "pass_seed": "バッチの組み方を決めた種。パスの識別子でもある。取り込んだ行では null"
+    },
+    "regeneration": "categories は後から作り直せる。判定の入力(word と context_used)と条件(model と contract)を 1 レコードに揃えて持たせてあるので、中項目 48(無形の人工物)のような体系の変更を採る場合は、対象の語だけを選んで取り直し、同じ形式の別ファイルへ書けばよい。既存の行は捨てずに残す",
+    "subset": "jmdict_priority が true の行だけを取れば、日常語だけの部分集合を判定の取り直しなしで切り出せる"
+  },
+  "contract": {
+    "id": "v3-reworded",
+    "text": "語義として挙げるのは、現代の日本語で日常的に使われると広く認められるものだけ である。比喩や転用に由来する語義も、辞書に載る程度に定着していれば挙げる。 心に強く響くことを指す「刺さる」がこれに当たる。 次の 3 つは挙げない。まだ定着していない直訳や転用、特定の分野や集団の中でしか 通じない用法、文学的・修辞的な言い回しにだけ現れる語義である。迷ったら挙げない 側に倒す。 たとえば「落ちる」には、高い所から下がる語義に加えて、試験に受からない語義が 辞書に載る。どちらも挙げる。一方「芽吹く」は草木の芽が出る語義だけを挙げ、 「希望が芽吹く」のような修辞にだけ現れる語義は挙げない。 用例は、その語がどう使われるかを知る手がかりである。用例の語義だけに絞らず、 その語が持つ定着した語義を挙げる。",
+    "note": "識別子は生成の方針の版を指す。方針の文言は名詞の v5 と同一で、指示文の中の例示の語だけが分類対象ごとに違う"
+  },
+  "categories": {
+    "count": 23,
+    "scheme": "意味の中項目を 2 桁の番号で表す。十の位が部門で、1 が関係、3 が活動、5 が自然物である。体の類と違い、主体(2)と生産物(4)の部門を用の類は持たない。表へ書くときは 2.mm00 の形にする",
+    "provenance": "番号は分類語彙表増補改訂版データベースの目次ファイル(github.com/masayu-a/WLSP の koumoku2.txt)の 2. の行 23 件と一対一で確かめた。名前は中項目の目次名に、配下の分類項目の目次名から代表を足して補強した。どの語にどの中項目を与えるかはモデルの言語判断で決めた",
+    "items": {
+      "10": "真偽・是非",
+      "11": "関係・異同・因果",
+      "12": "存在・出没・成立・消滅",
+      "13": "様相・調和・難易",
+      "14": "力",
+      "15": "作用・変化・移動・開始・終了",
+      "16": "時間・順序・遅速",
+      "17": "空間・場所・方向",
+      "19": "量・過不足",
+      "30": "心・感情・思考・学習",
+      "31": "言語活動",
+      "32": "創作・著述・芸術",
+      "33": "生活・労働・身振り",
+      "34": "行為・義務・成功",
+      "35": "交わり・応対・争い",
+      "36": "支配・政治・命令・待遇",
+      "37": "取得・金銭・売買",
+      "38": "事業・業務・産業",
+      "50": "自然・現象",
+      "51": "物質・気象・火",
+      "52": "天象",
+      "56": "身体",
+      "57": "生命・生死・生理"
+    }
+  },
+  "few_shot": {
+    "module": "verb/target.py",
+    "groups": 5,
+    "words": 22,
+    "rationale": "demos-rationale.txt",
+    "note": "用言のベンチマークはまだ無いので、重複の制約は掛かっていない"
+  },
+  "population": {
+    "jmdict": {
+      "source": "verb/inputs/jmdict-verb-headwords.txt",
+      "script": "pipeline/headwords.py",
+      "how": [
+        "品詞の持ち込みは一段(v1・v1-s)・五段の全種(v5*)・カ変(vk)・ザ変(vz)だけである。サ変(vs・vs-i・vs-s・vs-c)は体の類の表で名詞として判定できるため対象にしない。二段・四段などの古典活用は持ち込みに入らないことで落ちる",
+        "その語義が exp(成句)を併せ持つ場合は落とす",
+        "動詞の語義がどれも古語・廃語・稀語の印を持つ項目は落とす",
+        "表記に日本語の文字以外が混じる見出しと、13 字以上の見出しを落とす"
+      ],
+      "headword": "見出しは項目ごとに 1 つだけ採る。漢字表記があればその先頭、無ければ読みの先頭である",
+      "context": "用例は添えない",
+      "count": 6785,
+      "jmdict_version": "JMdict created 2026-09-03"
+    },
+    "no_corpus_tier": "名詞にあった corpus 層は持たない。動詞は活用するため、名詞で使った見出し語の部分文字列走査ではコーパスに現れる語を拾えない。多数決を全語に掛けるので、層で判定の回数を分ける理由も無い"
+  },
+  "generation": {
+    "dspy": "3.3.1",
+    "target": "verb",
+    "temperature": 0.0,
+    "max_tokens": 8192,
+    "predictor": "dspy.Predict 1 段",
+    "chunk": 20,
+    "chunk_order": "語の一覧から判定済みの語を除き、パスの種で混ぜてから先頭より 20 語ずつ切る。並びのままだと字種の偏ったバッチができ、モデルが空の配列を返すことがある。バッチの通し番号と語順の種を chunk_id に、バッチ内の位置を chunk_index に残す",
+    "workers": 8,
+    "retries": 3,
+    "gateway": "LLM_BASE_URL の litellm ゲートウェイを openai 互換で呼ぶ",
+    "idempotent": "出力の JSONL を読んで判定済みの語を飛ばす。走行の途中で止まっても、次の走行が残りだけを拾う",
+    "commands": [
+      "uv run python pipeline/headwords.py --target verb --jmdict <JMdict_e.xml> --out verb/inputs/jmdict-verb-headwords.txt",
+      "uv run python pipeline/run_votes.py --target verb --words verb/inputs/jmdict-verb-headwords.txt --out-dir verb/votes --model-key <ANTHROPIC_MODEL|OPENAI_MODEL> --tier jmdict --jmdict <JMdict_e.xml> --seed <694|1002|1003>",
+      "uv run python pipeline/finalize.py --votes-dir verb/votes --model <モデル> --seeds 694,1002,1003 --out-dir verb/votes/final --eval-dir verb/review",
+      "uv run python pipeline/disagreement.py --final-dir verb/votes/final --model-a claude-haiku-4-5-20251001 --model-b gpt-5.6-luna --out verb/review/disagreement-v5-verbs.tsv",
+      "uv run python pipeline/manifest.py --target verb --out-dir verb/votes --jmdict-version <JMdict の版>",
+      "uv run python pipeline/build_table.py --target verb --votes-dir verb/votes/final --model claude-haiku-4-5-20251001 --manifest verb/votes/manifest.json --out verb/verb-semantic-class-table.tsv"
+    ]
+  },
+  "voting": {
+    "design": "全語に 3 パス × 2 モデルの判定",
+    "why": "母集団が 7 千語弱と小さいので、名詞のように日常語へ絞らず全語に多数決を掛けられる。1 回判定の裾が無くなる",
+    "passes": {
+      "seeds": [
+        694,
+        1002,
+        1003
+      ],
+      "independence": "パスごとにバッチの組み方の種を変える。温度 0 ではバッチを固定すると同じ判定が出るので、判定の独立性はバッチの組み方の違いだけから来る",
+      "input": "全パスとも用例文を添えない同じ入力である",
+      "files": "1 回目の判定は <モデル>.jsonl、追加のパスは <モデル>-s<種>.jsonl",
+      "counts": {
+        "claude-haiku-4-5-20251001": {
+          "1002": 6765,
+          "1003": 6744,
+          "694": 6785
+        },
+        "gpt-5.6-luna": {
+          "1002": 6785,
+          "1003": 6785,
+          "694": 6785
+        }
+      }
+    },
+    "rule": {
+      "majority": "2 パス以上に現れた語は、2 パス以上が挙げた中項目だけを採る",
+      "single": "1 パスにしか現れない語は、その 1 回の判定をそのまま採る。全語が 3 パスの対象なので、ここに落ちるのは下の失敗の塊の語だけ",
+      "unstable": "どの中項目も 2 回の判定に届かない語は確定させず、表へ載せない"
+    },
+    "failures": "モデルが空の分類を返す語(定着した語義を持たない俗語など)を含むバッチは検証で弾かれ、その語は再実行しても同じ種では同じバッチに落ちるため未判定のまま残る。判定の無い語は表に載らず、検出器は黙るので安全側である。語の一覧は failed-*.json にある"
+  },
+  "models": {
+    "claude-haiku-4-5-20251001": {
+      "env": "ANTHROPIC_MODEL",
+      "file": "claude-haiku-4-5-20251001.jsonl"
+    },
+    "gpt-5.6-luna": {
+      "env": "OPENAI_MODEL",
+      "file": "gpt-5.6-luna.jsonl"
+    }
+  }
+}

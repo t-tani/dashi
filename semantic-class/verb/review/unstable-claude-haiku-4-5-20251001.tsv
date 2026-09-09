@@ -1,0 +1,18 @@
+word	passes	tier	jmdict_priority
+けつかる	35 | 15	jmdict	いいえ
+ごてつく	35 | 13 | 33	jmdict	いいえ
+ごてる	13 | 33 | 15	jmdict	いいえ
+でれつく	33 | 30	jmdict	いいえ
+まかり間違う	10 | 15 | 12	jmdict	いいえ
+ステる	33 | 15 | 30	jmdict	いいえ
+修める	30 33 | 34 38	jmdict	はい
+側む	15 | 17 | 33	jmdict	いいえ
+強つく	34 | 13 | 33	jmdict	いいえ
+弾じる	15 | 34 | 32	jmdict	いいえ
+我鳴る	30 | 50 | 31	jmdict	いいえ
+江川る	15 | 31 | 34	jmdict	いいえ
+目っかる	50 | 15 | 56	jmdict	いいえ
+祟る	14 | 35 | 30 50	jmdict	いいえ
+縁付く	33 | 35 | 12	jmdict	いいえ
+臈たける	34 | 33 | 16	jmdict	いいえ
+舐める	30 34 | 15 33	jmdict	はい

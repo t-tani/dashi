@@ -1,0 +1,37 @@
+現行の既定: 指摘 68 TP 8 FP 59 FN 5 母数外 1
+
+== 閾値だけを動かしたとき、偽陰性を取り戻せるか
+  0.50: 指摘 181 TP 8 FN 5 母数内 FP 59 母数外 114 / 出力の総数 173
+  0.55: 指摘 180 TP 8 FN 5 母数内 FP 59 母数外 113 / 出力の総数 172
+  0.60: 指摘 179 TP 8 FN 5 母数内 FP 59 母数外 112 / 出力の総数 171
+  0.65: 指摘 175 TP 8 FN 5 母数内 FP 59 母数外 108 / 出力の総数 167
+  0.70: 指摘 163 TP 8 FN 5 母数内 FP 59 母数外 96 / 出力の総数 155
+  0.75: 指摘 144 TP 8 FN 5 母数内 FP 59 母数外 77 / 出力の総数 136
+  0.80: 指摘 113 TP 8 FN 5 母数内 FP 59 母数外 46 / 出力の総数 105
+  0.85: 指摘 68 TP 8 FN 5 母数内 FP 59 母数外 1 / 出力の総数 60
+  0.90: 指摘 26 TP 2 FN 11 母数内 FP 24 母数外 0 / 出力の総数 24
+
+== フィルタの選択性(閾値 0.85 の 68 件に当てる)
+  class48: 残り 36 件 / 刈った 32 件 (うち偽陽性 28 件、真陽性 4 件) / 重ね掛けの候補 いいえ
+  comp-any: 残り 44 件 / 刈った 24 件 (うち偽陽性 24 件、真陽性 0 件) / 重ね掛けの候補 はい
+  comp-first: 残り 46 件 / 刈った 22 件 (うち偽陽性 22 件、真陽性 0 件) / 重ね掛けの候補 はい
+  wordnet-abstract: 残り 42 件 / 刈った 26 件 (うち偽陽性 26 件、真陽性 0 件) / 重ね掛けの候補 はい
+  wordnet-abstract-wide: 残り 39 件 / 刈った 29 件 (うち偽陽性 29 件、真陽性 0 件) / 重ね掛けの候補 はい
+  other-corpus: 残り 36 件 / 刈った 32 件 (うち偽陽性 29 件、真陽性 3 件) / 重ね掛けの候補 いいえ
+  other-corpus-judged: 残り 62 件 / 刈った 6 件 (うち偽陽性 6 件、真陽性 0 件) / 重ね掛けの候補 はい
+  katakana: 残り 17 件 / 刈った 51 件 (うち偽陽性 46 件、真陽性 4 件) / 重ね掛けの候補 いいえ
+
+== 30 文書の外で妥当と裁定された語を、フィルタが消すか
+  語	class48	comp-any	comp-first	wordnet-abstract	wordnet-abstract-wide	other-corpus	other-corpus-judged	katakana
+  野生	残す	残す	残す	残す	残す	残す	残す	残す	(finding-verdicts/verdicts_v2.py OK old:1、luna-comparison B:13)
+  ボード	残す	残す	残す	残す	残す	残す	残す	消す	(finding-verdicts/verdicts_v2.py OK old:38)
+  導線	残す	残す	残す	残す	残す	残す	残す	残す	(finding-verdicts/verdicts_v2.py OK old:55)
+  バケット	消す	残す	残す	残す	残す	消す	残す	消す	(finding-verdicts/verdicts_v2.py OK new:58、shipped-default-diff AFTER:21)
+  窓	残す	残す	残す	消す	消す	消す	残す	残す	(finding-verdicts/verdicts_v2.py OK both:15、shipped-default-diff AFTER:22)
+  原子	残す	残す	残す	残す	残す	消す	残す	残す	(finding-verdicts/verdicts_v2.py OK both:17)
+  死	残す	残す	残す	消す	消す	消す	残す	残す	(finding-verdicts/verdicts_v2.py FINAL_OK:26)
+  機械	残す	残す	残す	残す	残す	消す	消す	残す	(finding-verdicts/verdicts_v2.py FINAL_OK:30(同じ語を REASON は定着と裁定))
+  レバー	残す	残す	残す	残す	残す	消す	残す	消す	(shipped-default-diff/verdicts.py BEFORE:28)
+  透かし	残す	残す	残す	残す	残す	消す	残す	残す	(shipped-default-diff/verdicts.py AFTER:23)
+  口	残す	残す	残す	消す	消す	残す	残す	残す	(luna-comparison/verdicts_v3.py A:21)
+  ルアー	残す	残す	残す	消す	消す	残す	残す	消す	(luna-comparison/verdicts_v3.py U:24)
