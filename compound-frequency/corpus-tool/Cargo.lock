@@ -20,7 +20,7 @@ dependencies = [
 [[package]]
 name = "aku_core"
 version = "0.1.0"
-source = "git+https://github.com/t-tani/akunuki.git?rev=a4d27caa92493d46cb60c29f975dca4d7526cc56#a4d27caa92493d46cb60c29f975dca4d7526cc56"
+source = "git+https://github.com/t-tani/akunuki.git?rev=c5f14509d62d26c3d80b5359eda5444991fc36c2#c5f14509d62d26c3d80b5359eda5444991fc36c2"
 dependencies = [
  "pulldown-cmark",
  "regex",
@@ -34,20 +34,19 @@ dependencies = [
 [[package]]
 name = "aku_dict"
 version = "0.1.0"
-source = "git+https://github.com/t-tani/akunuki.git?rev=a4d27caa92493d46cb60c29f975dca4d7526cc56#a4d27caa92493d46cb60c29f975dca4d7526cc56"
+source = "git+https://github.com/t-tani/akunuki.git?rev=c5f14509d62d26c3d80b5359eda5444991fc36c2#c5f14509d62d26c3d80b5359eda5444991fc36c2"
 dependencies = [
  "aku_core",
  "fancy-regex 0.19.0",
  "regex",
  "serde",
  "serde_yaml",
- "thiserror 2.0.20",
 ]
 
 [[package]]
 name = "aku_freq"
 version = "0.1.0"
-source = "git+https://github.com/t-tani/akunuki.git?rev=a4d27caa92493d46cb60c29f975dca4d7526cc56#a4d27caa92493d46cb60c29f975dca4d7526cc56"
+source = "git+https://github.com/t-tani/akunuki.git?rev=c5f14509d62d26c3d80b5359eda5444991fc36c2#c5f14509d62d26c3d80b5359eda5444991fc36c2"
 dependencies = [
  "fst",
  "thiserror 2.0.20",
@@ -58,7 +57,7 @@ dependencies = [
 [[package]]
 name = "aku_morph"
 version = "0.1.0"
-source = "git+https://github.com/t-tani/akunuki.git?rev=a4d27caa92493d46cb60c29f975dca4d7526cc56#a4d27caa92493d46cb60c29f975dca4d7526cc56"
+source = "git+https://github.com/t-tani/akunuki.git?rev=c5f14509d62d26c3d80b5359eda5444991fc36c2#c5f14509d62d26c3d80b5359eda5444991fc36c2"
 dependencies = [
  "aku_core",
  "aku_dict",
@@ -79,7 +78,7 @@ dependencies = [
 [[package]]
 name = "aku_rules"
 version = "0.1.0"
-source = "git+https://github.com/t-tani/akunuki.git?rev=a4d27caa92493d46cb60c29f975dca4d7526cc56#a4d27caa92493d46cb60c29f975dca4d7526cc56"
+source = "git+https://github.com/t-tani/akunuki.git?rev=c5f14509d62d26c3d80b5359eda5444991fc36c2#c5f14509d62d26c3d80b5359eda5444991fc36c2"
 dependencies = [
  "aho-corasick",
  "aku_core",

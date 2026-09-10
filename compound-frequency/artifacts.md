@@ -123,7 +123,7 @@ for run in compound_runs(fragment):
 ```
 FilterFile {
     magic:                u8[8]    = "AKUFREQ\0"
-    format_version:       u16      = 1
+    format_version:       u16      = 2
     key_hash_seed:        u64      = 0x616b755f66726571   // "aku_freq" の ASCII
     key_count:            u32                             // 重複を除いた登録数
     crate_version:        str16                           // aku_freq の CARGO_PKG_VERSION
@@ -142,10 +142,10 @@ str16 {
 }
 ```
 
-キーの登録と照合では、バケットを値として持たず、ハッシュのシードへ畳み込みます。
+キーの登録と照合では、バケットを値として持たず、キーのハッシュにバケットごとの定数を XOR して畳み込みます。定数はバケットに奇数の乗数を掛けた値で、64 bit の全体に散ります。シードにバケットを畳み込む形にはしません。xxh3 は 8 バイト以下の入力ではシードを特定のバイトにしか掛けないため、短いキーの対が別のバケットで同じハッシュになるからです。
 
 ```
-key_hash(key, bucket) = xxh3_64(key.as_bytes(), seed = key_hash_seed ^ bucket)
+key_hash(key, bucket) = xxh3_64(key.as_bytes(), seed = key_hash_seed) ^ (bucket * 0x9e3779b97f4a7c15)
 
 register(key, bucket):  filter.insert(key_hash(key, bucket))
 bucket(key):            max { b in 7..=1 | filter.contains(key_hash(key, b)) }

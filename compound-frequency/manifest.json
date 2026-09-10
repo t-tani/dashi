@@ -1,6 +1,6 @@
 {
   "artifact": "release",
-  "version": "dashi-2026.09.1",
+  "version": "dashi-2026.09.2",
   "inputs": {
     "wikipedia": {
       "counts_dir": "../counts",
@@ -10,27 +10,27 @@
       "counts_dir": "../counts-docs",
       "weight": 1.0,
       "text_dir": "../corpus/text",
-      "documents": 13848,
-      "text_bytes": 54872563,
+      "documents": 13846,
+      "text_bytes": 54803373,
       "excluded_sources": [],
       "sources": [
         {
           "name": "mdn",
-          "commit": "5ac29ddc0c08296e349285742c9bbb4f282c67dc",
+          "commit": "805090bfe845984842c6f508d877f9b34c47f746",
           "license": "CC-BY-SA-2.5",
-          "documents": 10221,
-          "text_bytes": 30803125
+          "documents": 10219,
+          "text_bytes": 30734377
         },
         {
           "name": "k8s",
-          "commit": "bfae6f837a9ef9d84809a39465b055f99121655f",
+          "commit": "da362469ceb0802accadb425acbb0576e845d246",
           "license": "CC-BY-4.0",
           "documents": 587,
           "text_bytes": 4023619
         },
         {
           "name": "astro",
-          "commit": "ae13762517102f50f103106d1ce4609496909ef7",
+          "commit": "43b55a036ed8942c6b76679c628c859d655c4293",
           "license": "MIT",
           "documents": 144,
           "text_bytes": 627843
@@ -51,10 +51,10 @@
         },
         {
           "name": "vite",
-          "commit": "30ae2dd0e3460eaedc692189d95ebcd1b766ce67",
+          "commit": "ccb44d9ebe1cf3069a951a78770153adcf387fb4",
           "license": "MIT",
           "documents": 47,
-          "text_bytes": 335950
+          "text_bytes": 335508
         },
         {
           "name": "angular",
@@ -417,7 +417,7 @@
     ]
   },
   "akunuki": {
-    "rev": "a4d27caa92493d46cb60c29f975dca4d7526cc56",
+    "rev": "c5f14509d62d26c3d80b5359eda5444991fc36c2",
     "dictionary_version": "sudachi-dictionary-20260723"
   },
   "dictionary": {
@@ -483,31 +483,31 @@
     ],
     "min_count": 5,
     "general_threshold": 5,
-    "keys": 7891906,
+    "keys": 7891920,
     "domain_filter_bin": {
       "bytes": 17760342,
-      "sha256": "3476b9f5aca5a7a8654fce3f1e03d5ad3afdab53683aedc27ddb74b55db255cc"
+      "sha256": "516801765cf30498d648d5b49590bb276386a4fd83ded37eb1528f6e631ab406"
     },
     "registered": [
       {
         "domain": "情報技術",
-        "keys": 92384
+        "keys": 92374
       },
       {
         "domain": "その他の理工",
-        "keys": 617768
+        "keys": 617776
       },
       {
         "domain": "文化",
-        "keys": 2667887
+        "keys": 2667895
       },
       {
         "domain": "地理",
-        "keys": 3315526
+        "keys": 3315534
       },
       {
         "domain": "社会",
-        "keys": 1031786
+        "keys": 1031794
       },
       {
         "domain": "行政",
@@ -519,19 +519,19 @@
       },
       {
         "domain": "一般",
-        "keys": 98487
+        "keys": 98479
       }
     ]
   },
-  "compound_keys": 11183905,
+  "compound_keys": 11189197,
   "artifact_bytes": {
     "freq_filter_bin": {
-      "bytes": 25165910,
-      "sha256": "d2b695656061fc245ce0d867189f3e94a8afde6db20f6deb31c11c729eced1c5"
+      "bytes": 25231446,
+      "sha256": "553cec18036f75665111a72e357a920986021f9410c962bf4b3ac26d11033aba"
     },
     "component_freq_fst": {
-      "bytes": 5855317,
-      "sha256": "eb9122ed13cf7cb3171b782b51782113f94cc1c1d320e178ac46f5eee18d1f69"
+      "bytes": 5856744,
+      "sha256": "e766eecb3c84c9ec6c4611539925b8da52646c2205c4bea1653dff8fd7e133d7"
     }
   },
   "buckets": [
