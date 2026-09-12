@@ -5,6 +5,11 @@
 //! 足し、その和をバケットに丸める。バケット 7 の見出しは解析辞書と記事名の
 //! 2 つの TSV から読み、回数のバケットに重ねる。
 //!
+//! 部品の頻度表には、部品の出現数と、前後に付く相手の種類数 [`partners`] を
+//! 載せる。種類数はフィルタに入れる複合語を割って数え、値の 5 つの欄への
+//! 符号化は `aku_freq` が持つ。見出しには分割単位 A の部品のほかに、分割単位 C
+//! で 1 語になり A で 2 形態素以上に割れる語も載せる。
+//!
 //! 語と分野の組の回数がある入力では、分野のフィルタ [`domain_filter`] も書く。
 //! 登録の条件は頻度のフィルタと別であり、`--domain-min-count` と
 //! `--general-threshold` が決める。
@@ -14,13 +19,17 @@
 //! 組んだ、混同行列を出すための成果物である。どちらで組んだかは manifest の
 //! ファイル名と項目に残る。
 
+pub(crate) mod partners;
+
 use std::collections::{BTreeMap, HashMap};
 use std::path::{Path, PathBuf};
 
-use aku_freq::{Bucket, ConstituentFrequencies, FrequencyFilter};
+use aku_freq::{Bucket, ConstituentEntry, ConstituentFrequencies, FrequencyFilter};
 use aku_morph::DICTIONARY_VERSION;
 use anyhow::{Context, Result, bail};
 use serde::Serialize;
+
+use self::partners::Partners;
 
 use crate::compound::UnknownMorphemes;
 use crate::count::corpus::{CORPUS_STATS_FILE, CorpusSourceStats, CorpusStats};
@@ -164,6 +173,9 @@ struct Manifest {
     domain: Option<DomainSection>,
     /// フィルタに登録したキーの数。回数から作ったキーと見出しのキーの和である。
     compound_keys: u32,
+    /// 部品の頻度表の値の形式のバージョン。読む側はこの欄で、出現数だけを
+    /// 持つ旧形式(0)と、相手の種類数も持つ形式(1)を見分ける。
+    component_freq_format_version: u64,
     /// 成果物のバイト数。
     artifact_bytes: ArtifactBytesSection,
     /// バケットの境界。
@@ -538,6 +550,7 @@ fn build_manifest(
         },
         domain,
         compound_keys: written.compound_keys,
+        component_freq_format_version: constituent_format_version(),
         artifact_bytes: ArtifactBytesSection {
             freq_filter_bin: FileDigest {
                 bytes: written.filter_bytes,
@@ -640,8 +653,16 @@ struct Written {
 }
 
 /// フィルタと部品の頻度表を組み、`out_dir` へ書く。
+///
+/// 部品の相手の種類数は、回数から入れる複合語のキーだけから数える。見出しと
+/// 記事名のキーは数えないので、見出しを重ねる前の表を読む。
 fn write_artifacts(inputs: &Inputs, out_dir: &Path) -> Result<Written> {
-    let entries = bucket_table(inputs)?;
+    let mut table = counted_buckets(inputs)?;
+    let compounds: Vec<&str> = table.keys().map(String::as_str).collect();
+    let partners = partners::count(&compounds).context("部品の相手の種類数を数えられない")?;
+    drop(compounds);
+    overlay_headwords(inputs, &mut table)?;
+    let entries: Vec<(String, Bucket)> = table.into_iter().collect();
     let filter =
         FrequencyFilter::build(&entries, DICTIONARY_VERSION).context("フィルタを組めない")?;
     let filter_bytes = filter.to_bytes();
@@ -650,7 +671,7 @@ fn write_artifacts(inputs: &Inputs, out_dir: &Path) -> Result<Written> {
     std::fs::write(&filter_path, &filter_bytes)
         .with_context(|| format!("{} を書けない", filter_path.display()))?;
 
-    let components = component_frequencies(inputs)?;
+    let components = component_frequencies(inputs, &partners)?;
     let constituent_bytes =
         ConstituentFrequencies::build(&components).context("部品の頻度表を組めない")?;
     let constituent_sha256 = crate::checksum::sha256_hex(&constituent_bytes);
@@ -799,11 +820,9 @@ fn optional_counts(dir: Option<&Path>, file: &str) -> Result<HashMap<String, u64
     Ok(tsv::read(&dir.join(file))?.into_iter().collect())
 }
 
-/// フィルタに登録するキーとバケットの表。3 つの入力の回数を重み付きで足してから
-/// バケットに丸め、そこへ見出しのバケットを重ねる。同じキーには大きい方のバケットを
-/// 残す。両方を登録しても照合は最大のバケットを返すが、1 つにまとめてキーの数を
-/// 増やさない。
-fn bucket_table(inputs: &Inputs) -> Result<Vec<(String, Bucket)>> {
+/// 回数から作るキーとバケットの表。3 つの入力の回数を重み付きで足してから
+/// バケットに丸める。見出しのバケットは [`overlay_headwords`] が重ねる。
+fn counted_buckets(inputs: &Inputs) -> Result<BTreeMap<String, Bucket>> {
     let counts_dir = inputs.counts_dir.as_path();
     let mut documents = optional_counts(inputs.docs_counts_dir.as_deref(), COMPOUND_COUNTS_FILE)?;
     let mut corpus = optional_counts(inputs.corpus_counts_dir.as_deref(), COMPOUND_COUNTS_FILE)?;
@@ -841,6 +860,13 @@ fn bucket_table(inputs: &Inputs) -> Result<Vec<(String, Bucket)>> {
         };
         insert(&mut table, key, counted);
     }
+    Ok(table)
+}
+
+/// 回数から作った `table` へ、見出しのバケットを重ねる。同じキーには大きい方の
+/// バケットを残す。両方を登録しても照合は最大のバケットを返すが、1 つにまとめて
+/// キーの数を増やさない。
+fn overlay_headwords(inputs: &Inputs, table: &mut BTreeMap<String, Bucket>) -> Result<()> {
     for path in headword_files(inputs) {
         for (key, value) in tsv::read(&path)? {
             let bucket = u8::try_from(value)
@@ -858,7 +884,7 @@ fn bucket_table(inputs: &Inputs) -> Result<Vec<(String, Bucket)>> {
                 .or_insert(bucket);
         }
     }
-    Ok(table.into_iter().collect())
+    Ok(())
 }
 
 /// バケット 7 の見出しを読む TSV。解析辞書の見出しは必ず読み、記事名は
@@ -869,8 +895,17 @@ fn headword_files(inputs: &Inputs) -> Vec<PathBuf> {
     paths
 }
 
-/// 部品の頻度表に入れる、部品ごとの重み付きの頻度。
-fn component_frequencies(inputs: &Inputs) -> Result<Vec<(String, u64)>> {
+/// 部品の頻度表に入れる値。部品ごとの重み付きの頻度に、`partners` の相手の
+/// 種類数を添える。種類数はあっても頻度が下限に満たない部品は載せない。
+///
+/// 分割単位 C の語([`Partners::long_units`])は、部品の回数の TSV に無ければ
+/// 出現数 0 で、あればその値で載せる。下限はこの語には当てない。載せる目的が
+/// 相手の種類数であり、出現数は A の部品の数え方をそのまま写した参考の値で
+/// あるためである。
+fn component_frequencies(
+    inputs: &Inputs,
+    partners: &Partners,
+) -> Result<Vec<(String, ConstituentEntry)>> {
     let mut documents = optional_counts(inputs.docs_counts_dir.as_deref(), COMPONENT_COUNTS_FILE)?;
     let mut corpus = optional_counts(inputs.corpus_counts_dir.as_deref(), COMPONENT_COUNTS_FILE)?;
     let mut rows: Vec<(String, u64)> = tsv::read(&inputs.counts_dir.join(COMPONENT_COUNTS_FILE))?
@@ -901,8 +936,44 @@ fn component_frequencies(inputs: &Inputs) -> Result<Vec<(String, u64)>> {
         };
         (key, weighted_count(counted, inputs.weights))
     }));
+    let long_unit_frequencies: HashMap<String, u64> = rows
+        .iter()
+        .filter(|(key, _)| partners.long_units.contains(key))
+        .map(|(key, frequency)| (key.clone(), *frequency))
+        .collect();
     rows.retain(|(_, frequency)| *frequency >= inputs.pruning.min_component_count);
-    Ok(rows)
+    let mut entries: Vec<(String, ConstituentEntry)> = rows
+        .into_iter()
+        .map(|(key, frequency)| {
+            let entry = ConstituentEntry {
+                frequency,
+                partners: partners.counts.get(&key).copied().unwrap_or_default(),
+            };
+            (key, entry)
+        })
+        .collect();
+    for word in &partners.long_units {
+        let frequency = long_unit_frequencies.get(word).copied().unwrap_or(0);
+        if frequency >= inputs.pruning.min_component_count {
+            // 部品としても載る語は、上で載せている。
+            continue;
+        }
+        entries.push((
+            word.clone(),
+            ConstituentEntry {
+                frequency,
+                partners: partners.counts.get(word).copied().unwrap_or_default(),
+            },
+        ));
+    }
+    Ok(entries)
+}
+
+/// 部品の頻度表の値の形式のバージョン。`aku_freq` が符号化した値の上位 3 bit が
+/// 持つ値であり、manifest に写す。定数を写さずに符号化した値から読むのは、依存を
+/// 上げたときに manifest だけが古いバージョンを指さないためである。
+fn constituent_format_version() -> u64 {
+    ConstituentEntry::default().encode() >> 61
 }
 
 /// `count` 回現れた複合語のバケット。`min_count` に満たなければ `None` を返す。
@@ -934,6 +1005,10 @@ fn bucket_ranges() -> Vec<BucketRange> {
 
 #[cfg(test)]
 mod tests {
+    use std::collections::HashSet;
+
+    use aku_freq::PartnerCounts;
+
     use super::*;
 
     /// 既定の重み。
@@ -1053,8 +1128,9 @@ mod tests {
             version: "test-version".to_owned(),
         };
 
-        let table: BTreeMap<String, u8> = bucket_table(&inputs)
-            .unwrap()
+        let mut table = counted_buckets(&inputs).unwrap();
+        overlay_headwords(&inputs, &mut table).unwrap();
+        let table: BTreeMap<String, u8> = table
             .into_iter()
             .map(|(key, bucket)| (key, bucket.get()))
             .collect();
@@ -1157,15 +1233,118 @@ mod tests {
             artifact: Artifact::Release,
             version: "test-version".to_owned(),
         };
-        let all: Vec<(String, u64)> = component_frequencies(&inputs).unwrap();
+        let partners = Partners {
+            counts: [
+                (
+                    "暗号".to_owned(),
+                    PartnerCounts {
+                        prefix_kango: 2,
+                        ..PartnerCounts::default()
+                    },
+                ),
+                (
+                    "公開".to_owned(),
+                    PartnerCounts {
+                        suffix_kango: 1,
+                        ..PartnerCounts::default()
+                    },
+                ),
+            ]
+            .into_iter()
+            .collect(),
+            long_units: HashSet::new(),
+        };
+        let all = component_frequencies(&inputs, &partners).unwrap();
         assert_eq!(all.len(), 2);
-        // 下限を 3 にすると、2 回の部品が落ちる。
+        // 下限を 3 にすると、相手の種類数があっても 2 回の部品が落ちる。
         inputs.pruning.min_component_count = 3;
         assert_eq!(
-            component_frequencies(&inputs).unwrap(),
-            vec![("暗号".to_owned(), 3_u64)]
+            component_frequencies(&inputs, &partners).unwrap(),
+            vec![(
+                "暗号".to_owned(),
+                ConstituentEntry {
+                    frequency: 3,
+                    partners: partners.counts["暗号"],
+                }
+            )]
         );
         std::fs::remove_dir_all(&dir).unwrap();
+    }
+
+    #[test]
+    fn 長単位の語は回数が無くても頻度表に載る() {
+        let dir = std::env::temp_dir().join("corpus-tool-long-unit-test");
+        let counts_dir = dir.join("counts");
+        write_counts(
+            &counts_dir,
+            COMPONENT_COUNTS_FILE,
+            &[("集団", 5), ("敵対的", 2)],
+        );
+        let inputs = Inputs {
+            counts_dir,
+            docs_counts_dir: None,
+            corpus_counts_dir: None,
+            titles_dir: None,
+            weights: ONES,
+            pruning: Pruning {
+                min_component_count: 3,
+                ..KEEP_ALL
+            },
+            domain: DOMAIN,
+            artifact: Artifact::Release,
+            version: "test-version".to_owned(),
+        };
+        let suffix_foreign = PartnerCounts {
+            suffix_foreign: 1,
+            ..PartnerCounts::default()
+        };
+        let partners = Partners {
+            counts: [
+                ("集団".to_owned(), suffix_foreign),
+                ("母集団".to_owned(), suffix_foreign),
+                ("敵対的".to_owned(), suffix_foreign),
+            ]
+            .into_iter()
+            .collect(),
+            long_units: HashSet::from(["母集団".to_owned(), "敵対的".to_owned()]),
+        };
+        let mut entries = component_frequencies(&inputs, &partners).unwrap();
+        entries.sort_unstable_by(|left, right| left.0.cmp(&right.0));
+        // 母集団 は回数の TSV に無いので出現数 0 で載り、敵対的 は下限に満たない
+        // 2 回でもその値で載る。集団 は部品として下限を超えて載る。
+        assert_eq!(
+            entries,
+            vec![
+                (
+                    "敵対的".to_owned(),
+                    ConstituentEntry {
+                        frequency: 2,
+                        partners: suffix_foreign,
+                    }
+                ),
+                (
+                    "母集団".to_owned(),
+                    ConstituentEntry {
+                        frequency: 0,
+                        partners: suffix_foreign,
+                    }
+                ),
+                (
+                    "集団".to_owned(),
+                    ConstituentEntry {
+                        frequency: 5,
+                        partners: suffix_foreign,
+                    }
+                ),
+            ]
+        );
+        std::fs::remove_dir_all(&dir).unwrap();
+    }
+
+    #[test]
+    fn 部品の頻度表の形式のバージョンは1である() {
+        // manifest に写す値であり、`artifacts.md` の値の形式の節と一致する。
+        assert_eq!(constituent_format_version(), 1);
     }
 
     #[test]

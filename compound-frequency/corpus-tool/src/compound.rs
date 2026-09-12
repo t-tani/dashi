@@ -3,10 +3,24 @@
 //! 切り出しは分割単位 A の形態素列に対して行う。akunuki が検査でキーを作るのと
 //! 同じ解析([`analyze_short`])で割らなければ、数えたキーは検査する側の候補と
 //! 当たらない。
+//!
+//! 区間は原文で隣り合う形態素だけからなるが、1 つだけ例外がある。漢字を含む
+//! 名詞とラテン文字だけの名詞が対をなす箇所は、間に空白 1 つ(U+0020)を
+//! 挟んでも区間を切らない。akunuki の `unknown-compound` が「読み取り専用 API」
+//! の形をこの規則で連ね、空白を除いたキーでフィルタを引くので、数える側が同じ
+//! 規則で数えなければそのキーはフィルタに載らない。対の判定は akunuki の
+//! [`bridges_kanji_latin_pair`] をそのまま呼び、ここには写しを持たない。
+//!
+//! ラテン文字だけの名詞を含む区間は、全体と隣り合う対に加えて、ラテン文字の
+//! 形態素で区切った日本語だけの部分区間も、それぞれ独立の区間として数える。
+//! 検査する側がラテン文字で区切った漢語の部分列を別に判定するので、数える側も
+//! 同じキーを持たなければ当たらない。
 
 use std::collections::HashMap;
+use std::sync::LazyLock;
 
-use aku_morph::{MorphError, Morpheme, PartOfSpeech, analyze_short};
+use aku_morph::{MorphError, Morpheme, PartOfSpeech, analyze_short, bridges_kanji_latin_pair};
+use regex::Regex;
 
 /// 解析器へ 1 回に渡す最大バイト数。解析器自身の上限より十分小さく取り、句点と
 /// 改行で切った文がこの長さを超えた場合だけ、読点と固定長でさらに切る。
@@ -15,6 +29,13 @@ const MAX_ANALYSIS_BYTES: usize = 8192;
 /// 全体を 1 つの複合語として数える区間の、最大の形態素数。これより長い区間は
 /// 隣り合う 2 形態素の対だけを数える。
 const MAX_SPAN_MORPHEMES: usize = 5;
+
+/// ラテン文字だけからなる表層形。akunuki の `unknown-compound` が、漢語の
+/// 部分列を区切るラテン文字の名詞を見る条件と同じパターンである。
+static LATIN_SURFACE: LazyLock<Regex> = LazyLock::new(|| {
+    #[allow(clippy::expect_used)]
+    Regex::new(r"^[A-Za-z]+$").expect("固定パターンのコンパイルに失敗しない")
+});
 
 /// 解析辞書に無いカタカナと英字の 1 形態素を、複合語のキーとして数えるか。
 ///
@@ -73,7 +94,7 @@ impl Counts {
     pub fn add_text(&mut self, text: &str) -> Result<(), MorphError> {
         for chunk in analysis_chunks(text) {
             let morphemes = analyze_short(chunk)?;
-            self.add_morphemes(&morphemes);
+            self.add_morphemes(chunk, &morphemes);
         }
         Ok(())
     }
@@ -110,8 +131,12 @@ impl Counts {
     ///
     /// 区間は、複合語を成さない品詞に当たったところと、形態素が原文で隣り合わなく
     /// なったところで切れる。解析は空白を形態素にしないので、空白での切れ目は
-    /// 形態素のバイト範囲が続くかどうかに現れる。
-    fn add_morphemes(&mut self, morphemes: &[Morpheme<'_>]) {
+    /// 形態素のバイト範囲が続くかどうかに現れる。ただし、漢字を含む名詞と
+    /// ラテン文字名詞の対([`bridges_kanji_latin_pair`])だけは、間の空白
+    /// 1 つを跨いでも区間を続ける。区間のキーは表層形と正規化形を連ねた文字列
+    /// なので、跨いだ空白はキーに残らない。`text` は `morphemes` を解析した
+    /// 原文で、跨ぐ空白を確かめるのに使う。
+    fn add_morphemes(&mut self, text: &str, morphemes: &[Morpheme<'_>]) {
         let mut start: Option<usize> = None;
         for (index, morpheme) in morphemes.iter().enumerate() {
             if !is_compound_part(&morpheme.part_of_speech) {
@@ -120,7 +145,11 @@ impl Counts {
                 }
                 continue;
             }
-            let joins = start.is_some() && morphemes[index - 1].range.end == morpheme.range.start;
+            let joins = start.is_some() && {
+                let previous = &morphemes[index - 1];
+                previous.range.end == morpheme.range.start
+                    || bridges_kanji_latin_pair(text, previous, morpheme)
+            };
             if !joins {
                 if let Some(begin) = start.take() {
                     self.add_span(&morphemes[begin..index]);
@@ -135,39 +164,69 @@ impl Counts {
 
     /// 1 つの区間を数える。2 形態素に満たない区間は複合語にならないので数えない。
     /// ただし [`UnknownMorphemes::Count`] では、未知語 1 形態素をキーにする。
+    ///
+    /// 区間にラテン文字だけの名詞([`is_latin_only_noun`])があれば、その形態素で
+    /// 区切った各部分区間も、独立の区間として同じ規則で数える。
+    /// 「Django認証バックエンド」は全体と対のほかに、部分区間「認証バックエンド」
+    /// のキーを持つ。同じキーが全体の対と部分区間の両方から出ても、1 つの区間の
+    /// 出現は 1 回なので、1 回だけ数える。部品は区間全体の形態素で数える。
     fn add_span(&mut self, span: &[Morpheme<'_>]) {
+        let mut keys: Vec<String> = Vec::new();
+        self.push_span_keys(&mut keys, span);
+        if span.iter().any(is_latin_only_noun) {
+            for part in span.split(is_latin_only_noun) {
+                self.push_span_keys(&mut keys, part);
+            }
+        }
+        keys.sort_unstable();
+        keys.dedup();
+        for key in &keys {
+            increment(&mut self.compounds, key);
+        }
+        if span.len() >= 2 {
+            for morpheme in span {
+                increment(&mut self.components, morpheme.surface);
+            }
+        }
+    }
+
+    /// 1 つの区間から作るキーを `keys` に足す。区間全体(最大
+    /// [`MAX_SPAN_MORPHEMES`] 形態素)と、3 形態素以上なら隣り合う対である。
+    fn push_span_keys(&self, keys: &mut Vec<String>, span: &[Morpheme<'_>]) {
         if span.len() < 2 {
             if self.unknown == UnknownMorphemes::Count
                 && let [morpheme] = span
                 && is_unknown_run(morpheme)
             {
-                self.add_compound(span);
+                push_compound(keys, span);
             }
             return;
         }
         if span.len() <= MAX_SPAN_MORPHEMES {
-            self.add_compound(span);
+            push_compound(keys, span);
         }
         if span.len() >= 3 {
             for pair in span.windows(2) {
-                self.add_compound(pair);
+                push_compound(keys, pair);
             }
         }
-        for morpheme in span {
-            increment(&mut self.components, morpheme.surface);
-        }
     }
+}
 
-    /// 区間の 2 種類のキーを数える。表層形のキーと正規化形のキーが同じなら 1 つに
-    /// まとめ、違えばどちらも同じ回数で数える。
-    fn add_compound(&mut self, span: &[Morpheme<'_>]) {
-        let surface: String = span.iter().map(|morpheme| morpheme.surface).collect();
-        let normalized: String = span.iter().map(Morpheme::normalized_form).collect();
-        increment(&mut self.compounds, &surface);
-        if normalized != surface {
-            increment(&mut self.compounds, &normalized);
-        }
+/// 区間の 2 種類のキーを `keys` に足す。表層形のキーと正規化形のキーが同じなら
+/// 1 つにまとめ、違えばどちらも足す。
+fn push_compound(keys: &mut Vec<String>, span: &[Morpheme<'_>]) {
+    let surface: String = span.iter().map(|morpheme| morpheme.surface).collect();
+    let normalized: String = span.iter().map(Morpheme::normalized_form).collect();
+    if normalized != surface {
+        keys.push(normalized);
     }
+    keys.push(surface);
+}
+
+/// ラテン文字だけからなる名詞か。「Django」「API」がこれにあたる。
+fn is_latin_only_noun(morpheme: &Morpheme<'_>) -> bool {
+    morpheme.part_of_speech.category() == "名詞" && LATIN_SURFACE.is_match(morpheme.surface)
 }
 
 /// `key` の回数を 1 増やす。既にあるキーでは文字列を確保しない。
@@ -281,6 +340,11 @@ mod tests {
         keys
     }
 
+    /// `text` を数えたキーに `key` があるか。
+    fn has_key(text: &str, key: &str) -> bool {
+        compounds(text).iter().any(|(found, _)| found == key)
+    }
+
     /// `documents` を 1 つずつ文書単位で数え、足し込んだ回数を返す。
     fn document_counts(documents: &[&str]) -> Counts {
         let mut totals = Counts::default();
@@ -332,6 +396,66 @@ mod tests {
     fn 空白をまたぐ区間は続かない() {
         // 解析は空白を形態素にしないので、切れ目は形態素のバイト範囲に現れる。
         assert!(compounds("認証 基盤。").is_empty());
+    }
+
+    #[test]
+    fn 漢字を含む名詞とラテン文字名詞の対は空白1つを跨ぐ() {
+        // 「読み取り」「専用」は漢字を含む名詞、「API」はラテン文字だけの名詞
+        // なので、間の空白 1 つを跨いで 1 つの区間になる。キーは表層形を連ねる
+        // ので、空白は残らない。
+        assert!(has_key("読み取り専用 API を呼ぶ。", "読み取り専用API"));
+        // 送りがなの無い漢語でも跨ぐ。「演算子」は「演算」と「子」に割れる。
+        assert!(has_key("AND 演算子を使う。", "AND演算子"));
+        // 対の並びは逆でもよい。
+        assert!(has_key("API 呼び出しを数える。", "API呼び出し"));
+    }
+
+    #[test]
+    fn ラテン文字で区切った部分区間も数える() {
+        // 全体と隣り合う対のほかに、ラテン文字の Django で区切った日本語だけの
+        // 部分区間 認証バックエンド もキーになる。
+        let keys = compounds("Django 認証バックエンドを使う。");
+        for key in ["Django認証バックエンド", "認証バックエンド", "Django認証"] {
+            assert!(
+                keys.iter().any(|(found, _)| found == key),
+                "{key}: {keys:?}"
+            );
+        }
+        // 空白なしで隣接した型にも同じ規則を当てる。
+        let adjacent = compounds("Django認証バックエンドを使う。");
+        assert_eq!(adjacent, keys);
+        // 部分区間のキーが全体の対と重なっても、1 つの区間では 1 回である。
+        assert!(
+            keys.contains(&("認証バックエンド".to_owned(), 1)),
+            "{keys:?}"
+        );
+        // ラテン文字を含まない区間は、これまでどおり全体と対だけである。
+        assert_eq!(
+            compounds("公開鍵暗号を使う。"),
+            vec![
+                ("公開鍵".to_owned(), 1),
+                ("公開鍵暗号".to_owned(), 1),
+                ("鍵暗号".to_owned(), 1),
+            ]
+        );
+    }
+
+    #[test]
+    fn 対の型でない箇所は空白で切れたままである() {
+        // 漢語どうしは対の型でないので、空白での切れ目が残る。
+        assert!(compounds("侵害 成功。").is_empty());
+        // カタカナの名詞は空白を跨がない。空白なしなら今までどおり続く。
+        assert!(!has_key("Azure サブドメインを作る。", "Azureサブドメイン"));
+        assert!(has_key("Azureサブドメインを作る。", "Azureサブドメイン"));
+        // 跨ぐのは半角空白 1 つだけで、全角空白と 2 つ以上の空白は跨がない。
+        assert!(!has_key(
+            "読み取り専用\u{3000}API を呼ぶ。",
+            "読み取り専用API"
+        ));
+        assert!(!has_key("読み取り専用  API を呼ぶ。", "読み取り専用API"));
+        // 「済み」は「gzip 済み」のように接辞として続く形が正当なので、対の
+        // 一方にならない。
+        assert!(!has_key("gzip 済みの辞書。", "gzip済み"));
     }
 
     #[test]

@@ -779,7 +779,7 @@ fn ratio(numerator: u64, denominator: u64) -> String {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use aku_freq::Bucket;
+    use aku_freq::{Bucket, ConstituentEntry};
 
     /// 構成の分析を使わない検査のための閾値。
     const UNUSED_THRESHOLDS: Thresholds = Thresholds { upper: 0, lower: 0 };
@@ -812,7 +812,20 @@ mod tests {
             .map(|(key, bucket)| (*key, Bucket::new(*bucket).unwrap()))
             .collect();
         let filter = FrequencyFilter::build(&entries, DICTIONARY_VERSION).unwrap();
-        let bytes = ConstituentFrequencies::build(constituents).unwrap();
+        // 判定は出現数だけを読むので、相手の種類数は空にする。
+        let constituents: Vec<(&str, ConstituentEntry)> = constituents
+            .iter()
+            .map(|(part, frequency)| {
+                (
+                    *part,
+                    ConstituentEntry {
+                        frequency: *frequency,
+                        ..ConstituentEntry::default()
+                    },
+                )
+            })
+            .collect();
+        let bytes = ConstituentFrequencies::build(&constituents).unwrap();
         Judge::new(
             filter,
             ConstituentFrequencies::read(bytes).unwrap(),
@@ -842,7 +855,7 @@ mod tests {
             .iter()
             .map(|(domain, word)| (crate::domain::key(*domain, word), registered))
             .collect();
-        let no_constituents: [(&str, u64); 0] = [];
+        let no_constituents: [(&str, ConstituentEntry); 0] = [];
         let bytes = ConstituentFrequencies::build(&no_constituents).unwrap();
         Judge::new(
             FrequencyFilter::build(&words, DICTIONARY_VERSION).unwrap(),

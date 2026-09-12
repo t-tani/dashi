@@ -1,6 +1,6 @@
 {
   "artifact": "release",
-  "version": "dashi-2026.09.3",
+  "version": "dashi-2026.09.4",
   "inputs": {
     "wikipedia": {
       "counts_dir": "../counts",
@@ -417,7 +417,7 @@
     ]
   },
   "akunuki": {
-    "rev": "7187b392d507f60756d018930d70e67a3edcf055",
+    "rev": "d18b46c61c82f644a74a651668d0ceccfc20ca61",
     "dictionary_version": "sudachi-dictionary-20260723"
   },
   "dictionary": {
@@ -483,55 +483,56 @@
     ],
     "min_count": 5,
     "general_threshold": 5,
-    "keys": 7891920,
+    "keys": 8087384,
     "domain_filter_bin": {
-      "bytes": 17760342,
-      "sha256": "9f02108dd8fe9b69a81deeb4da31c2887e3114c6a87d6b17bc121e9bb42520e7"
+      "bytes": 18219094,
+      "sha256": "912a7e1eff66b534bf46b6a88639c4cc0b9838ea8371648dd46381b3851abdbd"
     },
     "registered": [
       {
         "domain": "情報技術",
-        "keys": 92374
+        "keys": 95275
       },
       {
         "domain": "その他の理工",
-        "keys": 617776
+        "keys": 631506
       },
       {
         "domain": "文化",
-        "keys": 2667895
+        "keys": 2754423
       },
       {
         "domain": "地理",
-        "keys": 3315534
+        "keys": 3392231
       },
       {
         "domain": "社会",
-        "keys": 1031794
+        "keys": 1046977
       },
       {
         "domain": "行政",
-        "keys": 12571
+        "keys": 12604
       },
       {
         "domain": "法令",
-        "keys": 55497
+        "keys": 55489
       },
       {
         "domain": "一般",
-        "keys": 98479
+        "keys": 98879
       }
     ]
   },
-  "compound_keys": 11189197,
+  "compound_keys": 11538100,
+  "component_freq_format_version": 1,
   "artifact_bytes": {
     "freq_filter_bin": {
-      "bytes": 25231446,
-      "sha256": "983e80372ddb13ccf8cb9a0fc3137c5e7404c21203ab261e06c55018aa5bb209"
+      "bytes": 26017878,
+      "sha256": "880efe70a36defb09e5655f32a3801b3a798a1a6b1806866f91c9de5befc9967"
     },
     "component_freq_fst": {
-      "bytes": 5856744,
-      "sha256": "e766eecb3c84c9ec6c4611539925b8da52646c2205c4bea1653dff8fd7e133d7"
+      "bytes": 10070883,
+      "sha256": "70f0ae581ec641f0ad2f0c2f0198ba2ffe769cd4bf0b651a329356ac153bbddd"
     }
   },
   "buckets": [
