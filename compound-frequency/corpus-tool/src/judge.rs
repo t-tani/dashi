@@ -22,7 +22,7 @@ use std::fs::File;
 use std::io::{BufRead, BufReader};
 use std::path::Path;
 
-use aku_freq::{ConstituentFrequencies, FrequencyFilter};
+use aku_freq::{AlignedBytes, ConstituentFrequencies, FrequencyFilter};
 use aku_morph::{DICTIONARY_VERSION, MorphError, Morpheme, analyze_short};
 use anyhow::{Context, Result, bail};
 
@@ -231,7 +231,7 @@ impl fmt::Display for Judgment {
 /// 成果物を引いて語を判定する。
 pub struct Judge {
     /// 複合語のキーとバケットのフィルタ。
-    filter: FrequencyFilter,
+    filter: FrequencyFilter<'static>,
     /// 複合語の部品ごとの頻度表。
     constituents: ConstituentFrequencies,
     /// 構成の分析が引く、分割の単位の回数。
@@ -246,7 +246,7 @@ impl Judge {
     /// 成果物と切り替えから判定器を作る。
     #[must_use]
     pub fn new(
-        filter: FrequencyFilter,
+        filter: FrequencyFilter<'static>,
         constituents: ConstituentFrequencies,
         units: UnitFrequencies,
         domains: Option<DomainFilter>,
@@ -270,7 +270,11 @@ impl Judge {
         let filter_path = artifacts_dir.join(FILTER_FILE);
         let filter_bytes = std::fs::read(&filter_path)
             .with_context(|| format!("{} を読めない", filter_path.display()))?;
-        let filter = FrequencyFilter::from_bytes(&filter_bytes, DICTIONARY_VERSION)
+        // `from_bytes` はフィンガープリントの配列をバイト列から借りるので、2 バイト
+        // 境界に揃えた写しを作り、プロセスが終わるまで生かす。フィルタは 1 つを読んで
+        // 使い回すため、解放する持ち主を置かない。
+        let aligned = AlignedBytes::new(&filter_bytes).leak();
+        let filter = FrequencyFilter::from_bytes(aligned, DICTIONARY_VERSION)
             .with_context(|| format!("{} を読めない", filter_path.display()))?;
         let constituent_path = artifacts_dir.join(CONSTITUENT_FILE);
         let constituent_bytes = std::fs::read(&constituent_path)

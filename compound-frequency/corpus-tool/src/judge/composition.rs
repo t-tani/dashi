@@ -127,7 +127,7 @@ pub fn score(
     morphemes: &[Morpheme<'_>],
     units: &UnitFrequencies,
     constituents: &ConstituentFrequencies,
-    filter: &FrequencyFilter,
+    filter: &FrequencyFilter<'_>,
 ) -> Score {
     let mut best = 0;
     let mut unknown_unit = false;
@@ -154,7 +154,7 @@ fn unit_frequency(
     unit: &[Morpheme<'_>],
     units: &UnitFrequencies,
     constituents: &ConstituentFrequencies,
-    filter: &FrequencyFilter,
+    filter: &FrequencyFilter<'_>,
 ) -> UnitFrequency {
     if let [morpheme] = unit {
         return UnitFrequency::Known(constituents.frequency(morpheme.surface).unwrap_or(0));

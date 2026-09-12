@@ -2,7 +2,7 @@
 
 use std::path::Path;
 
-use aku_freq::{ConstituentFrequencies, FrequencyFilter};
+use aku_freq::{AlignedBytes, ConstituentFrequencies, FrequencyFilter};
 use aku_morph::{DICTIONARY_VERSION, Morpheme, analyze_short};
 use anyhow::{Context, Result};
 
@@ -23,7 +23,10 @@ pub fn run(artifacts_dir: &Path, words: &[String]) -> Result<()> {
     let filter_path = artifacts_dir.join(FILTER_FILE);
     let filter_bytes = std::fs::read(&filter_path)
         .with_context(|| format!("{} を読めない", filter_path.display()))?;
-    let filter = FrequencyFilter::from_bytes(&filter_bytes, DICTIONARY_VERSION)
+    // `from_bytes` はフィンガープリントの配列をバイト列から借りるので、2 バイト境界に
+    // 揃えた写しを通して渡す。
+    let aligned = AlignedBytes::new(&filter_bytes);
+    let filter = FrequencyFilter::from_bytes(aligned.as_bytes(), DICTIONARY_VERSION)
         .with_context(|| format!("{} を読めない", filter_path.display()))?;
     let constituent_path = artifacts_dir.join(CONSTITUENT_FILE);
     let constituent_bytes = std::fs::read(&constituent_path)

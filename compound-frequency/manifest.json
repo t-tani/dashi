@@ -1,6 +1,6 @@
 {
   "artifact": "release",
-  "version": "dashi-2026.09.2",
+  "version": "dashi-2026.09.3",
   "inputs": {
     "wikipedia": {
       "counts_dir": "../counts",
@@ -417,7 +417,7 @@
     ]
   },
   "akunuki": {
-    "rev": "c5f14509d62d26c3d80b5359eda5444991fc36c2",
+    "rev": "7187b392d507f60756d018930d70e67a3edcf055",
     "dictionary_version": "sudachi-dictionary-20260723"
   },
   "dictionary": {
@@ -486,7 +486,7 @@
     "keys": 7891920,
     "domain_filter_bin": {
       "bytes": 17760342,
-      "sha256": "516801765cf30498d648d5b49590bb276386a4fd83ded37eb1528f6e631ab406"
+      "sha256": "9f02108dd8fe9b69a81deeb4da31c2887e3114c6a87d6b17bc121e9bb42520e7"
     },
     "registered": [
       {
@@ -527,7 +527,7 @@
   "artifact_bytes": {
     "freq_filter_bin": {
       "bytes": 25231446,
-      "sha256": "553cec18036f75665111a72e357a920986021f9410c962bf4b3ac26d11033aba"
+      "sha256": "983e80372ddb13ccf8cb9a0fc3137c5e7404c21203ab261e06c55018aa5bb209"
     },
     "component_freq_fst": {
       "bytes": 5856744,

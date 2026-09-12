@@ -123,11 +123,12 @@ for run in compound_runs(fragment):
 ```
 FilterFile {
     magic:                u8[8]    = "AKUFREQ\0"
-    format_version:       u16      = 2
+    format_version:       u16      = 3
     key_hash_seed:        u64      = 0x616b755f66726571   // "aku_freq" の ASCII
     key_count:            u32                             // 重複を除いた登録数
     crate_version:        str16                           // aku_freq の CARGO_PKG_VERSION
     dictionary_version:   str16                           // "sudachi-dictionary-20260723"
+    padding:              u8[(len(crate_version) + len(dictionary_version)) % 2] = 0
     seed:                 u64                             // ここから 4 つは BinaryFuse16 の descriptor
     segment_length:       u32                             // 2 のべき乗
     segment_length_mask:  u32                             // segment_length - 1
@@ -141,6 +142,8 @@ str16 {
     bytes:  u8[length]                                    // UTF-8
 }
 ```
+
+`padding` は `fingerprints` をファイルの先頭から偶数バイトの位置に置きます。2 つのバージョンの文字列の長さで位置がずれるので、その和が奇数なら 1 バイト、偶数なら 0 バイト置きます。位置が偶数なら、読む側は `u16` の並びである配列を写さずに借りられます。
 
 キーの登録と照合では、バケットを値として持たず、キーのハッシュにバケットごとの定数を XOR して畳み込みます。定数はバケットに奇数の乗数を掛けた値で、64 bit の全体に散ります。シードにバケットを畳み込む形にはしません。xxh3 は 8 バイト以下の入力ではシードを特定のバイトにしか掛けないため、短いキーの対が別のバケットで同じハッシュになるからです。
 

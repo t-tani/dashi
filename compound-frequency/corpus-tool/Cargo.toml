@@ -20,14 +20,14 @@ aho-corasick = "1.1.5"
 # 複合語の頻度のフィルタと部品の頻度表。構築と照合を akunuki と同じ実装で行わな
 # ければ、数えたキーは検査する側で当たらない。akunuki はまだ版のタグを切って
 # いないので、タグではなく commit で固定する。
-aku_freq = { git = "https://github.com/t-tani/akunuki.git", rev = "c5f14509d62d26c3d80b5359eda5444991fc36c2" }
+aku_freq = { git = "https://github.com/t-tani/akunuki.git", rev = "7187b392d507f60756d018930d70e67a3edcf055" }
 # Markdown の走査。コードブロックとフロントマターと HTML を外し、日本語の本文の
 # 断片だけを返す。平文化が akunuki と同じ走査を使えば、頻度を数える本文と、検査
 # する側が読む本文が揃う。
-aku_core = { git = "https://github.com/t-tani/akunuki.git", rev = "c5f14509d62d26c3d80b5359eda5444991fc36c2" }
+aku_core = { git = "https://github.com/t-tani/akunuki.git", rev = "7187b392d507f60756d018930d70e67a3edcf055" }
 # 分割単位 A の形態素解析。複合語のキーと部品は、akunuki が検査で使うのと同じ
 # 解析辞書と同じ正規化で割る。
-aku_morph = { git = "https://github.com/t-tani/akunuki.git", rev = "c5f14509d62d26c3d80b5359eda5444991fc36c2", features = [
+aku_morph = { git = "https://github.com/t-tani/akunuki.git", rev = "7187b392d507f60756d018930d70e67a3edcf055", features = [
     "morph",
 ] }
 anyhow = "1.0.100"

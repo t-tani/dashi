@@ -20,7 +20,7 @@ dependencies = [
 [[package]]
 name = "aku_core"
 version = "0.1.0"
-source = "git+https://github.com/t-tani/akunuki.git?rev=c5f14509d62d26c3d80b5359eda5444991fc36c2#c5f14509d62d26c3d80b5359eda5444991fc36c2"
+source = "git+https://github.com/t-tani/akunuki.git?rev=7187b392d507f60756d018930d70e67a3edcf055#7187b392d507f60756d018930d70e67a3edcf055"
 dependencies = [
  "pulldown-cmark",
  "regex",
@@ -34,7 +34,7 @@ dependencies = [
 [[package]]
 name = "aku_dict"
 version = "0.1.0"
-source = "git+https://github.com/t-tani/akunuki.git?rev=c5f14509d62d26c3d80b5359eda5444991fc36c2#c5f14509d62d26c3d80b5359eda5444991fc36c2"
+source = "git+https://github.com/t-tani/akunuki.git?rev=7187b392d507f60756d018930d70e67a3edcf055#7187b392d507f60756d018930d70e67a3edcf055"
 dependencies = [
  "aku_core",
  "fancy-regex 0.19.0",
@@ -46,7 +46,7 @@ dependencies = [
 [[package]]
 name = "aku_freq"
 version = "0.1.0"
-source = "git+https://github.com/t-tani/akunuki.git?rev=c5f14509d62d26c3d80b5359eda5444991fc36c2#c5f14509d62d26c3d80b5359eda5444991fc36c2"
+source = "git+https://github.com/t-tani/akunuki.git?rev=7187b392d507f60756d018930d70e67a3edcf055#7187b392d507f60756d018930d70e67a3edcf055"
 dependencies = [
  "fst",
  "thiserror 2.0.20",
@@ -57,12 +57,13 @@ dependencies = [
 [[package]]
 name = "aku_morph"
 version = "0.1.0"
-source = "git+https://github.com/t-tani/akunuki.git?rev=c5f14509d62d26c3d80b5359eda5444991fc36c2#c5f14509d62d26c3d80b5359eda5444991fc36c2"
+source = "git+https://github.com/t-tani/akunuki.git?rev=7187b392d507f60756d018930d70e67a3edcf055#7187b392d507f60756d018930d70e67a3edcf055"
 dependencies = [
  "aku_core",
  "aku_dict",
  "aku_freq",
  "aku_rules",
+ "aku_table",
  "memmap2",
  "pulldown-cmark",
  "regex",
@@ -78,7 +79,7 @@ dependencies = [
 [[package]]
 name = "aku_rules"
 version = "0.1.0"
-source = "git+https://github.com/t-tani/akunuki.git?rev=c5f14509d62d26c3d80b5359eda5444991fc36c2#c5f14509d62d26c3d80b5359eda5444991fc36c2"
+source = "git+https://github.com/t-tani/akunuki.git?rev=7187b392d507f60756d018930d70e67a3edcf055#7187b392d507f60756d018930d70e67a3edcf055"
 dependencies = [
  "aho-corasick",
  "aku_core",
@@ -86,6 +87,14 @@ dependencies = [
  "encoding_rs",
  "pulldown-cmark",
  "regex",
+]
+
+[[package]]
+name = "aku_table"
+version = "0.1.0"
+source = "git+https://github.com/t-tani/akunuki.git?rev=7187b392d507f60756d018930d70e67a3edcf055#7187b392d507f60756d018930d70e67a3edcf055"
+dependencies = [
+ "fst",
 ]
 
 [[package]]

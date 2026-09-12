@@ -17,7 +17,7 @@
 use std::collections::HashMap;
 use std::path::{Path, PathBuf};
 
-use aku_freq::{Bucket, FrequencyFilter};
+use aku_freq::{AlignedBytes, Bucket, FrequencyFilter};
 use anyhow::{Context, Result, bail};
 use serde::Serialize;
 
@@ -355,13 +355,13 @@ fn fold_general(domains: DomainSet, threshold: usize) -> DomainSet {
 
 /// 語が現れる分野の集合を引くフィルタ。
 pub struct DomainFilter {
-    filter: FrequencyFilter,
+    filter: FrequencyFilter<'static>,
 }
 
 impl DomainFilter {
     /// 読み込んだフィルタから作る。
     #[must_use]
-    pub fn new(filter: FrequencyFilter) -> Self {
+    pub fn new(filter: FrequencyFilter<'static>) -> Self {
         Self { filter }
     }
 
@@ -379,7 +379,11 @@ impl DomainFilter {
                 path.display()
             )
         })?;
-        let filter = FrequencyFilter::from_bytes(&bytes, dictionary_version)
+        // `from_bytes` はフィンガープリントの配列をバイト列から借りるので、2 バイト
+        // 境界に揃えた写しを作り、プロセスが終わるまで生かす。フィルタは 1 つを読んで
+        // 使い回すため、解放する持ち主を置かない。
+        let aligned = AlignedBytes::new(&bytes).leak();
+        let filter = FrequencyFilter::from_bytes(aligned, dictionary_version)
             .with_context(|| format!("{} を読めない", path.display()))?;
         Ok(Self::new(filter))
     }
