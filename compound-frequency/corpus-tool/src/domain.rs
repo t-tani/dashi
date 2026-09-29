@@ -41,9 +41,23 @@ pub const DOMAIN_COUNT: usize = 8;
 /// タブを含まない。
 const KEY_SEPARATOR: char = '\t';
 
-/// 情報技術の文書を出す機関。日本語コーパスのソース名の、最初の `-` までが
-/// この一覧にあれば情報技術とする。
-const TECHNOLOGY_AGENCIES: [&str; 5] = ["ipa", "jpccert", "jvn", "nco", "nicter"];
+/// 情報技術の文書を出す機関と企業とメディア。日本語コーパスのソース名の、最初の
+/// `-` までがこの一覧にあれば情報技術とする。`aws` と `gcp` と `gca` は翻訳された
+/// 製品文書、`publickey1jp` は技術ニュース、`gihyo` は技術雑誌、`internal` は
+/// 技術書のソースである。
+const TECHNOLOGY_AGENCIES: [&str; 11] = [
+    "ipa",
+    "jpccert",
+    "jvn",
+    "nco",
+    "nicter",
+    "aws",
+    "gcp",
+    "gca",
+    "publickey1jp",
+    "gihyo",
+    "internal",
+];
 
 /// 法令の文体。日本語コーパスの記録が文書ごとに持つ値である。
 const LAW_STYLE: &str = "法令文";
@@ -376,6 +390,23 @@ mod tests {
         );
         assert_eq!(
             Domain::from_corpus_source("nco-standards", &["指示文".to_owned()]),
+            Domain::InformationTechnology
+        );
+        // 翻訳された製品文書と技術ニュースも情報技術である。
+        assert_eq!(
+            Domain::from_corpus_source("aws-ja-docs", &["翻訳（AWS 日本語版）".to_owned()]),
+            Domain::InformationTechnology
+        );
+        assert_eq!(
+            Domain::from_corpus_source("publickey1jp", &explanation),
+            Domain::InformationTechnology
+        );
+        assert_eq!(
+            Domain::from_corpus_source("gihyo-webdb", &explanation),
+            Domain::InformationTechnology
+        );
+        assert_eq!(
+            Domain::from_corpus_source("internal-books", &explanation),
             Domain::InformationTechnology
         );
         // 法令文のソースは法令、残る官公庁のソースは行政である。

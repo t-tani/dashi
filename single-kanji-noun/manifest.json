@@ -1,0 +1,40 @@
+{
+  "artifact": "single-kanji-noun",
+  "version": "dashi-2026.09.5",
+  "akunuki": {
+    "rev": "d17113bc8ca265ebab7bc714c91d6a014c40d87f"
+  },
+  "lines": {
+    "2": 4.607066860306903,
+    "5": 4.378957075216706,
+    "10": 4.15505185665655,
+    "20": 3.6641007567893045
+  },
+  "files": [
+    {
+      "name": "single-kanji-noun-model.json",
+      "bytes": 9791550,
+      "sha256": "30592fcc51dcffe385ae68fc8f5c035676c4e9472f680198a648263e5802ed6a"
+    },
+    {
+      "name": "single-kanji-noun-novelty.tsv.zst",
+      "bytes": 11745316,
+      "sha256": "52abc0d30ed256c234f8a25bff8ccb8469bf0f0e986dd62b116ed543d5840966"
+    },
+    {
+      "name": "single-kanji-noun-targets.tsv",
+      "bytes": 31469,
+      "sha256": "8fac36c5696d51b28c2c40240374830c516f4da36883d9941d09c3206d2f80b8"
+    },
+    {
+      "name": "single-kanji-noun-case-frame-counts.tsv",
+      "bytes": 4723428,
+      "sha256": "65fb96e7e760eb8148580c0168805be721dd368c1c0132f8ca1b525583328faf"
+    },
+    {
+      "name": "single-kanji-noun-noun-modifier-counts.tsv",
+      "bytes": 11413258,
+      "sha256": "77ddce7b67529045117df4107dffb76b368114c0591f595648b05c35dd9367ac"
+    }
+  ]
+}

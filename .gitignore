@@ -28,3 +28,20 @@ compound-frequency/corpus/
 __pycache__/
 *.pyc
 .venv/
+
+# 外来語の置き換え表の中間物。名詞の回数と JMdict の索引は手順で作り直せる。
+loanword-substitution/counts/
+loanword-substitution/candidates/run-*.log
+
+# 共起の回数。手順で作り直せる 4 GB の中間物である。
+loanword-substitution/cooccurrence/
+
+# 格と述語の組の回数と、それを合わせた表。手順で作り直せる 240 MB の中間物で、
+# 表は akunuki のビルドがリリースから取得する。
+loanword-substitution/case-frames/
+
+# 格と述語の組を数え直した回の出力。どれも手順で作り直せる 230〜560 MB の中間物である。
+loanword-substitution/case-frames-*/
+
+# 置き換え表を語をキーに組み替えた対応表。build_word_map.py で表から作り直せる。
+loanword-substitution/substitution-map.json

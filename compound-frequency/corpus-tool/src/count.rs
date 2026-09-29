@@ -9,7 +9,7 @@
 
 pub mod corpus;
 pub mod documents;
-mod runs;
+pub mod runs;
 
 use std::path::Path;
 
@@ -77,10 +77,14 @@ pub struct CountStats {
     /// 分野ごとに数えた記事の数。分野の組を数えなかった場合は空である。
     #[serde(default)]
     pub domain_articles: Vec<DomainTally>,
+    /// 本文を掃除済みの平文に差し替えた記事の数。差し替えなければ 0 である。
+    #[serde(default)]
+    pub cleaned_text_articles: u64,
 }
 
 /// `dump_path` のダンプを `selection` の絞り込みで読み、`out_dir` に回数の TSV と
-/// 記録を書く。
+/// 記録を書く。`article_texts` を渡すと、そこに平文がある記事はダンプの本文の
+/// 代わりにその平文を数える([`Dump::with_article_texts`])。
 ///
 /// 複合語の回数は、キーが [`SPILL_KEYS`] に達するたびに run へ書き出し、最後に
 /// キー順で併合する。部品の回数は複合語よりずっと少ないので、最後まで表で持つ。
@@ -96,10 +100,14 @@ pub fn run(
     limit: Option<u64>,
     unknown: UnknownMorphemes,
     domains: DomainCounting,
+    article_texts: Option<&Path>,
 ) -> Result<()> {
     std::fs::create_dir_all(out_dir)
         .with_context(|| format!("{} を作れない", out_dir.display()))?;
     let mut dump = Dump::open(dump_path, selection, limit)?;
+    if let Some(dir) = article_texts {
+        dump = dump.with_article_texts(dir);
+    }
     let mut counts = Counts::new(unknown);
     let mut domain_counts = DomainCounts::default();
     let mut domain_articles = [0_u64; DOMAIN_COUNT];
@@ -164,6 +172,7 @@ pub fn run(
         skipped_articles: skipped,
         unknown_morphemes: unknown.counted(),
         domain_articles: domain::tallies(&domain_articles),
+        cleaned_text_articles: dump.replaced,
     };
     let stats_path = out_dir.join(COUNT_STATS_FILE);
     let json = serde_json::to_string_pretty(&stats).context("記録を JSON にできない")?;

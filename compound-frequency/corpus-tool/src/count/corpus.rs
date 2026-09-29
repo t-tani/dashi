@@ -192,6 +192,25 @@ pub fn run(
     Ok(())
 }
 
+/// 読むソースの平文のパスを、ソース名の順に集める。文語体の法令は複合語の回数と
+/// 同じ条件で落とす。名詞の回数([`crate::nouns`])の入口である。
+///
+/// # Errors
+///
+/// コーパスのディレクトリを読めない場合、ソースに平文か記録が無い場合に返す。
+pub fn text_paths(
+    corpus_dir: &Path,
+    exclude: &[String],
+    limit: Option<u64>,
+) -> Result<Vec<PathBuf>> {
+    let collected = collect(corpus_dir, exclude, DomainCounting::Skip)?;
+    let mut paths: Vec<PathBuf> = collected.paths.into_iter().map(|(_, path)| path).collect();
+    if let Some(limit) = limit {
+        paths.truncate(usize::try_from(limit).unwrap_or(usize::MAX));
+    }
+    Ok(paths)
+}
+
 /// 読むソースと平文のディレクトリ。
 struct Collected {
     /// ソースごとの内訳。数える前なので、文書の数とバイト数は 0 である。

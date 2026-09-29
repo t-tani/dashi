@@ -26,6 +26,13 @@ const TEXT_DIR: &str = "text";
 /// 変換しなかったソースの、パスの欄に書く値。
 const NO_OUTPUT_DIR: &str = "-";
 
+/// 検査の対象から外した範囲の跡に置く名詞。解析辞書はこの表層を 1 形態素の
+/// 名詞(普通名詞)にする。インラインのコードは文の項を埋める名詞なので、跡に
+/// 名詞を置かないと、格助詞が宿す名詞を失って係り受けが崩れる。日本語の本文に
+/// 現れない綴りを選び、数え上げの対象の語と衝突させない。技術文書 8,700 万
+/// バイトに 1 回も現れない綴りである。
+pub(crate) const PLACEHOLDER: &str = "ZZCODEZZ";
+
 /// 平文に残すのに要る、日本語の文字の比率の下限。akunuki が検査で使う既定と同じ
 /// 値である。訳し残した英語の段落と、識別子だけを並べた表のセルがこの下限で落ちる。
 const MIN_JAPANESE_RATIO: f64 = 0.20;
@@ -296,6 +303,12 @@ fn scan_config() -> ScanConfig {
 /// 段落の原文([`aku_core::Paragraph`] の `text`)は、インラインのコードと
 /// リンク先の URL を含んだままである。断片だけを連ねれば、走査が検査の対象から
 /// 外したものは平文に残らない。
+///
+/// 外した範囲の跡には [`PLACEHOLDER`] を置く。インラインのコードは文の項を
+/// 埋める名詞であり、消すと格助詞が宿す名詞を失う(「`docker run` を実行する」
+/// が「 を実行する」になる)。検査する側は、akunuki がこの位置に見えない名詞句
+/// の文節を立てて解析する。数える側も名詞を 1 つ置いて、同じ文節の切れ目で
+/// 解析する。
 fn plain_text(result: &ScanResult<'_>) -> String {
     let mut text = String::new();
     let mut fragments = result.fragments.iter().peekable();
@@ -305,6 +318,9 @@ fn plain_text(result: &ScanResult<'_>) -> String {
             fragments.next_if(|fragment| fragment.range.start < paragraph.range.end)
         {
             if fragment.range.start >= paragraph.range.start {
+                if fragment.abuts_excluded || fragment.gap_after_excluded {
+                    line.push_str(PLACEHOLDER);
+                }
                 line.push_str(fragment.text);
             }
         }

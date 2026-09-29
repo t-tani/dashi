@@ -19,7 +19,9 @@
 use std::collections::HashMap;
 use std::sync::LazyLock;
 
-use aku_morph::{MorphError, Morpheme, PartOfSpeech, analyze_short, bridges_kanji_latin_pair};
+use aku_morph::{
+    BridgeLatin, MorphError, Morpheme, PartOfSpeech, analyze_short, bridges_kanji_latin_pair,
+};
 use regex::Regex;
 
 /// 解析器へ 1 回に渡す最大バイト数。解析器自身の上限より十分小さく取り、句点と
@@ -148,7 +150,9 @@ impl Counts {
             let joins = start.is_some() && {
                 let previous = &morphemes[index - 1];
                 previous.range.end == morpheme.range.start
-                    || bridges_kanji_latin_pair(text, previous, morpheme)
+                    // 空白を挟む対の相手の条件は、akunuki の unknown-compound の既定
+                    // (大文字か数字を含むラテン文字の語)に揃える。
+                    || bridges_kanji_latin_pair(text, previous, morpheme, BridgeLatin::default())
             };
             if !joins {
                 if let Some(begin) = start.take() {
@@ -252,6 +256,36 @@ pub fn is_compound_part(part_of_speech: &PartOfSpeech) -> bool {
     }
 }
 
+/// 形態素列の全体が、`count` が 1 つのキーにする区間か。区間の条件は
+/// [`Counts::add_morphemes`] と同じで、複合語を成す品詞が原文で隣り合って続き、
+/// 2 形態素以上 [`MAX_SPAN_MORPHEMES`] 形態素以下であること。`unknown` が
+/// [`UnknownMorphemes::Count`] なら、未知語 1 形態素([`is_unknown_run`])も区間で
+/// ある。
+///
+/// akunuki の unknown-compound は同じ条件で候補を切り出すので、この条件に合わない
+/// 語は、頻度にあってもなくても検査の対象にならない。正解つきの語の集合を判定する
+/// 側は、この関数で候補になれない語を母数から外す。
+#[must_use]
+pub fn is_whole_span(morphemes: &[Morpheme<'_>], unknown: UnknownMorphemes) -> bool {
+    if !morphemes
+        .iter()
+        .all(|morpheme| is_compound_part(&morpheme.part_of_speech))
+    {
+        return false;
+    }
+    if morphemes
+        .windows(2)
+        .any(|pair| pair[0].range.end != pair[1].range.start)
+    {
+        return false;
+    }
+    match morphemes {
+        [] => false,
+        [morpheme] => unknown == UnknownMorphemes::Count && is_unknown_run(morpheme),
+        _ => morphemes.len() <= MAX_SPAN_MORPHEMES,
+    }
+}
+
 /// 解析辞書に見出しが無いカタカナか英字の連なりか。この形の 1 形態素だけが、
 /// [`UnknownMorphemes::Count`] で複合語のキーになる。
 ///
@@ -278,7 +312,7 @@ fn is_katakana(surface: &str) -> bool {
 
 /// 解析器へ渡す塊に切る。句点と改行で切り、[`MAX_ANALYSIS_BYTES`] を超える塊は
 /// 読点で、それでも超える塊は文字の境目で切る。
-fn analysis_chunks(text: &str) -> Vec<&str> {
+pub(crate) fn analysis_chunks(text: &str) -> Vec<&str> {
     let mut chunks = Vec::new();
     for sentence in text.split_inclusive(['\n', '。']) {
         if sentence.len() <= MAX_ANALYSIS_BYTES {

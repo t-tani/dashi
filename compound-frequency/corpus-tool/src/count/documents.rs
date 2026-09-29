@@ -186,6 +186,34 @@ pub fn run(
     Ok(())
 }
 
+/// 頻度に使うソースの平文のパスを、ソース名の順に集める。`exclude` のソースは外し、
+/// `limit` を渡すと先頭のその数で切る。名詞の回数([`crate::nouns`])が、複合語の
+/// 回数と同じ文書の集合を読むための入口である。
+///
+/// # Errors
+///
+/// 平文の記録を読めない場合、ソースの平文が無い場合に返す。
+pub fn text_paths(text_dir: &Path, exclude: &[String], limit: Option<u64>) -> Result<Vec<PathBuf>> {
+    let mut sources = read_manifest(&text_dir.join(MANIFEST_FILE))?;
+    sources.retain(|source| !exclude.contains(&source.name));
+    let mut paths = Vec::new();
+    for source in &sources {
+        let source_dir = text_dir.join(&source.name);
+        if !source_dir.is_dir() {
+            bail!(
+                "ソース '{}' の平文が {} に無い。`flatten` を通したか確かめる",
+                source.name,
+                source_dir.display()
+            );
+        }
+        paths.extend(text_files(&source_dir)?);
+    }
+    if let Some(limit) = limit {
+        paths.truncate(usize::try_from(limit).unwrap_or(usize::MAX));
+    }
+    Ok(paths)
+}
+
 /// 文書のまとまりを数えた結果。
 pub struct Counted {
     /// 複合語と部品の回数。

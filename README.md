@@ -52,9 +52,17 @@ dashi は、akunuki が引く言語資源と、それを作って検証する工
 
 `freq_filter.bin` は複合語のキーと、どれだけ使われているかの区分を持ちます。`component_freq.fst` は複合語の部品ごとの頻度表で、`domain_filter.bin` は語と分野の組です。
 
-回数を数える入力は 3 つで、Wikipedia 日本語版の全記事と、日本語の技術文書と、日本語コーパスです。日本語の技術文書は翻訳された公式文書と技術書からなり、日本語コーパスは官公庁と公的機関が公開する書き言葉を集めたものです。Wikipedia の記事は出現回数で数え、残りの 2 つは語が現れた文書の数で数えます。この 3 つに加えて、SudachiDict の見出しと Wikipedia の記事名を、人手で付けられた既存語として登録します。
+回数を数える入力は 3 つで、Wikipedia 日本語版の全記事と、日本語の技術文書と、日本語コーパスです。日本語の技術文書は翻訳された公式文書と技術書からなります。日本語コーパスは、官公庁と公的機関が公開する書き言葉に、翻訳された製品文書と技術ニュースと技術雑誌と技術書を加えたものです。Wikipedia の記事は出現回数で数え、残りの 2 つは語が現れた文書の数で数えます。この 3 つに加えて、SudachiDict の見出しと Wikipedia の記事名を、人手で付けられた既存語として登録します。
 
 フィルタを組む工程は `compound-frequency/corpus-tool/` の Rust が持ちます。ソースごとのライセンスと文書数は `compound-frequency/design.md` に、入力から成果物までの手順は `compound-frequency/README.md` にあります。
+
+### 外来語の置き換え表
+
+外来語の置き換え表は、情報技術の文書で使われるカタカナ語ごとに、LLM がその代わりに書きうる漢字とかなの短い語を対応づける表です。`ゲート` を `門`、`ネットワーク` を `網` と書く型を、外来語の側から検査するために作ります。見出し語の一覧(頻出のカタカナ語と語源の英語)と生成の工程は `loanword-substitution/` にあります。
+
+### 単独で立つ漢字 1 字の名詞の判定モデル
+
+このモデルは、漢字 1 字の名詞が単独で立つ出現ごとに得点を出し、LLM が外来語の代わりに書いた `欄` や比喩で立てた `窓` を見分けます。字そのものは見ず、係り受けの部分木の形と、人の IT 文書で同じ字が取る修飾と格と述語の組を比べます。モデルと、モデルが引く表と、学習の工程は `single-kanji-noun/` にあります。
 
 ## 利用条件
 
@@ -69,3 +77,32 @@ dashi は、akunuki が引く言語資源と、それを作って検証する工
 | 中項目の体系 | 国立国語研究所『分類語彙表増補改訂版データベース』 | https://github.com/masayu-a/WLSP |
 | 意味分類表の見出し語 | Electronic Dictionary Research and Development Group『JMdict』 | https://www.edrdg.org/jmdict/j_jmdict.html |
 | 複合語の切り出しと見出し | Works Applications『SudachiDict』 | https://github.com/WorksApplications/SudachiDict |
+
+複合語の頻度フィルタと、単独で立つ漢字 1 字の名詞の判定モデルの回数は、次の資料を含む文書から数えています。載せたのは、利用の条件として出典の表示を求める資料です。
+
+| 資料 | 提供元 | 利用条件 |
+|---|---|---|
+| Wikipedia 日本語版 | ウィキメディア財団 | CC BY-SA 4.0 |
+| MDN Web Docs 日本語版 | Mozilla | CC BY-SA 2.5 |
+| Kubernetes ドキュメント | The Kubernetes Authors | CC BY 4.0 |
+| React 日本語版ドキュメント | Meta Platforms | CC BY 4.0 |
+| Vue.js 日本語ドキュメント | Vue.js 日本語翻訳チーム | CC BY 4.0 |
+| TypeScript Deep Dive 日本語版 | yohamta | CC BY 4.0 |
+| Rails ガイド | YassLab | CC BY-SA 4.0 |
+| サバイバル TypeScript | YYTypeScript | CC BY-SA 4.0 |
+| OWASP Top 10 | OWASP Foundation | CC BY-SA 4.0 |
+| Google Cloud ドキュメント(日本語) | Google | CC BY 4.0 |
+| Gemini Code Assist ドキュメント(日本語) | Google | CC BY 4.0 |
+| AWS ドキュメント(日本語) | Amazon Web Services | CC BY-SA 4.0 |
+| 検査報告データベース | 会計検査院 | 公共データ利用規約(第1.0版) |
+| 法令データ(e-Gov 法令 API) | デジタル庁 | 政府標準利用規約(第2.0版) |
+| 標準ガイドライン群と調達の資料 | デジタル庁 | 政府標準利用規約(第2.0版) |
+| 情報科の教員研修用教材 | 文部科学省 | 政府標準利用規約(第2.0版) |
+| 情報通信白書と情報通信審議会の答申 | 総務省 | 政府標準利用規約(第2.0版) |
+| DX レポート | 経済産業省 | 政府標準利用規約(第2.0版) |
+| ガイドライン | 個人情報保護委員会 | 政府標準利用規約(第2.0版) |
+| サイバーセキュリティ対策の統一基準群とマニュアル | 国家サイバー統括室 | 政府標準利用規約(第2.0版) |
+| 試験の過去問題、安全なウェブサイトの作り方、調達の資料 | 情報処理推進機構 | 出典の明示 |
+| JVN iPedia | 情報処理推進機構 | JVN の利用条件 |
+| 注意喚起、Weekly Report、JPCERT/CC Eyes | JPCERT コーディネーションセンター | 出典の明示 |
+| NICTER 観測レポート | 情報通信研究機構 | NICT のサイトポリシー |

@@ -32,8 +32,8 @@ use serde::Serialize;
 use self::partners::Partners;
 
 use crate::compound::UnknownMorphemes;
-use crate::count::corpus::{CORPUS_STATS_FILE, CorpusSourceStats, CorpusStats};
-use crate::count::documents::{DOCUMENT_STATS_FILE, DocumentStats, SourceStats};
+use crate::count::corpus::{CORPUS_STATS_FILE, CorpusStats};
+use crate::count::documents::{DOCUMENT_STATS_FILE, DocumentStats};
 use crate::count::{
     COMPONENT_COUNTS_FILE, COMPOUND_COUNTS_FILE, COUNT_STATS_FILE, CountStats, DOMAIN_COUNTS_FILE,
 };
@@ -155,8 +155,8 @@ struct Manifest {
     /// 成果物の版の名前。`dashi-<年>.<月>.<連番>` の形であり、作り直すたびに
     /// 上げる。
     version: String,
-    /// 回数の入力と合算の重み。
-    inputs: InputsSection,
+    /// 合算の重み。入力の中身(ソースの一覧・文書数・取得の経緯)は載せない。
+    weights: WeightsSection,
     /// 入力にしたダンプ。
     dump: DumpSection,
     /// 記事の絞り込み。
@@ -231,65 +231,15 @@ struct DomainName {
     name: String,
 }
 
-/// 回数の入力と合算の重み。
+/// 合算の重み。技術文書と日本語コーパスは、合算しなかった場合に `null` である。
 #[derive(Serialize)]
-struct InputsSection {
-    /// Wikipedia の回数。
-    wikipedia: CountsInput,
-    /// 技術文書の文書数。合算しなかった場合は `null` である。
-    documents: Option<DocumentsInput>,
-    /// 日本語コーパスの文書数。合算しなかった場合は `null` である。
-    corpus: Option<CorpusInput>,
-}
-
-/// Wikipedia の回数の入力。
-#[derive(Serialize)]
-struct CountsInput {
-    /// 回数の TSV を読んだディレクトリ。
-    counts_dir: String,
-    /// 回数に掛けた重み。
-    weight: f64,
-}
-
-/// 技術文書の文書数の入力。
-#[derive(Serialize)]
-struct DocumentsInput {
-    /// 文書数の TSV を読んだディレクトリ。
-    counts_dir: String,
-    /// 文書数に掛けた重み。
-    weight: f64,
-    /// 平文を読んだディレクトリ。
-    text_dir: String,
-    /// 数えた文書の数。
-    documents: u64,
-    /// 数えた平文のバイト数。
-    text_bytes: u64,
-    /// 数えなかったソースの名前。
-    excluded_sources: Vec<String>,
-    /// ソースごとの内訳。
-    sources: Vec<SourceStats>,
-}
-
-/// 日本語コーパスの文書数の入力。コーパスのディレクトリは書かない。成果物を組み
-/// 直す側が `count` に引数で渡すためである。
-#[derive(Serialize)]
-struct CorpusInput {
-    /// 文書数の TSV を読んだディレクトリ。
-    counts_dir: String,
-    /// 文書数に掛けた重み。
-    weight: f64,
-    /// 数えた文書の数。
-    documents: u64,
-    /// 数えた平文のバイト数。
-    text_bytes: u64,
-    /// 数えなかったソースの名前。
-    excluded_sources: Vec<String>,
-    /// 文語体として外した法令の数。
-    excluded_laws: u64,
-    /// 法令 ID の形を読めず、外さずに数えた法令の数。
-    unreadable_law_ids: u64,
-    /// ソースごとの内訳。
-    sources: Vec<CorpusSourceStats>,
+struct WeightsSection {
+    /// Wikipedia の回数に掛けた重み。
+    wikipedia: f64,
+    /// 技術文書の文書数に掛けた重み。
+    documents: Option<f64>,
+    /// 日本語コーパスの文書数に掛けた重み。
+    corpus: Option<f64>,
 }
 
 /// 入力にしたダンプ。
@@ -316,6 +266,8 @@ struct SelectionSection {
     skipped_articles: u64,
     /// 分野ごとに数えた記事の数。分野の回数を数えなかった場合は空である。
     domain_articles: Vec<DomainTally>,
+    /// 本文を掃除済みの平文に差し替えた記事の数。
+    cleaned_text_articles: u64,
 }
 
 /// 統計を作った akunuki の版。
@@ -426,10 +378,6 @@ struct LoadedStats {
     stats: CountStats,
     /// 解析辞書の見出しの記録。
     headword_stats: HeadwordStats,
-    /// 技術文書の文書数の記録。合算しなかった場合は `None` である。
-    document_stats: Option<DocumentStats>,
-    /// 日本語コーパスの文書数の記録。合算しなかった場合は `None` である。
-    corpus_stats: Option<CorpusStats>,
     /// 記事名の記録。登録しなかった場合は `None` である。
     title_stats: Option<TitleStats>,
     /// すべての回数が揃えた、未知語 1 形態素を数える設定。
@@ -479,8 +427,6 @@ fn load_stats(inputs: &Inputs) -> Result<LoadedStats> {
     Ok(LoadedStats {
         stats,
         headword_stats,
-        document_stats,
-        corpus_stats,
         title_stats,
         unknown_morphemes,
     })
@@ -497,15 +443,20 @@ fn build_manifest(
     let LoadedStats {
         stats,
         headword_stats,
-        document_stats,
-        corpus_stats,
         title_stats,
         unknown_morphemes,
     } = loaded;
     Manifest {
         artifact: inputs.artifact,
         version,
-        inputs: inputs_section(inputs, document_stats, corpus_stats),
+        weights: WeightsSection {
+            wikipedia: inputs.weights.counts,
+            documents: inputs.docs_counts_dir.as_ref().map(|_| inputs.weights.docs),
+            corpus: inputs
+                .corpus_counts_dir
+                .as_ref()
+                .map(|_| inputs.weights.corpus),
+        },
         dump: DumpSection {
             file_name: stats.dump_file_name,
             version: stats.dump_version,
@@ -517,6 +468,7 @@ fn build_manifest(
             text_bytes: stats.text_bytes,
             skipped_articles: stats.skipped_articles,
             domain_articles: stats.domain_articles,
+            cleaned_text_articles: stats.cleaned_text_articles,
         },
         akunuki: AkunukiSection {
             rev: env!("CORPUS_TOOL_AKUNUKI_REV").to_owned(),
@@ -687,50 +639,6 @@ fn write_artifacts(inputs: &Inputs, out_dir: &Path) -> Result<Written> {
         constituent_bytes: constituent_bytes.len(),
         constituent_sha256,
     })
-}
-
-/// 回数の入力と合算の重みの節。読んだ記録から、入力ごとの文書数とソースの一覧を
-/// 写す。
-fn inputs_section(
-    inputs: &Inputs,
-    document_stats: Option<DocumentStats>,
-    corpus_stats: Option<CorpusStats>,
-) -> InputsSection {
-    let documents = inputs
-        .docs_counts_dir
-        .as_deref()
-        .zip(document_stats)
-        .map(|(dir, stats)| DocumentsInput {
-            counts_dir: dir.display().to_string(),
-            weight: inputs.weights.docs,
-            text_dir: stats.text_dir,
-            documents: stats.documents,
-            text_bytes: stats.text_bytes,
-            excluded_sources: stats.excluded_sources,
-            sources: stats.sources,
-        });
-    let corpus = inputs
-        .corpus_counts_dir
-        .as_deref()
-        .zip(corpus_stats)
-        .map(|(dir, stats)| CorpusInput {
-            counts_dir: dir.display().to_string(),
-            weight: inputs.weights.corpus,
-            documents: stats.documents,
-            text_bytes: stats.text_bytes,
-            excluded_sources: stats.excluded_sources,
-            excluded_laws: stats.excluded_laws,
-            unreadable_law_ids: stats.unreadable_law_ids,
-            sources: stats.sources,
-        });
-    InputsSection {
-        wikipedia: CountsInput {
-            counts_dir: inputs.counts_dir.display().to_string(),
-            weight: inputs.weights.counts,
-        },
-        documents,
-        corpus,
-    }
 }
 
 /// `path` の記録を読む。

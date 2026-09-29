@@ -12,7 +12,7 @@ akunuki は、複合名詞の候補を既存語とグレーと造語の候補へ
 | `component_freq.fst` | 複合語の部品ごとの出現数と、前後に付く相手の種類数の表 |
 | `domain_filter.bin` | 語と分野の組を登録したフィルタ |
 
-3 つとも GitHub リリースのアセットとして配布します。どこでどう使われるかと、ファイルの形式は `artifacts.md` にあります。組んだときの来歴は `manifest.json` が持ちます。入力とその絞り込みの条件、合算に使った重み、バージョンのほか、キーと見出しと記事名と文書の数、成果物のバイト数と SHA-256、バケットの境界が載ります。
+3 つとも GitHub リリースのアセットとして配布します。どこでどう使われるかと、ファイルの形式は `artifacts.md` にあります。組んだときの来歴は `manifest.json` が持ちます。合算に使った重み、バージョンのほか、キーと見出しと記事名の数、成果物のバイト数と SHA-256、バケットの境界が載ります。
 
 バージョンは `dashi-<年>.<月>.<連番>` の形で、`build --version` に渡します。月は 0 埋めし、同じ月に組み直すたびに連番を上げます。入力にしたダンプの日付は `manifest.json` の `dump` が持つので、名前には入れません。
 
@@ -38,11 +38,12 @@ akunuki は、複合名詞の候補を既存語とグレーと造語の候補へ
 
 ## サブコマンド
 
-`corpus-tool` のサブコマンドは 8 つあります。
+`corpus-tool` のサブコマンドは 9 つあります。
 
 | サブコマンド | 役割 |
 |---|---|
 | `count` | 入力を読み、複合語と部品と、語と分野の組の回数を TSV に書く |
+| `count-nouns` | 入力を読み、名詞の出現回数を TSV に書く。外来語の置き換え表(`../loanword-substitution/`)の見出し語の一覧が引く |
 | `dictionary-headwords` | 解析辞書の見出しのうち、2 形態素以上に割れる名詞を TSV に書く |
 | `article-titles` | ダンプの記事名とリダイレクト名のうち、複合語の区間になる名前を TSV に書く |
 | `flatten` | 取得した技術文書を、1 文書 1 ファイルの平文にする |
@@ -78,7 +79,7 @@ done
 
 ### 技術文書
 
-翻訳された公式文書と技術書を `corpus/raw/<ソース名>/` へ置きます。ソースごとのリポジトリとブランチと commit、日付とパスと形式とライセンスを `corpus/raw/manifest.tsv` に書きます。ソースの一覧は `design.md` の「日本語の技術文書」にあります。
+翻訳された公式文書と技術書を `corpus/raw/<ソース名>/` へ置きます。ソースごとのリポジトリとブランチと commit、日付とパスと形式とライセンスを `corpus/raw/manifest.tsv` に書きます。
 
 `flatten` が取得物を 1 文書 1 ファイルの平文にし、`corpus/text/<ソース名>/` へ書きます。
 
@@ -91,7 +92,7 @@ cargo run --release -- flatten --raw-dir ../corpus/raw --out-dir ../corpus
 
 ### 日本語コーパス
 
-官公庁と公的機関が公開する書き言葉を集めたコーパスは、リポジトリに入っていません。パスを `count --corpus-dir` に渡してください。資料の形は `design.md` の「日本語コーパス」にあります。
+官公庁と公的機関が公開する書き言葉と、翻訳された製品文書と技術ニュースと技術雑誌と技術書を集めたコーパスは、リポジトリに入っていません。ソースごとのディレクトリを直下に並べた親のパス(集めたリポジトリの `data/`)を `count --corpus-dir` に渡してください。資料の形は `design.md` の「日本語コーパス」にあります。
 
 ## 再現手順
 
@@ -100,9 +101,11 @@ cargo run --release -- flatten --raw-dir ../corpus/raw --out-dir ../corpus
 ```
 cd compound-frequency/corpus-tool
 
-# 1. 全記事を読み、複合語と部品と、語と分野の組の回数を TSV に書く
+# 1. 全記事を読み、複合語と部品と、語と分野の組の回数を TSV に書く。本文は
+#    日本語コーパスの掃除済みの平文で差し替える
 cargo run --release -- count --domains \
-    --dump <ダンプ>/jawiki-20251229-cirrussearch-content.json.gz --out-dir ../counts
+    --dump <ダンプ>/jawiki-20251229-cirrussearch-content.json.gz \
+    --article-text-dir <日本語コーパス>/jawiki/text --out-dir ../counts
 
 # 2. 記事名とリダイレクト名から、見出しの TSV を書く
 cargo run --release -- article-titles \
@@ -115,13 +118,13 @@ cargo run --release -- dictionary-headwords \
 # 4. 技術文書の平文を読み、複合語と部品の文書数を TSV に書く
 cargo run --release -- count --domains --text-dir ../corpus/text --out-dir ../counts-docs
 cargo run --release -- count --domains --text-dir ../corpus/text \
-    --exclude owasp-top10,ts-survival --out-dir ../counts-docs-evaluation
+    --exclude ts-survival --out-dir ../counts-docs-evaluation
 
 # 5. 日本語コーパスの平文を読み、複合語と部品の文書数を TSV に書く
 cargo run --release -- count --domains --corpus-dir <日本語コーパス> \
-    --exclude jawiki,raw --out-dir ../counts-corpus
+    --exclude jawiki,github-ja-docs --out-dir ../counts-corpus
 cargo run --release -- count --domains --corpus-dir <日本語コーパス> \
-    --exclude jawiki,raw,jpccert-eyes,ipa-websec --out-dir ../counts-corpus-evaluation
+    --exclude jawiki,github-ja-docs,jpccert-eyes,ipa-websec --out-dir ../counts-corpus-evaluation
 
 # 6. 配布用の成果物と manifest.json を書く
 cargo run --release -- build --counts-dir ../counts --docs-counts-dir ../counts-docs \
@@ -162,25 +165,25 @@ cargo run --release -- judge --artifacts-dir ../variants/evaluation \
 
 | コマンド | 入力 | 時間 | 最大 RSS |
 |---|---|---:|---:|
-| `count --domains --dump` | 全記事 1,484,267 件 | 30 分 48 秒 | 1,263,568 kB |
-| `article-titles` | 全記事 1,484,267 件 | 3 分 31 秒 | 262,048 kB |
-| `dictionary-headwords` | 解析辞書 full | 3.7 秒 | 458,688 kB |
-| `count --domains --text-dir` | 技術文書 13,846 文書 | 3.4 秒 | 220,528 kB |
-| `count --domains --corpus-dir` | 日本語コーパス 14,540 文書 | 26.2 秒 | 389,776 kB |
-| `build` | 3 つの回数と見出しと記事名の TSV | 37.1 秒 | 3,286,912 kB |
+| `count --domains --dump` | 全記事 1,484,267 件 | 33 分 11 秒 | 1,192,400 kB |
+| `article-titles` | 全記事 1,484,267 件 | 3 分 34 秒 | 235,408 kB |
+| `dictionary-headwords` | 解析辞書 full | 3.9 秒 | 434,256 kB |
+| `count --domains --text-dir` | 技術文書 | 2.9 秒 | 188,752 kB |
+| `count --domains --corpus-dir` | 日本語コーパス | 1 分 12 秒 | 932,752 kB |
+| `build` | 3 つの回数と見出しと記事名の TSV | 35.1 秒 | 2,992,336 kB |
 | `topic-distribution` | 全記事 1,484,267 件 | 4 分 5 秒 | 14,816 kB |
 
-語と分野の組を数えても `count` の最大 RSS が上がらないのは、複合語の表と組の表の合計を見て両方を途中で書き出すためです。技術文書の `count` は、数える本文が記事の 0.6% しかないので、途中の表を書き出さずに最後まで持てます。時間の側では、本文を解析しない `article-titles` と `topic-distribution` が、同じダンプでも `count` より 1 桁短く終わります。`dictionary-headwords` の 3.7 秒は、解析を CPU の数だけ並べた結果です。評価用の 2 つの `count` は、どちらも配布用より短い時間で終わります。
+語と分野の組を数えても `count` の最大 RSS が上がらないのは、複合語の表と組の表の合計を見て両方を途中で書き出すためです。技術文書の `count` は、数える本文が記事の 0.6% しかないので、途中の表を書き出さずに最後まで持てます。時間の側では、本文を解析しない `article-titles` と `topic-distribution` が、同じダンプでも `count` より 1 桁短く終わります。`dictionary-headwords` の 3.9 秒は、解析を CPU の数だけ並べた結果です。評価用の 2 つの `count` は、どちらも配布用より短い時間で終わります。
 
 ## 数えた結果
 
 入力ごとの件数のうち、配布用と評価用で違うのは技術文書と日本語コーパスだけです。
 
-読んだ全記事は 1,484,267 件、数えた本文は 9,285,571,411 バイトです。解析に失敗して飛ばした記事はありません。複合語のキーは 45,888,704 件、部品は 1,617,547 件です。語と分野の組は 79,277,802 件で、分野ごとの記事の数は `design.md` の「分野の区分」にあります。
+読んだ全記事は 1,484,267 件です。そのうち 1,483,647 件の本文を日本語コーパスの掃除済みの平文で差し替え、数えた本文は 7,424,920,602 バイトです。解析に失敗して飛ばした記事はありません。複合語のキーは 39,086,998 件、部品は 1,455,168 件です。語と分野の組は 66,727,773 件で、分野ごとの記事の数は `design.md` の「分野の区分」にあります。
 
-技術文書は、配布用が 16 ソースの 13,846 文書、平文 54,803,373 バイトで、キーは 168,598 件、部品は 13,848 件です。評価用は 14 ソースの 13,562 文書、53,656,706 バイトで、キーは 165,320 件、部品は 13,614 件です。どちらも解析に失敗して飛ばした文書はありません。文書単位で数えるので、1 つのキーの回数は文書の数を超えません。
+技術文書は、配布用でキーが 171,168 件、部品が 13,126 件です。評価用では、キーが 168,329 件、部品が 12,915 件です。どちらも解析に失敗して飛ばした文書はありません。文書単位で数えるので、1 つのキーの回数は文書の数を超えません。
 
-日本語コーパスは、配布用が 20 ソースの 14,540 文書、平文 535,840,821 バイトで、キーは 675,136 件、部品は 48,129 件です。評価用は 18 ソースの 14,400 文書、533,972,365 バイトで、キーは 662,992 件、部品は 47,383 件です。どちらも文語体の法令 284 件を外してあります。
+日本語コーパスは、配布用でキーが 3,115,246 件、部品が 152,035 件です。評価用では、キーが 3,108,167 件、部品が 151,740 件です。どちらも文語体の法令を外してあります。
 
 解析辞書の見出しは、2,274,679 件の名詞のうち 83,594 件が 2 形態素以上に割れます。`dictionary-headwords` は固有名詞の見出しを書かないので、内訳は普通名詞 83,548 件と、数詞と助動詞語幹の 46 件です。記事名の側では、`article-titles` が 1,484,267 件の記事名と 928,100 件のリダイレクト名を読み、464,833 語を登録します。
 
@@ -188,7 +191,7 @@ cargo run --release -- judge --artifacts-dir ../variants/evaluation \
 
 | 成果物 | キー数 | `freq_filter.bin` のバイト数 | 部品数 | `component_freq.fst` のバイト数 | 組のキー数 | `domain_filter.bin` のバイト数 |
 |---|---:|---:|---:|---:|---:|---:|
-| 配布用 | 11,538,100 | 26,017,878 | 701,675 | 10,070,883 | 8,087,384 | 18,219,094 |
-| 評価用 | 11,536,810 | 26,017,878 | 701,631 | 10,070,592 | 8,087,207 | 18,219,094 |
+| 配布用 | 10,426,317 | 23,461,974 | 663,316 | 9,532,376 | 6,876,319 | 15,532,118 |
+| 評価用 | 10,424,219 | 23,461,974 | 663,252 | 9,528,203 | 6,875,794 | 15,532,118 |
 
-2 つの差は、キー 1,290 件と部品 44 件、それに語と分野の組 177 件だけです。外した 4 ソースが持つ語の大半が、Wikipedia の本文か記事名か解析辞書の見出しにもあるためです。`freq_filter.bin` のバイト数が同じなのは、フィルタの配列がキーの数を段階で丸めた大きさを取るためです。
+2 つの差は、キー 2,098 件と部品 64 件、それに語と分野の組 525 件だけです。外した 3 ソースが持つ語の大半が、Wikipedia の本文か記事名か解析辞書の見出しにもあるためです。`freq_filter.bin` のバイト数が同じなのは、フィルタの配列がキーの数を段階で丸めた大きさを取るためです。

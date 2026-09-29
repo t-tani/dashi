@@ -114,7 +114,7 @@ for run in compound_runs(fragment):
 
 ### corpus-tool での使い方
 
-`query` は語を分割単位 A で割り、表層形と正規化形で `freq_filter.bin` を引いてバケットを出し、各部品の出現数と相手の種類数を `component_freq.fst` から並べます。`judge` は完全一致、部品の比、分野の 3 つの検査で語を 4 つの名前に振り分け、正解つきの語の集合を渡すと混同行列を出します。名前と検査の順と閾値は、`design.md` の「判定の名前」と「判定」にあります。
+`query` は語を分割単位 A で割り、表層形と正規化形で `freq_filter.bin` を引いてバケットを出し、各部品の出現数と相手の種類数を `component_freq.fst` から並べます。`judge` は完全一致、部品の比、分野の 3 つの検査で語を 4 つの名前に振り分け、複合語の区間にならない語は候補外とし、正解つきの語の集合を渡すと混同行列を出します。名前と検査の順と閾値は、`design.md` の「判定の名前」と「判定」にあります。
 
 ## フィルタのバイナリ形式
 
@@ -256,7 +256,7 @@ domains(word):          { code in 1..=8 | bucket(domain_key(code, word)) != None
 | 18〜11 | 前・外来語 | 8 | 部品の前に外来語が付いた複合語の種類数 |
 | 10〜0 | 出現数 | 11 | 部品の出現数 |
 
-出現数は、3 つの入力の回数を重み 1.0 で足した和です。Wikipedia では出現回数を、技術文書と日本語コーパスでは文書数を数えます。和が 3 に満たない部品は、種類数があっても載せません。見出しには A 単位の部品と、A 単位 2 つ以上に割れる C 単位の語の両方があり、C 単位の語の出現数は、部品の回数にその語があればその値、無ければ 0 です。種類数の数え方は `design.md` の「部品の相手の種類数」にあります。形式のバージョンは `manifest.json` の `component_freq_format_version` にも書きます。
+出現数は、3 つの入力の回数に `build` の既定の重み(記事 1.0、技術文書とコーパス 2.0)を掛けて足した和です。Wikipedia では出現回数を、技術文書と日本語コーパスでは文書数を数えます。和が 3 に満たない部品は、種類数があっても載せません。見出しには A 単位の部品と、A 単位 2 つ以上に割れる C 単位の語の両方があり、C 単位の語の出現数は、部品の回数にその語があればその値、無ければ 0 です。種類数の数え方は `design.md` の「部品の相手の種類数」にあります。形式のバージョンは `manifest.json` の `component_freq_format_version` にも書きます。
 
 ### 符号化
 
@@ -299,22 +299,8 @@ decode_count(c)     = c                                    if c <= 127
 Manifest {
     artifact:       "release" | "evaluation"
     version:        string                  // "dashi-<年>.<月>.<連番>"
-    inputs: {
-        wikipedia:  { counts_dir: string, weight: f64 }
-        documents:  {                       // 技術文書。合算しなければ null
-            counts_dir: string, weight: f64, text_dir: string,
-            documents: u64, text_bytes: u64,
-            excluded_sources: string[],
-            sources: [{ name, commit, license: string, documents, text_bytes: u64 }]
-        } | null
-        corpus:     {                       // 日本語コーパス。合算しなければ null。パスは書かない
-            counts_dir: string, weight: f64,
-            documents: u64, text_bytes: u64,
-            excluded_sources: string[], excluded_laws: u64, unreadable_law_ids: u64,
-            sources: [{ name: string, styles: string[], licenses: string[], domain: string,
-                        documents, text_bytes: u64 }]
-        } | null
-    }
+    weights:        { wikipedia: f64, documents: f64 | null, corpus: f64 | null }
+                                            // 合算の重み。技術文書とコーパスは合算しなければ null
     dump:           { file_name: string, version: string | null }
     selection:      { condition: string, scanned_articles, selected_articles, text_bytes,
                       skipped_articles: u64, domain_articles: [{ domain: string, documents: u64 }] }
@@ -342,7 +328,7 @@ Manifest {
 }
 ```
 
-`inputs.corpus` にコーパスのディレクトリを書かないのは、組み直す側が `count` に引数で渡すためです。一方、`variant` と `domain` の条件を読めば、同じ回数の TSV から同じ成果物を組み直せます。 `akunuki.rev` と `dictionary.version` は、成果物を読める akunuki のバージョンを決めます。
+入力の中身(ソースの一覧・文書数・取得の条件)は載せません。`weights` と `variant` と `domain` の条件を読めば、同じ回数の TSV から同じ成果物を組み直せます。 `akunuki.rev` と `dictionary.version` は、成果物を読める akunuki のバージョンを決めます。
 
 ## 中間の TSV
 
@@ -369,7 +355,7 @@ TSV ごとの書く側とキーと回数は次のとおりです。
 
 `domain-counts.tsv` は番号を語の後ろに置きます。キーの昇順で 1 つの語の行が隣り合うため、 `build` は数千万件の組を表に載せずに語ごとの総数を出せます。フィルタに登録するときに `<番号><タブ><語>` へ組み替えます。
 
-TSV を書くコマンドは、それぞれの TSV と並べて、数えた記録を JSON で書きます。`build` がこれを読んで、`manifest.json` の各節に写します。
+TSV を書くコマンドは、それぞれの TSV と並べて、数えた記録を JSON で書きます。`build` はこのうち Wikipedia と解析辞書と記事名の記録を、`manifest.json` の各節に写します。
 
 | ファイル | 書く側 | 記録 |
 |---|---|---|

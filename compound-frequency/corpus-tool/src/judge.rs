@@ -27,7 +27,7 @@ use aku_morph::{DICTIONARY_VERSION, MorphError, Morpheme, analyze_short};
 use anyhow::{Context, Result, bail};
 
 use crate::build::{CONSTITUENT_FILE, FILTER_FILE};
-use crate::compound::{UnknownMorphemes, is_unknown_run};
+use crate::compound::{UnknownMorphemes, is_unknown_run, is_whole_span};
 use crate::domain::{Domain, DomainSet};
 use crate::domain_filter::DomainFilter;
 use crate::judge::composition::{Score, Thresholds, UnitFrequencies};
@@ -154,6 +154,9 @@ pub enum Verdict {
     RepurposeCandidate,
     /// 登録が無く、造語の疑いがある語。
     Coined,
+    /// 複合語の区間にならず、akunuki が候補にしない語。正解つきの語の集合では
+    /// 母数から外す。
+    NotCandidate,
 }
 
 impl Verdict {
@@ -164,6 +167,7 @@ impl Verdict {
             Self::Gray => "グレー",
             Self::RepurposeCandidate => "転用の候補",
             Self::Coined => "造語の候補",
+            Self::NotCandidate => "候補外",
         }
     }
 }
@@ -187,6 +191,9 @@ pub enum Reason {
     Constituent,
     /// どの検査でも当たらなかった。
     Unregistered,
+    /// 形態素列が複合語の区間にならなかった。形状詞や数詞や記号を含む語と、
+    /// 6 形態素以上の語がこれにあたる。
+    Span,
 }
 
 impl Reason {
@@ -201,6 +208,7 @@ impl Reason {
             Self::Domain => "分野",
             Self::Constituent => "部品",
             Self::Unregistered => "未登録",
+            Self::Span => "区間",
         }
     }
 }
@@ -295,6 +303,14 @@ impl Judge {
     /// 語を解析できない場合に返す。
     pub fn judge(&self, word: &str) -> Result<Judgment, MorphError> {
         let morphemes = analyze_short(word)?;
+        if !is_whole_span(&morphemes, self.options.unknown) {
+            return Ok(Judgment {
+                verdict: Verdict::NotCandidate,
+                reason: Reason::Span,
+                unknown_unit: false,
+                domains: DomainSet::default(),
+            });
+        }
         if let Some(bucket) = self.bucket(&morphemes) {
             let (verdict, reason) = match bucket {
                 DICTIONARY_BUCKET => (Verdict::Established, Reason::Dictionary),
@@ -500,12 +516,18 @@ impl Tally {
         self.verdicts.get(&verdict).copied().unwrap_or(0)
     }
 
+    /// 候補になった語数。判定した語数から候補外を引いたもので、割合の母数である。
+    fn candidates(&self) -> u64 {
+        self.total - self.count(Verdict::NotCandidate)
+    }
+
     /// 名前と理由の内訳を書き出す。
     fn print(&self) {
         println!(
-            "{} {} 語: 既存語 {}、グレー {}、転用の候補 {}、造語の候補 {}",
+            "{} {} 語: 候補外 {}、既存語 {}、グレー {}、転用の候補 {}、造語の候補 {}",
             self.label,
             self.total,
+            self.count(Verdict::NotCandidate),
             self.count(Verdict::Established),
             self.count(Verdict::Gray),
             self.count(Verdict::RepurposeCandidate),
@@ -520,6 +542,7 @@ impl Tally {
             Reason::Domain,
             Reason::Constituent,
             Reason::Unregistered,
+            Reason::Span,
         ]
         .into_iter()
         .map(|reason| {
@@ -702,7 +725,7 @@ fn judge_row(judge: &Judge, path: &Path, line_number: usize, word: &str) -> Resu
 ///
 /// 再現率の母数は区分が造語の語だけである。区分が言い換えの語は拾ってはいけない語
 /// なので、造語の候補と判定した割合を誤検出率と同じ向きで出す。グレー率の母数は、
-/// 判定したすべての語である。
+/// 判定したすべての語である。どの母数からも候補外の語は外す。
 ///
 /// `document_domain` を渡した場合は、意味の転用の再現率と、既存語の例の集合ごとの
 /// 転用の誤検出率も出す。分野の検査を当てなければ、区分が意味の転用の語は語の有無
@@ -726,21 +749,21 @@ fn print_matrix(
     let counted = [coined, reworded, repurposed]
         .into_iter()
         .chain(established);
-    let total: u64 = counted.clone().map(|tally| tally.total).sum();
+    let total: u64 = counted.clone().map(Tally::candidates).sum();
     let gray: u64 = counted.map(|tally| tally.count(Verdict::Gray)).sum();
     println!(
         "造語の再現率 {}",
-        ratio(coined.count(Verdict::Coined), coined.total)
+        ratio(coined.count(Verdict::Coined), coined.candidates())
     );
     println!(
         "言い換えの誤検出率 {}",
-        ratio(reworded.count(Verdict::Coined), reworded.total)
+        ratio(reworded.count(Verdict::Coined), reworded.candidates())
     );
     for tally in established {
         println!(
             "{}の誤検出率 {}",
             tally.label,
-            ratio(tally.count(Verdict::Coined), tally.total)
+            ratio(tally.count(Verdict::Coined), tally.candidates())
         );
     }
     println!("グレー率 {}", ratio(gray, total));
@@ -750,14 +773,14 @@ fn print_matrix(
             "意味の転用の再現率 {}",
             ratio(
                 repurposed.count(Verdict::RepurposeCandidate),
-                repurposed.total
+                repurposed.candidates()
             )
         );
         for tally in established {
             println!(
                 "{}の転用の誤検出率 {}",
                 tally.label,
-                ratio(tally.count(Verdict::RepurposeCandidate), tally.total)
+                ratio(tally.count(Verdict::RepurposeCandidate), tally.candidates())
             );
         }
     }
@@ -974,7 +997,6 @@ mod tests {
         let judgment = counted.judge("Kubectl").unwrap();
         assert_eq!(judgment.verdict, Verdict::Established);
         assert_eq!(judgment.reason, Reason::HighFrequency);
-        // 候補にしない設定では、キーがあっても引かない。
         let skipped = judge_with_options(
             &keys,
             &[],
@@ -984,7 +1006,10 @@ mod tests {
                 ..options
             },
         );
-        assert_eq!(skipped.judge("Kubectl").unwrap().verdict, Verdict::Coined);
+        // 候補にしない設定では、キーがあっても引かず、候補外になる。
+        let skipped_judgment = skipped.judge("Kubectl").unwrap();
+        assert_eq!(skipped_judgment.verdict, Verdict::NotCandidate);
+        assert_eq!(skipped_judgment.reason, Reason::Span);
     }
 
     /// 構成の分析の例に使う部品の頻度。`未認証データ` の 3 形態素である。
@@ -1140,17 +1165,38 @@ mod tests {
     fn 部品も珍しい未登録の語は理由が未登録になる() {
         // 部品の最小の頻度 118 が閾値 1000 に届かない。名前は造語の候補のままで、
         // 理由だけが変わる。
-        let judge = judge_with(&[], &[("貪欲", 118), ("分割", 32179)], 1000.0);
-        let judgment = judge.judge("貪欲分割").unwrap();
+        let judge = judge_with(&[], &[("痕跡", 118), ("検出", 32179)], 1000.0);
+        let judgment = judge.judge("痕跡検出").unwrap();
         assert_eq!(judgment.verdict, Verdict::Coined);
         assert_eq!(judgment.reason, Reason::Unregistered);
     }
 
+    #[test]
+    fn 複合語の区間にならない語は候補外になる() {
+        let judge = judge_with(&[("静的解析", 7)], &[("解析", 24196)], 1000.0);
+        // 「静的」は形状詞なので区間に入らず、キーがあっても候補外である。
+        let judgment = judge.judge("静的解析").unwrap();
+        assert_eq!(judgment.verdict, Verdict::NotCandidate);
+        assert_eq!(judgment.reason, Reason::Span);
+        // 「貪欲」も形状詞である。数詞を含む語も区間にならない。
+        assert_eq!(
+            judge.judge("貪欲分割").unwrap().verdict,
+            Verdict::NotCandidate
+        );
+        assert_eq!(
+            judge.judge("2要素認証").unwrap().verdict,
+            Verdict::NotCandidate
+        );
+        // 名詞だけの語は候補である。
+        assert_eq!(judge.judge("幽霊参照").unwrap().verdict, Verdict::Coined);
+    }
+
     /// 3 区分の例を持つ造語の例の TSV。`樹形図` は解析辞書に見出しがあるので意味の
-    /// 転用、`公開鍵暗号` はプロジェクトが別の表記を使う言い換え、残る 2 語は造語で
-    /// ある。
+    /// 転用、`公開鍵暗号` はプロジェクトが別の表記を使う言い換え、残る 3 語は造語で
+    /// ある。造語のうち `貪欲分割` は形状詞を含むので候補外になる。
     const CATEGORIZED_TSV: &str = "語\t判定者\t出典\t区分\t区分の判定者\n\
          幽霊参照\tmaintainer\t記録\t造語\tmaintainer\n\
+         痕跡検出\tmaintainer\t記録\t造語\tmaintainer\n\
          貪欲分割\tmaintainer\t記録\t造語\tmaintainer\n\
          公開鍵暗号\tmaintainer\t記録\t言い換え\tmaintainer\n\
          樹形図\tmaintainer\t記録\t意味の転用\tmaintainer\n";
@@ -1162,8 +1208,8 @@ mod tests {
             &[
                 ("幽霊", 8220),
                 ("参照", 42449),
-                ("貪欲", 118),
-                ("分割", 32179),
+                ("痕跡", 118),
+                ("検出", 32179),
             ],
             1000.0,
         );
@@ -1178,10 +1224,13 @@ mod tests {
 
     #[test]
     fn 区分が造語の行だけを再現率の母数にする() {
-        // 残る 2 区分の 2 行を母数に入れれば 2/4 になる。区分で分けるので 2/2 である。
+        // 残る 2 区分の 2 行を母数に入れれば 2/4 になる。区分で分けるので 2/2 で
+        // あり、区間にならない `貪欲分割` は候補外として母数から外れる。
         let tallies = tally_categorized_tsv("corpus-tool-coined-tally-test");
-        assert_eq!(tallies.coined.total, 2);
+        assert_eq!(tallies.coined.total, 3);
+        assert_eq!(tallies.coined.candidates(), 2);
         assert_eq!(tallies.coined.count(Verdict::Coined), 2);
+        assert_eq!(tallies.coined.count(Verdict::NotCandidate), 1);
         assert_eq!(tallies.coined.count(Verdict::Established), 0);
     }
 

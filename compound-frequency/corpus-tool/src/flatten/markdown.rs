@@ -7,8 +7,9 @@ use super::{plain_text, scan_config};
 /// `source` の Markdown から、日本語の本文だけを取り出す。
 ///
 /// フロントマター、コードブロック、コードスパン、HTML のタグ、リンク先の URL は
-/// 走査が検査の対象から外すので、返す平文に残らない。mdx の JSX のタグは HTML と
-/// して外れ、`import` の行は日本語の文字の比率が下限に届かないので落ちる。
+/// 走査が検査の対象から外すので、中身は返す平文に残らない。外した範囲の跡には
+/// 名詞を 1 つ置く([`super::plain_text`])。mdx の JSX のタグは HTML として
+/// 外れ、`import` の行は日本語の文字の比率が下限に届かないので落ちる。
 pub fn flatten(source: &str) -> String {
     plain_text(&scan(source, scan_config()))
 }
@@ -42,9 +43,16 @@ This paragraph is written in English and carries no Japanese prose.
         assert_eq!(
             flatten(MARKDOWN),
             "設定ファイル\n\
-             に既定値を書く。詳しくは 設定の一覧 を読む。\n\
+             ZZCODEZZ に既定値を書く。詳しくは 設定の一覧 を読む。\n\
              注記の本文は引用ブロックに置く。\n"
         );
+    }
+
+    #[test]
+    fn コードスパンの跡に名詞が残る() {
+        // 「`aku.toml` に既定値を書く」の「に」は、宿す名詞を失うと係り先を持てない。
+        let text = flatten(MARKDOWN);
+        assert!(text.contains("ZZCODEZZ に既定値を書く"), "{text}");
     }
 
     #[test]

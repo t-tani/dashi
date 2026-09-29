@@ -24,8 +24,10 @@
 //! 分野の分布でどれだけ情報技術に偏るかを測る。
 
 mod build;
+mod case_frames;
 mod checksum;
 mod compound;
+mod cooccurrence;
 mod count;
 mod domain;
 mod domain_filter;
@@ -33,7 +35,10 @@ mod dump;
 mod flatten;
 mod headwords;
 mod judge;
+mod nouns;
+mod occurrences;
 mod query;
+mod subtrees;
 mod titles;
 mod topic;
 mod topic_distribution;
@@ -84,6 +89,81 @@ enum Command {
         /// 情報技術、日本語コーパスはソースの機関と文体で決める。
         #[arg(long)]
         domains: bool,
+    },
+    /// 入力を読んで名詞の出現回数を TSV に書く。外来語の置き換え表の見出し語の
+    /// 一覧が引く頻度である。
+    CountNouns {
+        /// 数える入力。
+        #[command(flatten)]
+        input: NounInput,
+        /// 回数の TSV と数えた記録を書くディレクトリ。
+        #[arg(long)]
+        out_dir: PathBuf,
+        /// 先頭のこの数の記事か文書だけを読む。動きの確認に使う。
+        #[arg(long)]
+        limit: Option<u64>,
+    },
+    /// 入力を読んで、対象の語ごとに前後に現れた内容語の回数を TSV に書く。
+    CountCooccurrence {
+        /// 数える入力。
+        #[command(flatten)]
+        input: NounInput,
+        /// 対象の語の一覧。1 行 1 語で、分割単位 C の正規化形で書く。
+        #[arg(long)]
+        targets: PathBuf,
+        /// 回数の TSV と数えた記録を書くディレクトリ。
+        #[arg(long)]
+        out_dir: PathBuf,
+        /// 先頭のこの数の記事か文書だけを読む。動きの確認に使う。
+        #[arg(long)]
+        limit: Option<u64>,
+    },
+    /// 入力を読んで、対象の語ごとに付いた格助詞と係り先の述語の組の回数を TSV に
+    /// 書く。
+    CountCaseFrames {
+        /// 数える入力。
+        #[command(flatten)]
+        input: NounInput,
+        /// 対象の語の一覧。1 行 1 語で、分割単位 C の正規化形で書く。
+        #[arg(long)]
+        targets: PathBuf,
+        /// 回数の TSV と数えた記録を書くディレクトリ。
+        #[arg(long)]
+        out_dir: PathBuf,
+        /// 先頭のこの数の記事か文書だけを読む。動きの確認に使う。
+        #[arg(long)]
+        limit: Option<u64>,
+    },
+    /// 検査する文書から、対象の語が単独で立つ出現とその文脈を JSONL に書き出す。
+    ExtractOccurrences {
+        /// 読む入力。
+        #[command(flatten)]
+        input: NounInput,
+        /// 対象の語の一覧。
+        #[arg(long)]
+        targets: PathBuf,
+        /// 書き出す JSONL。
+        #[arg(long)]
+        out: PathBuf,
+        /// 先頭のこの数の文書だけを読む。
+        #[arg(long)]
+        limit: Option<u64>,
+    },
+    /// 文書から、対象の語が単独で立つ出現ごとに、係り受けの部分木と修飾と格と述語の
+    /// 組を JSONL に書き出す。
+    ExtractSubtrees {
+        /// 読む入力。
+        #[command(flatten)]
+        input: NounInput,
+        /// 対象の語の一覧。
+        #[arg(long)]
+        targets: PathBuf,
+        /// 書き出す JSONL。
+        #[arg(long)]
+        out: PathBuf,
+        /// 先頭のこの数の文書だけを読む。
+        #[arg(long)]
+        limit: Option<u64>,
     },
     /// 解析辞書の見出しのうち、分割単位 A で 2 形態素以上に割れる名詞を TSV に
     /// 書く。
@@ -138,10 +218,10 @@ enum Command {
         #[arg(long, default_value_t = 1.0)]
         counts_weight: f64,
         /// 技術文書の文書数に掛ける重み。
-        #[arg(long, default_value_t = 1.0)]
+        #[arg(long, default_value_t = 2.0)]
         docs_weight: f64,
         /// 日本語コーパスの文書数に掛ける重み。
-        #[arg(long, default_value_t = 1.0)]
+        #[arg(long, default_value_t = 2.0)]
         corpus_weight: f64,
         /// フィルタに入れる複合語の回数の下限。
         #[arg(long, default_value_t = build::DEFAULT_MIN_COUNT)]
@@ -244,6 +324,11 @@ struct CountInput {
     /// 情報技術の記事だけを数える。既定は名前空間 0 の全記事である。
     #[arg(long, conflicts_with_all = ["text_dir", "corpus_dir"])]
     topics: bool,
+    /// 掃除済みの記事の平文のディレクトリ。日本語コーパスの `jawiki/text/` で、
+    /// `<page_id の下 3 桁>/<page_id>.txt` の形である。記事の平文がここにあれば、
+    /// ダンプの本文の代わりにその平文を数える。
+    #[arg(long, requires = "dump")]
+    article_text_dir: Option<PathBuf>,
     /// `flatten` が書いた平文のディレクトリ。1 ファイルを 1 文書として数える。
     #[arg(long, conflicts_with = "corpus_dir")]
     text_dir: Option<PathBuf>,
@@ -255,6 +340,164 @@ struct CountInput {
     /// 平文の技術文書と日本語コーパスに効き、ダンプには効かない。
     #[arg(long, value_delimiter = ',', conflicts_with = "dump")]
     exclude: Vec<String>,
+}
+
+/// `count-nouns` の入力。3 つの入力は排他であり、どれかは要る。
+#[derive(clap::Args)]
+struct NounInput {
+    /// cirrussearch のダンプ。
+    #[arg(
+        long,
+        conflicts_with_all = ["text_dir", "corpus_dir"],
+        required_unless_present_any = ["text_dir", "corpus_dir"]
+    )]
+    dump: Option<PathBuf>,
+    /// 情報技術の記事(STEM.Computing か STEM.Technology)だけを数える。既定は
+    /// 名前空間 0 の全記事である。
+    #[arg(long, conflicts_with_all = ["text_dir", "corpus_dir", "computing"])]
+    topics: bool,
+    /// 話題の予測が STEM.Computing の記事だけを数える。
+    #[arg(long, conflicts_with_all = ["text_dir", "corpus_dir"])]
+    computing: bool,
+    /// `flatten` が書いた平文のディレクトリ。
+    #[arg(long, conflicts_with = "corpus_dir")]
+    text_dir: Option<PathBuf>,
+    /// メンテナーが集めた日本語コーパスのディレクトリ。
+    #[arg(long)]
+    corpus_dir: Option<PathBuf>,
+    /// 数えないソースの名前。平文の技術文書と日本語コーパスに効き、ダンプには効かない。
+    #[arg(long, value_delimiter = ',', conflicts_with = "dump")]
+    exclude: Vec<String>,
+}
+
+/// 渡された入力の名詞を数える。
+fn count_nouns(input: NounInput, out_dir: &Path, limit: Option<u64>) -> Result<()> {
+    let excluded = format!("外したソース: {}", input.exclude.join(","));
+    if let Some(corpus_dir) = input.corpus_dir {
+        let paths = nouns::corpus_paths(&corpus_dir, &input.exclude, limit)?;
+        return nouns::run_paths(&paths, &corpus_dir, excluded, out_dir);
+    }
+    if let Some(text_dir) = input.text_dir {
+        let paths = nouns::document_paths(&text_dir, &input.exclude, limit)?;
+        return nouns::run_paths(&paths, &text_dir, excluded, out_dir);
+    }
+    let Some(dump) = input.dump else {
+        bail!("--dump か --text-dir か --corpus-dir のどれかを渡すこと");
+    };
+    let selection = if input.computing {
+        Selection::ComputingTopics
+    } else {
+        Selection::from_topics(input.topics)
+    };
+    nouns::run_dump(&dump, out_dir, selection, limit)
+}
+
+/// 検査する文書から出現を抜き出す。
+fn extract_occurrences(
+    input: NounInput,
+    targets: &Path,
+    out: &Path,
+    limit: Option<u64>,
+) -> Result<()> {
+    let targets = cooccurrence::Targets::read(targets)?;
+    if targets.is_empty() {
+        bail!("対象の語の一覧が空である");
+    }
+    let paths = if let Some(corpus_dir) = input.corpus_dir {
+        nouns::corpus_paths(&corpus_dir, &input.exclude, limit)?
+    } else if let Some(text_dir) = input.text_dir {
+        nouns::document_paths(&text_dir, &input.exclude, limit)?
+    } else {
+        bail!("--text-dir か --corpus-dir を渡すこと");
+    };
+    let written = occurrences::run(&paths, &targets, out)?;
+    println!("{} 文書から {written} 件の出現を書いた", paths.len());
+    Ok(())
+}
+
+/// 渡された入力から、出現ごとの部分木と修飾と格と述語の組を書き出す。
+fn extract_subtrees(
+    input: NounInput,
+    targets: &Path,
+    out: &Path,
+    limit: Option<u64>,
+) -> Result<()> {
+    let targets = cooccurrence::Targets::read(targets)?;
+    if targets.is_empty() {
+        bail!("対象の語の一覧が空である");
+    }
+    let paths = if let Some(corpus_dir) = input.corpus_dir {
+        nouns::corpus_paths(&corpus_dir, &input.exclude, limit)?
+    } else if let Some(text_dir) = input.text_dir {
+        nouns::document_paths(&text_dir, &input.exclude, limit)?
+    } else {
+        bail!("--text-dir か --corpus-dir を渡すこと");
+    };
+    let written = subtrees::run(&paths, &targets, out)?;
+    println!("{} 文書から {written} 件の出現を書いた", paths.len());
+    Ok(())
+}
+
+/// 渡された入力の共起を数える。
+fn count_cooccurrence(
+    input: NounInput,
+    targets: &Path,
+    out_dir: &Path,
+    limit: Option<u64>,
+) -> Result<()> {
+    let targets = cooccurrence::Targets::read(targets)?;
+    if targets.is_empty() {
+        bail!("対象の語の一覧が空である");
+    }
+    let excluded = format!("外したソース: {}", input.exclude.join(","));
+    if let Some(corpus_dir) = input.corpus_dir {
+        let paths = nouns::corpus_paths(&corpus_dir, &input.exclude, limit)?;
+        return cooccurrence::run_paths(&paths, &targets, &corpus_dir, excluded, out_dir);
+    }
+    if let Some(text_dir) = input.text_dir {
+        let paths = nouns::document_paths(&text_dir, &input.exclude, limit)?;
+        return cooccurrence::run_paths(&paths, &targets, &text_dir, excluded, out_dir);
+    }
+    let Some(dump) = input.dump else {
+        bail!("--dump か --text-dir か --corpus-dir のどれかを渡すこと");
+    };
+    let selection = if input.computing {
+        Selection::ComputingTopics
+    } else {
+        Selection::from_topics(input.topics)
+    };
+    cooccurrence::run_dump(&dump, &targets, out_dir, selection, limit)
+}
+
+/// 渡された入力の格と述語の組を数える。
+fn count_case_frames(
+    input: NounInput,
+    targets: &Path,
+    out_dir: &Path,
+    limit: Option<u64>,
+) -> Result<()> {
+    let targets = cooccurrence::Targets::read(targets)?;
+    if targets.is_empty() {
+        bail!("対象の語の一覧が空である");
+    }
+    let excluded = format!("外したソース: {}", input.exclude.join(","));
+    if let Some(corpus_dir) = input.corpus_dir {
+        let paths = nouns::corpus_paths(&corpus_dir, &input.exclude, limit)?;
+        return case_frames::run_paths(&paths, &targets, &corpus_dir, excluded, out_dir);
+    }
+    if let Some(text_dir) = input.text_dir {
+        let paths = nouns::document_paths(&text_dir, &input.exclude, limit)?;
+        return case_frames::run_paths(&paths, &targets, &text_dir, excluded, out_dir);
+    }
+    let Some(dump) = input.dump else {
+        bail!("--dump か --text-dir か --corpus-dir のどれかを渡すこと");
+    };
+    let selection = if input.computing {
+        Selection::ComputingTopics
+    } else {
+        Selection::from_topics(input.topics)
+    };
+    case_frames::run_dump(&dump, &targets, out_dir, selection, limit)
 }
 
 /// 渡された入力を数える。3 つの入力は排他であり、どれかは要る。clap がその両方を
@@ -279,7 +522,15 @@ fn count(
         count::documents::run(&text_dir, out_dir, &input.exclude, limit, unknown, domains)
     } else if let Some(dump) = input.dump {
         let selection = Selection::from_topics(input.topics);
-        count::run(&dump, out_dir, selection, limit, unknown, domains)
+        count::run(
+            &dump,
+            out_dir,
+            selection,
+            limit,
+            unknown,
+            domains,
+            input.article_text_dir.as_deref(),
+        )
     } else {
         bail!("--dump か --text-dir か --corpus-dir のどれかを渡す")
     }
@@ -325,6 +576,35 @@ fn main() -> Result<()> {
             UnknownMorphemes::from_counted(!count_known_only),
             DomainCounting::from_counted(domains),
         ),
+        Command::CountNouns {
+            input,
+            out_dir,
+            limit,
+        } => count_nouns(input, &out_dir, limit),
+        Command::CountCooccurrence {
+            input,
+            targets,
+            out_dir,
+            limit,
+        } => count_cooccurrence(input, &targets, &out_dir, limit),
+        Command::CountCaseFrames {
+            input,
+            targets,
+            out_dir,
+            limit,
+        } => count_case_frames(input, &targets, &out_dir, limit),
+        Command::ExtractOccurrences {
+            input,
+            targets,
+            out,
+            limit,
+        } => extract_occurrences(input, &targets, &out, limit),
+        Command::ExtractSubtrees {
+            input,
+            targets,
+            out,
+            limit,
+        } => extract_subtrees(input, &targets, &out, limit),
         Command::DictionaryHeadwords {
             lexicon_dir,
             out_dir,

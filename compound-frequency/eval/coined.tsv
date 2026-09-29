@@ -41,7 +41,7 @@
 状態機械	maintainer	akunuki の docs/slop-inventory.yaml	意味の転用	claude-fable-5-1
 規則族	maintainer	akunuki の docs/slop-inventory.yaml	造語	claude-fable-5-1
 ルール族	maintainer	akunuki の docs/slop-inventory.yaml	造語	claude-fable-5-1
-審査待ち	maintainer	akunuki の docs/slop-inventory.yaml	造語	claude-fable-5-1
+審査待ち	maintainer	akunuki の docs/slop-inventory.yaml	意味の転用	maintainer
 監査検出	maintainer	akunuki の docs/slop-inventory.yaml	造語	claude-fable-5-1
 揮発ポインタ	claude-fable-5-1	akunuki の docs/slop-inventory.yaml	造語	claude-fable-5-1
 参照資料	maintainer	akunuki の docs/slop-inventory.yaml	意味の転用	claude-fable-5-1
@@ -113,7 +113,7 @@
 侵入後活動	maintainer	akunuki の .aku/dict/report/avoid/user.yaml	造語	claude-fable-5-1
 環境変数窃取	maintainer	akunuki の .aku/dict/report/avoid/user.yaml	造語	claude-fable-5-1
 無害化不備	maintainer	akunuki の .aku/dict/report/avoid/user.yaml	造語	claude-fable-5-1
-破壊的操作	maintainer	akunuki の .aku/dict/report/avoid/user.yaml	造語	claude-fable-5-1
+破壊的操作	maintainer	akunuki の .aku/dict/report/avoid/user.yaml	意味の転用	maintainer
 未認証リモートコード	maintainer	akunuki の .aku/dict/report/avoid/user.yaml	造語	claude-fable-5-1
 未認証任意ファイル	maintainer	akunuki の .aku/dict/report/avoid/user.yaml	造語	claude-fable-5-1
 未認証認可バイパス	maintainer	akunuki の .aku/dict/report/avoid/user.yaml	造語	claude-fable-5-1
@@ -201,5 +201,5 @@ OSINT資源	maintainer	akunuki の seeds/dict-specs.yaml	言い換え	claude-fab
 走査系	claude-fable-5-1	akunuki の issue #594	造語	claude-fable-5-1
 反復系	claude-fable-5-1	akunuki の issue #297	造語	claude-fable-5-1
 報告系	claude-fable-5-1	akunuki の issue #842	造語	claude-fable-5-1
-接続系	claude-fable-5-1	akunuki の issue #1054	造語	claude-fable-5-1
+接続系	claude-fable-5-1	akunuki の issue #1054	意味の転用	maintainer
 参照リソース	claude-fable-5-1	akunuki の issue #491	造語	claude-fable-5-1
