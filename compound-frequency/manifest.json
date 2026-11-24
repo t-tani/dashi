@@ -1,6 +1,6 @@
 {
   "artifact": "release",
-  "version": "dashi-2026.09.5",
+  "version": "dashi-2026.11.1",
   "weights": {
     "wikipedia": 1.0,
     "documents": 2.0,
